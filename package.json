@@ -5,5 +5,13 @@
   "main": "app.js",
   "repository": "git@github.com:DaJoker29/icarus-business-portal.git",
   "author": "Dewitt Buckingham <dj729@comcast.net>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "body-parser": "1.18.2",
+    "cors": "2.8.4",
+    "express": "4.16.2",
+    "method-override": "2.3.10",
+    "mongoose": "5.0.3",
+    "morgan": "1.9.0"
+  }
 }
