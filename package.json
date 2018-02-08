@@ -7,7 +7,8 @@
   "author": "Dewitt Buckingham <dj729@comcast.net>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint . --ext .js,.json,.jsx"
+    "lint": "yarn eslint .",
+    "fix": "yarn eslint --fix ."
   },
   "devDependencies": {
     "babel-eslint": "8.2.1",
