@@ -6,6 +6,9 @@
   "repository": "git@github.com:DaJoker29/icarus-business-portal.git",
   "author": "Dewitt Buckingham <dj729@comcast.net>",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint . --ext .js,.json,.jsx"
+  },
   "devDependencies": {
     "babel-eslint": "8.2.1",
     "body-parser": "1.18.2",
@@ -14,6 +17,7 @@
     "eslint-config-last": "0.0.5",
     "eslint-config-prettier": "2.9.0",
     "eslint-plugin-prettier": "2.6.0",
+    "eslint-plugin-react": "7.6.1",
     "express": "4.16.2",
     "method-override": "2.3.10",
     "mongoose": "5.0.3",
