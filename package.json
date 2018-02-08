@@ -1,0 +1,9 @@
+{
+  "name": "icarus-business-portal",
+  "version": "1.0.0",
+  "description": "Zero Daedalus Client Portal",
+  "main": "app.js",
+  "repository": "git@github.com:DaJoker29/icarus-business-portal.git",
+  "author": "Dewitt Buckingham <dj729@comcast.net>",
+  "license": "MIT"
+}
