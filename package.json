@@ -5,5 +5,44 @@
   "main": "app.js",
   "repository": "git@github.com:DaJoker29/icarus-business-portal.git",
   "author": "Dewitt Buckingham <dj729@comcast.net>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "lint": "yarn eslint .",
+    "fix": "yarn eslint --fix .",
+    "test": "istanbul cover node_modules/mocha/bin/_mocha",
+    "preversion": "git checkout master && git merge --no-ff develop -m 'Pull changes for release bump'",
+    "postversion": "git push && git push --tags && git checkout develop && git merge --no-ff master -m 'Sync Develop branch' && git push",
+    "install": "ln -si ../../tools/pre-commit.sh .git/hooks/pre-commit",
+    "prod": "yarn run build && pm2 start process.json",
+    "dev": "concurrently \"yarn run watch-server\" \"yarn run watch-bundle\"",
+    "watch-server": "nodemon index.js --config nodemon.json",
+    "watch-bundle": "webpack-dev-server --inline --hot --content-base client --config config/webpack.dev.js",
+    "build": "webpack -p --config config/webpack.prod.js",
+    "start": "yarn run dev",
+    "dist": "./tools/upgrade.sh",
+    "reload": "./tools/reload-server.sh"
+  },
+  "devDependencies": {
+    "babel-eslint": "8.2.1",
+    "body-parser": "1.18.2",
+    "cors": "2.8.4",
+    "eslint": "4.17.0",
+    "eslint-config-last": "0.0.5",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-json": "1.2.0",
+    "eslint-plugin-prettier": "2.6.0",
+    "eslint-plugin-react": "7.6.1",
+    "express": "4.16.2",
+    "method-override": "2.3.10",
+    "mongoose": "5.0.3",
+    "morgan": "1.9.0",
+    "prettier": "1.10.2"
+  },
+  "dependencies": {
+    "chai": "4.1.2",
+    "mocha": "5.0.0",
+    "sinon": "4.2.2",
+    "sinon-mongoose": "2.0.2"
+  }
 }
