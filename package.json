@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "lint": "yarn eslint .",
-    "fix": "yarn eslint --fix ."
+    "fix": "yarn eslint --fix .",
+    "test": "istanbul cover node_modules/mocha/bin/_mocha"
   },
   "devDependencies": {
     "babel-eslint": "8.2.1",
@@ -24,5 +25,11 @@
     "mongoose": "5.0.3",
     "morgan": "1.9.0",
     "prettier": "1.10.2"
+  },
+  "dependencies": {
+    "chai": "4.1.2",
+    "mocha": "5.0.0",
+    "sinon": "4.2.2",
+    "sinon-mongoose": "2.0.2"
   }
 }
