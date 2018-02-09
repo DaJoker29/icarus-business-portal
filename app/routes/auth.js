@@ -5,12 +5,14 @@ const onlyUnauth = require('../../helpers/auth').ONLY_UNAUTHENTICATED;
 
 const router = express.Router();
 
-router.post('/create-account', authCtrl.CREATE_ACCT);
-
+// Sign Up/Create Account
 router.get('/signup', onlyUnauth, (req, res) => {
   res.render('signup', { title: 'Sign up', message: 'Join Our Movement!' });
 });
 
+router.post('/signup', authCtrl.CREATE_ACCT);
+
+// Log In/Out
 router.get('/login', onlyUnauth, (req, res) => {
   res.render('login', { title: 'Welcome', message: 'Howdy!' });
 });
@@ -22,8 +24,10 @@ router.get('/logout', (req, res) => {
 
 router.post(
   '/login',
-  onlyUnauth,
-  passport.authenticate('local', { successRedirect: '/' }),
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+  }),
 );
 
 module.exports = router;
