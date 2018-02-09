@@ -1,4 +1,4 @@
-const person = require('../models').PERSON;
+const user = require('../app/models').USER;
 
 // Express middleware to ensure user authentication
 function ensureAuth(req, res, next) {
@@ -14,7 +14,7 @@ function handleOAuth(req, accessToken, refreshToken, profile, done) {
   if (!req.user) {
     const { displayName, id } = profile;
 
-    person.findOne({ googleID: id }, (err, doc) => {
+    user.findOne({ googleID: id }, (err, doc) => {
       // Check for existing doc and return it, if found
       if (err) {
         return done(err, doc);
@@ -25,7 +25,7 @@ function handleOAuth(req, accessToken, refreshToken, profile, done) {
           upsert: true,
         };
 
-        return person.findByIdAndUpdate(
+        return user.findByIdAndUpdate(
           doc.id,
           { googleToken: accessToken },
           options,
@@ -40,7 +40,7 @@ function handleOAuth(req, accessToken, refreshToken, profile, done) {
         googleToken: accessToken,
       };
 
-      return person.create(data, done);
+      return user.create(data, done);
     });
   }
 }
@@ -51,7 +51,7 @@ function serializeUser(user, done) {
 }
 
 function deserializeUser(id, done) {
-  person.findById(id, (err, user) => {
+  user.findById(id, (err, user) => {
     done(err, user);
   });
 }

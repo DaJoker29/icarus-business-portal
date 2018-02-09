@@ -15,7 +15,7 @@
     "install": "ln -si ../../tools/pre-commit.sh .git/hooks/pre-commit",
     "prod": "yarn run build && pm2 start process.json",
     "dev": "concurrently \"yarn run watch-server\" \"yarn run watch-bundle\"",
-    "watch-server": "nodemon index.js --config nodemon.json",
+    "watch-server": "nodemon icarus.js --config nodemon.json",
     "watch-bundle": "webpack-dev-server --inline --hot --content-base client --config config/webpack.dev.js",
     "build": "webpack -p --config config/webpack.prod.js",
     "start": "yarn run dev",
@@ -25,6 +25,7 @@
   "devDependencies": {
     "babel-eslint": "8.2.1",
     "body-parser": "1.18.2",
+    "concurrently": "3.5.1",
     "cors": "2.8.4",
     "eslint": "4.17.0",
     "eslint-config-last": "0.0.5",
@@ -40,9 +41,23 @@
     "prettier": "1.10.2"
   },
   "dependencies": {
+    "bcrypt": "1.0.3",
     "chai": "4.1.2",
+    "connect-redis": "3.3.3",
+    "dotenv": "5.0.0",
+    "express-session": "1.15.6",
+    "extract-text-webpack-plugin": "3.0.2",
+    "helmet": "3.10.0",
     "mocha": "5.0.0",
+    "mongoose-unique-validator": "2.0.0",
+    "passport": "0.4.0",
+    "passport-facebook": "2.1.1",
+    "passport-google-oauth": "1.0.0",
+    "passport-local": "1.0.0",
     "sinon": "4.2.2",
-    "sinon-mongoose": "2.0.2"
+    "sinon-mongoose": "2.0.2",
+    "webpack": "3.10.0",
+    "webpack-dev-server": "2.11.1",
+    "webpack-hot-middleware": "2.21.0"
   }
 }
