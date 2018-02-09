@@ -3,7 +3,7 @@ const unique = require('mongoose-unique-validator');
 
 const Schema = mongoose.Schema;
 
-const personSchema = new Schema({
+const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true, select: false },
   passwordSalt: { type: String, required: true, select: false },
@@ -14,6 +14,6 @@ const personSchema = new Schema({
   servers: [Schema.Types.ObjectId]
 });
 
-personSchema.plugin(unique);
+userSchema.plugin(unique);
 
-module.exports.person = mongoose.model('person', personSchema);
+module.exports.person = mongoose.model('person', userSchema);
