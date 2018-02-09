@@ -51,8 +51,9 @@ mongoose.connection.on('connected', () => {
   console.log(`\nSuccessfully connected to database...`);
 });
 
-// User Routes
+// Routes
 app.use('/user', routes.USER);
+app.use('/', routes.CREATE_ACCT);
 
 // Catch-All Route for Errors
 app.get('*', (req, res) => {

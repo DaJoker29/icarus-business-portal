@@ -2,12 +2,13 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const authHelpers = require('../helpers').AUTH;
+const user = require('../app/models').USER;
 
 const handleOAuth = authHelpers.HANDLE_OAUTH;
 const port = process.env.PORT || 3000;
 
-const localStrategy = new LocalStrategy((username, password, cb) => {
-  user.findOne({ email: username }, (err, doc) => {
+const localStrategy = new LocalStrategy({usernameField: 'email'}, (email, password, cb) => {
+  user.findOne({ email }, (err, doc) => {
     if (err) {
       return cb(err);
     } else if (doc) {

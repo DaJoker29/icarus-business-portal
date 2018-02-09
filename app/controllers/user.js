@@ -32,10 +32,10 @@ function changeInfo(req, res) {
   return res.sendStatus(404);
 };
 
-function changePassword(req, res) {
-  return;
-};
+// function changePassword(req, res) {
+//   return;
+// };
 
 module.exports.FETCH_USER = fetchUser;
 module.exports.CHANGE_INFO = changeInfo;
-module.exports.CHANGE_PASSWORD = changePassword;
+// module.exports.CHANGE_PASSWORD = changePassword;
