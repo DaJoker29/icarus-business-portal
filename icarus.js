@@ -82,10 +82,9 @@ app.post('/login', passport.authenticate('local'), (req, res) => {
 app.use('/user', routes.USER);
 app.use('/', routes.CREATE_ACCT);
 
-// Catch-All Route for Errors
-app.get('*', (req, res) => {
-  res.send('Does not compute.');
-});
+// 404s/Error Handling
+app.use(routes.ERROR);
+
 // Launch Server
 app.listen(process.env.PORT, err => {
   if (err) throw err;

@@ -10,5 +10,8 @@
     "tools",
     "client",
     "coverage"
-  ]
+  ],
+  "events": {
+    "restart": "yarn fix"
+  }
 }
