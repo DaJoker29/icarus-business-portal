@@ -1,6 +1,6 @@
 const express = require('express');
 const userCtrl = require('../controllers').USER;
-const ensureAuth = require('../helpers').AUTH.ENSURE_AUTH;
+const ensureAuth = require('../../helpers').AUTH.ENSURE_AUTH;
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.use(ensureAuth);
 router.get('/', userCtrl.FETCH_USER);
 
 // Update Account Details
-router.post('/password', userCtrl.CHANGE_PASSWORD);
+// router.post('/password', userCtrl.CHANGE_PASSWORD);
 router.post('/info', userCtrl.CHANGE_INFO);
 
 module.exports = router;

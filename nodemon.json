@@ -9,7 +9,6 @@
     "templates",
     "tools",
     "client",
-    "config",
     "coverage"
   ]
 }

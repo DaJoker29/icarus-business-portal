@@ -1,4 +1,4 @@
-const user = require('../models').USER;
+const user = require('../app/models').USER;
 
 // Express middleware to ensure user authentication
 function ensureAuth(req, res, next) {

@@ -10,7 +10,7 @@ const userSchema = new Schema({
   firstName: { type: String },
   lastName: { type: String },
   organization: { type: String },
-  phone: { type: String }
+  phone: { type: String },
   servers: [Schema.Types.ObjectId]
 });
 
