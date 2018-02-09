@@ -3,11 +3,11 @@ module.exports = {
     node: true,
     browser: true,
     mocha: true,
-    mongo: true
+    mongo: true,
   },
   extends: ['last', 'prettier/react', 'plugin:react/recommended'],
   rules: {
-    'no-console': 0
+    'no-console': 0,
   },
-  plugins: [ 'json', 'import' ]
+  plugins: ['json', 'import'],
 };

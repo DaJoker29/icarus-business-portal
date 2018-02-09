@@ -1,3 +1,3 @@
 #!/bin/sh
 # Git pre-commit hook
-npm run lint
+yarn run lint

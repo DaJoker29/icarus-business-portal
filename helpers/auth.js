@@ -1,6 +1,6 @@
 const user = require('../app/models').USER;
 
-// Express middleware to ensure user authentication
+// Redirect to Login Page if not authenticated
 function ensureAuth(req, res, next) {
   if (req.isAuthenticated()) {
     next();
@@ -9,7 +9,7 @@ function ensureAuth(req, res, next) {
   }
 }
 
-// Handle OAuth Provider Authentication
+/* TODO: Update OAuth Handler */
 function handleOAuth(req, accessToken, refreshToken, profile, done) {
   if (!req.user) {
     const { displayName, id } = profile;
@@ -45,7 +45,7 @@ function handleOAuth(req, accessToken, refreshToken, profile, done) {
   }
 }
 
-// Serialize and De-Serialize Users
+// Passport Auth Helpers
 function serializeUser(user, done) {
   done(null, user._id);
 }

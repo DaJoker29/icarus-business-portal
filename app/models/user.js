@@ -11,6 +11,7 @@ const userSchema = new Schema({
   organization: { type: String },
   phone: { type: String },
   servers: [Schema.Types.ObjectId],
+  // TODO: Expand User Model (createdOn, preferredContactMethod)
 });
 
 userSchema.plugin(unique);

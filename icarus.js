@@ -10,8 +10,8 @@ const passport = require('passport');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const routes = require('./app/routes');
-const config = require('./config');
-const helpers = require('./helpers');
+const strategies = require('./config/strategies');
+const authHelpers = require('./helpers/auth');
 const app = express();
 
 console.log('Icarus is taking flight...\n');
@@ -42,10 +42,10 @@ app.use(session(sessionSettings));
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(config.STRATEGIES.LOCAL);
+passport.use(strategies.LOCAL);
 
-passport.serializeUser(helpers.AUTH.SERIALIZE_USER);
-passport.deserializeUser(helpers.AUTH.DESERIALIZE_USER);
+passport.serializeUser(authHelpers.SERIALIZE_USER);
+passport.deserializeUser(authHelpers.DESERIALIZE_USER);
 
 mongoose.connect(process.env.DB);
 mongoose.connection.on('connected', () => {
@@ -81,7 +81,6 @@ app.post('/login', passport.authenticate('local'), (req, res) => {
 // Routes
 app.use('/user', routes.USER);
 app.use('/', routes.CREATE_ACCT);
-
 
 // Catch-All Route for Errors
 app.get('*', (req, res) => {

@@ -7,7 +7,7 @@ then
 else
   echo 'Fetching'
   git pull
-  npm install
-  npm test
-  npm run reload
+  yarn install
+  yarn test
+  yarn run reload
 fi
