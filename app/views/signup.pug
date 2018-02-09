@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1= message
+  form(method='POST')
+    input(type='email' name='email' required placeholder="Email Address")
+    input(type='password' name='password' required placeholder="Password")
+    input(type="text" name="firstName" placeholder="First Name")
+    input(type="text" name="lastName" placeholder="Last Name")
+    input(type="text" name="organization" placeholder="Organization or Business")
+    button(type='submit') Submit

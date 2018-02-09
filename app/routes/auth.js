@@ -1,0 +1,29 @@
+const express = require('express');
+const passport = require('passport');
+const authCtrl = require('../controllers/auth');
+const onlyUnauth = require('../../helpers/auth').ONLY_UNAUTHENTICATED;
+
+const router = express.Router();
+
+router.post('/create-account', authCtrl.CREATE_ACCT);
+
+router.get('/signup', onlyUnauth, (req, res) => {
+  res.render('signup', { title: 'Sign up', message: 'Join Our Movement!' });
+});
+
+router.get('/login', onlyUnauth, (req, res) => {
+  res.render('login', { title: 'Welcome', message: 'Howdy!' });
+});
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/login');
+});
+
+router.post(
+  '/login',
+  onlyUnauth,
+  passport.authenticate('local', { successRedirect: '/' }),
+);
+
+module.exports = router;

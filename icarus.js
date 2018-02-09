@@ -9,9 +9,14 @@ const helmet = require('helmet');
 const passport = require('passport');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
-const routes = require('./app/routes');
+
 const strategies = require('./config/strategies');
 const authHelpers = require('./helpers/auth');
+const authRoutes = require('./app/routes/auth');
+const errorRoutes = require('./app/routes/error');
+// const userRoutes = require('./app/routes/user');
+const clientRoutes = require('./app/routes/client');
+
 const app = express();
 
 console.log('Icarus is taking flight...\n');
@@ -31,6 +36,9 @@ const sessionSettings = {
   saveUninitialized: false,
   store: new RedisStore({ host: 'localhost', port: process.env.REDIS_PORT }),
 };
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'app/views'));
 
 app.use(morgan('development' === process.env.NODE_ENV ? 'dev' : 'combined'));
 app.use(bodyParser.urlencoded({ extended: 'true' }));
@@ -52,38 +60,11 @@ mongoose.connection.on('connected', () => {
   console.log(`\nSuccessfully connected to database...`);
 });
 
-// Special Routes
-app.get('/signup', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.redirect('/authenticated');
-  } else {
-    res.sendFile(path.join(`${__dirname}/client/sign-up.html`));
-  }
-});
-
-app.get('/login', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.redirect('/something');
-  } else {
-    res.sendFile(path.join(`${__dirname}/client/sign-in.html`));
-  }
-});
-
-app.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/login');
-});
-
-app.post('/login', passport.authenticate('local'), (req, res) => {
-  res.redirect('/');
-});
-
 // Routes
-app.use('/user', routes.USER);
-app.use('/', routes.CREATE_ACCT);
-
-// 404s/Error Handling
-app.use(routes.ERROR);
+// app.use('/user', userRoutes);
+app.use(authRoutes);
+app.use(clientRoutes);
+app.use(errorRoutes);
 
 // Launch Server
 app.listen(process.env.PORT, err => {

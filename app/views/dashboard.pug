@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  if null != user.firstName
+    p Howdy #{user.firstName}! Welcome Back.
+  else
+    p Hi there!

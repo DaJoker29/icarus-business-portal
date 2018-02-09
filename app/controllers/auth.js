@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const user = require('../models').USER;
+const user = require('../models/user');
 
 /* TODO: Looks ugly. Refactor.*/
 /* TODO: Pre-Check for Username Validity */
@@ -31,7 +31,7 @@ function createAccount(req, res, next) {
         if (err) return next(err);
         req.login(user, err => {
           if (err) return next(err);
-          return next();
+          res.redirect('/');
         });
       });
     });

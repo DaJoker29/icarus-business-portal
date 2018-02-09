@@ -1,4 +1,4 @@
-const user = require('../models').USER;
+const user = require('../models/user');
 
 /* TODO: Refactor Error Handling */
 function fetchUser(req, res) {
