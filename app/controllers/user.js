@@ -14,23 +14,28 @@ function fetchUser(req, res) {
 }
 
 function changeInfo(req, res) {
-  if ( req.user && req.body) {
+  if (req.user && req.body) {
     const { _id } = req.user;
     const { firstName, lastName, organization, phone } = req.body;
     const options = { new: true, upsert: true };
-    user.findByIdAndUpdate(_id, {firstName, lastName, organization, phone }, options, (err, doc) => {
-      if (err) {
-        console.log(err);
-        return res.sendStatus(500);
-      } else if (null === doc) {
-        console.log('No user found');
-        return res.sendStatus(404);
-      }
-      return res.json(doc);
-    })
+    user.findByIdAndUpdate(
+      _id,
+      { firstName, lastName, organization, phone },
+      options,
+      (err, doc) => {
+        if (err) {
+          console.log(err);
+          return res.sendStatus(500);
+        } else if (null === doc) {
+          console.log('No user found');
+          return res.sendStatus(404);
+        }
+        return res.json(doc);
+      },
+    );
   }
   return res.sendStatus(404);
-};
+}
 
 // function changePassword(req, res) {
 //   return;

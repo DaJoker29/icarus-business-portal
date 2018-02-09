@@ -10,9 +10,9 @@ const userSchema = new Schema({
   lastName: { type: String },
   organization: { type: String },
   phone: { type: String },
-  servers: [Schema.Types.ObjectId]
+  servers: [Schema.Types.ObjectId],
 });
 
 userSchema.plugin(unique);
 
-module.exports.person = mongoose.model('person', userSchema);
+module.exports.user = mongoose.model('user', userSchema);

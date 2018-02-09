@@ -41,6 +41,7 @@
     "prettier": "1.10.2"
   },
   "dependencies": {
+    "bcrypt": "1.0.3",
     "chai": "4.1.2",
     "connect-redis": "3.3.3",
     "dotenv": "5.0.0",

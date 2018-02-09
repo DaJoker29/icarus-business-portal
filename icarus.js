@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const path = require('path');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const helmet = require('helmet');
@@ -13,7 +14,7 @@ const config = require('./config');
 const helpers = require('./helpers');
 const app = express();
 
-console.log('Icarus is taking flight...\n')
+console.log('Icarus is taking flight...\n');
 
 // Configure environment variables
 const result = dotenv.config();
@@ -28,7 +29,7 @@ const sessionSettings = {
   resave: false,
   secret: process.env.SESSION_SECRET,
   saveUninitialized: false,
-  store: new RedisStore({ host: 'localhost', port: process.env.REDIS_PORT}),
+  store: new RedisStore({ host: 'localhost', port: process.env.REDIS_PORT }),
 };
 
 app.use(morgan('development' === process.env.NODE_ENV ? 'dev' : 'combined'));
@@ -51,15 +52,41 @@ mongoose.connection.on('connected', () => {
   console.log(`\nSuccessfully connected to database...`);
 });
 
+// Special Routes
+app.get('/signup', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect('/authenticated');
+  } else {
+    res.sendFile(path.join(`${__dirname}/client/sign-up.html`));
+  }
+});
+
+app.get('/login', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect('/something');
+  } else {
+    res.sendFile(path.join(`${__dirname}/client/sign-in.html`));
+  }
+});
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/login');
+});
+
+app.post('/login', passport.authenticate('local'), (req, res) => {
+  res.redirect('/');
+});
+
 // Routes
 app.use('/user', routes.USER);
 app.use('/', routes.CREATE_ACCT);
+
 
 // Catch-All Route for Errors
 app.get('*', (req, res) => {
   res.send('Does not compute.');
 });
-
 // Launch Server
 app.listen(process.env.PORT, err => {
   if (err) throw err;

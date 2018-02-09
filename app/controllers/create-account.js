@@ -1,7 +1,9 @@
+const bcrypt = require('bcrypt');
 const user = require('../models').USER;
 
 function createAccount(req, res, next) {
   const { email, firstName, lastName, organization, phone } = req.body;
+  console.log(req);
   const saltRounds = 10;
 
   bcrypt.genSalt(saltRounds, (err, salt) => {
@@ -9,18 +11,21 @@ function createAccount(req, res, next) {
     bcrypt.hash(req.body.password, salt, (err, hash) => {
       if (err) return next(err);
 
-      const user = {
+      const userData = {
         email,
         firstName,
         lastName,
         organization,
         phone,
-        passwordHash: hash
+        passwordHash: hash,
       };
 
-      person.create(user, (err, user) => {
+      user.create(userData, (err, user) => {
         if (err) throw err;
-        next(err, user);
+        req.login(user, err => {
+          if (err) return next(err);
+          return next();
+        });
       });
     });
   });
