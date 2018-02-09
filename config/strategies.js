@@ -1,12 +1,13 @@
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const FacebookStrategy = require('passport-facebook').Strategy;
+// const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+// const FacebookStrategy = require('passport-facebook').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
-const authHelpers = require('../helpers').AUTH;
+// const authHelpers = require('../helpers').AUTH;
 const user = require('../app/models').USER;
 const bcrypt = require('bcrypt');
 
-const handleOAuth = authHelpers.HANDLE_OAUTH;
-const port = process.env.PORT || 3000;
+// const handleOAuth = authHelpers.HANDLE_OAUTH;
+
+/* TODO: Add Google/Facebook Social Login Strategy */
 
 const localStrategy = new LocalStrategy(
   { usernameField: 'email' },
