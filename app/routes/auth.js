@@ -14,7 +14,11 @@ router.post('/signup', authCtrl.CREATE_ACCT);
 
 // Log In/Out
 router.get('/login', onlyUnauth, (req, res) => {
-  res.render('login', { title: 'Welcome', message: 'Howdy!' });
+  res.render('login', {
+    title: 'Welcome',
+    heading: 'Welcome',
+    description: 'Sign in below or create a new account.',
+  });
 });
 
 router.get('/logout', (req, res) => {

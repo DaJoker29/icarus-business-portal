@@ -1,7 +1,6 @@
-extends layout
+extends form-layout
 
-block content
-  h2 Sign up and join our service.
+block form-content
   form(method='POST')
     input(type='email' name='email' required placeholder="Email Address")
     input(type='password' name='password' required placeholder="Password")
