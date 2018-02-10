@@ -5,5 +5,102 @@ body {
   --gold: #AA9839;
   --black: #000;
   --white: #fff;
+  --exo-font: 'Exo', sans-serif;
+  --sans-font: 'Open Sans', sans-serif;
+
   background-color: var(--green);
+  font-family: var(--sans-font);
+  font-size: 100%;
+  line-height: 1;
+}
+
+.wrapper {
+  text-align: center;
+}
+
+/* PARAGRAPHS*/
+p {
+  font-size: 1rem;
+}
+
+/* ANCHORS */
+a {
+  text-decoration: none;
+}
+
+/* HEADINGS */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--exo-font);
+  margin: 1rem .5rem;
+}
+
+h1 {
+  font-size: 6.854rem;
+}
+
+h2 {
+  font-size: 4.236rem;
+}
+
+h3 {
+  font-size: 2.618rem;
+}
+
+h4 {
+  font-size: 1.618rem;
+}
+
+/* FOOTER */
+footer {
+  font-size: .75rem;
+}
+
+/* FORMS */
+
+form {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(5, 1fr);
+  grid-gap: 1rem;
+  margin: 2rem .5rem;
+}
+
+.form-fields {
+  font-family: var(--sans-font);
+  font-size: 1rem;
+  padding: 1rem;
+  border: 2px solid var(--black); 
+  border-radius: 2rem;
+  color: var(--black);
+  text-align: center;
+}
+
+/* Buttons */
+button,
+.btn {
+  font-family: var(--sans-font);
+  font-weight: 900;
+  font-size: 1rem;
+  padding: 1rem;
+  border: 2px solid var(--black);
+  background-color: var(--black);
+  color: var(--white);
+  border-radius: 2rem;
+}
+
+.btn-transparent {
+  background-color: transparent;
+  color: var(--black);
+}
+
+/* MEDIA QUERIES */
+
+@media (min-width: 800px) {
+  .wrapper {
+    max-width: 767px;
+    margin: 0 auto;
+  }
 }

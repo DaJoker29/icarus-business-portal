@@ -2,7 +2,8 @@ extends form-layout
 
 block form-content
   form(method='POST')
-    input(type='email' name='email' required placeholder="Email Address")
-    input(type='password' name='password' required placeholder="Password")
-    button(type='submit') Sign In
-  a.btn(href="/signup") Create Account
+    input.emailField.form-fields(type='email' name='email' required placeholder="Email Address")
+    input.passwordField.form-fields(type='password' name='password' required placeholder="Password")
+    button.signInBtn(type='submit') Sign In
+    .sep
+    a.createAcctBtn.btn.btn-transparent(href="/signup") Create Account

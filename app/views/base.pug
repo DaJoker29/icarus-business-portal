@@ -1,10 +1,15 @@
 html
   head
     title #{title} - Zero Daedalus Web
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css")
     link(rel="stylesheet", href="assets/style.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Exo|Open+Sans")
   body
     .wrapper
       block content
         p There is no content here.
       block footer
-        footer Crafted by a(href="https://zerodaedalus.com")[Zero Daedalus]
+        footer 
+          | Crafted by 
+          a(href="https://zerodaedalus.com") Zero Daedalus
+          | .
