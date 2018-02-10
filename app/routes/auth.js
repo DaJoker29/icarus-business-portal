@@ -7,7 +7,9 @@ const router = express.Router();
 
 // Sign Up/Create Account
 router.get('/signup', onlyUnauth, (req, res) => {
-  res.render('signup', { title: 'Sign up', message: 'Join Our Movement!' });
+  res.render('signup', {
+    title: 'Sign up below',
+  });
 });
 
 router.post('/signup', authCtrl.CREATE_ACCT);
@@ -16,8 +18,6 @@ router.post('/signup', authCtrl.CREATE_ACCT);
 router.get('/login', onlyUnauth, (req, res) => {
   res.render('login', {
     title: 'Welcome',
-    heading: 'Welcome',
-    description: 'Sign in below or create a new account.',
   });
 });
 
