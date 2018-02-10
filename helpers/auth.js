@@ -2,7 +2,8 @@ const User = require('../app/models/user');
 
 // Redirect to Login Page if not authenticated
 function ensureAuth(req, res, next) {
-  if (req.isAuthenticated()) {
+  console.log(req.path);
+  if (req.isAuthenticated() || req.path.includes('/assets')) {
     next();
   } else {
     res.redirect('/login');

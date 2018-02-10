@@ -1,0 +1,9 @@
+body {
+  --green: #80A035;
+  --blue: #226666;
+  --red: #7C151D;
+  --gold: #AA9839;
+  --black: #000;
+  --white: #fff;
+  background-color: var(--green);
+}

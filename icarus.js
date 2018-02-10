@@ -40,6 +40,7 @@ const sessionSettings = {
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'app/views'));
 
+app.use('/assets', express.static('app/assets'));
 app.use(morgan('development' === process.env.NODE_ENV ? 'dev' : 'combined'));
 app.use(bodyParser.urlencoded({ extended: 'true' }));
 app.use(bodyParser.json());

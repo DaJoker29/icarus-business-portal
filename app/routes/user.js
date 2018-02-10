@@ -4,7 +4,7 @@ const ensureAuth = require('../../helpers/auth').ENSURE_AUTH;
 
 const router = express.Router();
 
-router.use(ensureAuth);
+// router.use(ensureAuth);
 
 router.get('/', userCtrl.FETCH_USER);
 
