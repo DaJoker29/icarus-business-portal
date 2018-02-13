@@ -1,7 +1,8 @@
 extends base
 
 block content
-  if null != user.firstName
-    p Howdy #{user.firstName}! Welcome Back.
-  else
-    p Hi there!
+  .meta
+    h3 #{user.firstName} #{user.lastName}
+    p #{user.organization}
+    p #{user.email}
+    a.small(href="logout") (logout)

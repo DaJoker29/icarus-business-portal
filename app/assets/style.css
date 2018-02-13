@@ -11,7 +11,7 @@ body {
   background-color: var(--green);
   font-family: var(--sans-font);
   font-size: 100%;
-  line-height: 1;
+  line-height: 1.1;
 }
 
 .wrapper {
@@ -40,7 +40,7 @@ h2,
 h3,
 h4 {
   font-family: var(--exo-font);
-  margin: 1rem .5rem;
+  margin: 1rem 0 .5rem;
 }
 
 h1 {
@@ -58,7 +58,8 @@ h3 {
 }
 
 /* FOOTER */
-footer {
+footer,
+.small {
   margin-top: 5rem;
   font-size: .75rem;
 }
@@ -124,6 +125,21 @@ button:hover,
   height: 80px;
   background-color: var(--blue);
   width: 100%;
+}
+
+/* MISC */
+
+/* to hide empty Jade elements*/
+h1:empty,
+h2:empty,
+h3:empty,
+h4:empty,
+p:empty {
+  display: none;
+}
+
+.meta {
+  text-align: left;
 }
 
 /* MEDIA QUERIES */
