@@ -1,11 +1,20 @@
-const user = require('../app/models').USER;
+const User = require('../app/models/user');
 
 // Redirect to Login Page if not authenticated
 function ensureAuth(req, res, next) {
-  if (req.isAuthenticated()) {
+  console.log(req.path);
+  if (req.isAuthenticated() || req.path.includes('/assets')) {
     next();
   } else {
     res.redirect('/login');
+  }
+}
+
+function onlyUnauthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    res.redirect('/');
+  } else {
+    next();
   }
 }
 
@@ -14,7 +23,7 @@ function handleOAuth(req, accessToken, refreshToken, profile, done) {
   if (!req.user) {
     const { displayName, id } = profile;
 
-    user.findOne({ googleID: id }, (err, doc) => {
+    User.findOne({ googleID: id }, (err, doc) => {
       // Check for existing doc and return it, if found
       if (err) {
         return done(err, doc);
@@ -25,7 +34,7 @@ function handleOAuth(req, accessToken, refreshToken, profile, done) {
           upsert: true,
         };
 
-        return user.findByIdAndUpdate(
+        return User.findByIdAndUpdate(
           doc.id,
           { googleToken: accessToken },
           options,
@@ -40,7 +49,7 @@ function handleOAuth(req, accessToken, refreshToken, profile, done) {
         googleToken: accessToken,
       };
 
-      return user.create(data, done);
+      return User.create(data, done);
     });
   }
 }
@@ -51,7 +60,7 @@ function serializeUser(user, done) {
 }
 
 function deserializeUser(id, done) {
-  user.findById(id, (err, user) => {
+  User.findById(id, (err, user) => {
     done(err, user);
   });
 }
@@ -60,3 +69,4 @@ module.exports.HANDLE_OAUTH = handleOAuth;
 module.exports.ENSURE_AUTH = ensureAuth;
 module.exports.SERIALIZE_USER = serializeUser;
 module.exports.DESERIALIZE_USER = deserializeUser;
+module.exports.ONLY_UNAUTHENTICATED = onlyUnauthenticated;

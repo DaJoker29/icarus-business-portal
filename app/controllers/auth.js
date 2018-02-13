@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const user = require('../models').USER;
+const user = require('../models/user');
 
 /* TODO: Looks ugly. Refactor.*/
 /* TODO: Pre-Check for Username Validity */
@@ -7,7 +7,6 @@ const user = require('../models').USER;
 
 function createAccount(req, res, next) {
   const { email, firstName, lastName, organization, phone } = req.body;
-  console.log(req);
   const saltRounds = 10;
 
   // Generate Salt/Hash
@@ -28,10 +27,16 @@ function createAccount(req, res, next) {
 
       // Submit new User object to database. If successful, log in.
       user.create(userData, (err, user) => {
-        if (err) return next(err);
+        console.log(err.message);
+        if (err) {
+          if (err.message.startsWith('user validation failed')) {
+            res.render('signup', {error: 'That email address is already in use'});
+          }
+          return next(err);
+        }
         req.login(user, err => {
           if (err) return next(err);
-          return next();
+          res.redirect('/');
         });
       });
     });

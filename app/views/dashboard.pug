@@ -1,0 +1,8 @@
+extends base
+
+block content
+  .meta
+    h3 #{user.firstName} #{user.lastName}
+    p #{user.organization}
+    p #{user.email}
+    a.small(href="logout") (logout)

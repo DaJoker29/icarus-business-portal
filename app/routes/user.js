@@ -1,10 +1,10 @@
 const express = require('express');
-const userCtrl = require('../controllers').USER;
+const userCtrl = require('../controllers/user');
 const ensureAuth = require('../../helpers/auth').ENSURE_AUTH;
 
 const router = express.Router();
 
-router.use(ensureAuth);
+// router.use(ensureAuth);
 
 router.get('/', userCtrl.FETCH_USER);
 

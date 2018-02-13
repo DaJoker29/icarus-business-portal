@@ -2,7 +2,7 @@
 // const FacebookStrategy = require('passport-facebook').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 // const authHelpers = require('../helpers').AUTH;
-const user = require('../app/models').USER;
+const User = require('../app/models/user');
 const bcrypt = require('bcrypt');
 
 // const handleOAuth = authHelpers.HANDLE_OAUTH;
@@ -12,13 +12,15 @@ const bcrypt = require('bcrypt');
 const localStrategy = new LocalStrategy(
   { usernameField: 'email' },
   (email, password, cb) => {
-    user.findOne({ email }, 'passwordHash email', (err, doc) => {
+    User.findOne({ email }, 'passwordHash email', (err, doc) => {
       if (err) {
         return cb(err);
+      } else if (!doc) {
+        // If no user found
+        return cb(null, false);
       } else {
-        // Check for password...
+        // If user found, check for password...
         bcrypt.compare(password, doc.passwordHash, (err, res) => {
-          console.log(err);
           if (err) return cb(err);
           if (res === false) {
             return cb(null, false);

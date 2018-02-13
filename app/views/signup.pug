@@ -1,0 +1,15 @@
+extends form-layout
+
+block form-content
+  h2 Create an Account
+  p Own your piece of the Internet.
+  form(method='POST')
+    input.form-fields(type='email' name='email' required placeholder="Email Address")
+    input.form-fields(type='password' name='password' required placeholder="Password")
+    input.form-fields(type="text" name="firstName" placeholder="First Name")
+    input.form-fields(type="text" name="lastName" placeholder="Last Name")
+    input.form-fields(type="text" name="organization" placeholder="Organization or Business")
+    .sep
+    button(type='submit') Submit
+    .sep
+    a.btn.btn-transparent(href="/login") Already a member? Log in.

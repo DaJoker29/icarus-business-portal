@@ -1,0 +1,152 @@
+body {
+  --green: #80A035;
+  --blue: #226666;
+  --red: #7C151D;
+  --gold: #AA9839;
+  --black: rgba(0,0,0,0.8);
+  --white: rgba(255, 255, 255, 0.8);
+  --exo-font: 'Exo', sans-serif;
+  --sans-font: 'Open Sans', sans-serif;
+
+  background-color: var(--green);
+  font-family: var(--sans-font);
+  font-size: 100%;
+  line-height: 1.1;
+}
+
+.wrapper {
+  text-align: center;
+  padding: 1rem;
+}
+
+/* PARAGRAPHS*/
+p {
+  font-size: 1rem;
+}
+
+/* ANCHORS */
+a {
+  text-decoration: none;
+  color: var(--blue);
+}
+
+a:hover {
+  color: var(--white);
+}
+
+/* HEADINGS */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--exo-font);
+  margin: 1rem 0 .5rem;
+}
+
+h1 {
+  font-size: 4.236rem;
+  margin-top: 3rem;
+}
+
+h2 {
+  font-size: 2.618rem;
+  margin-top: 2.5rem;
+}
+
+h3 {
+  font-size: 1.618rem;
+}
+
+/* FOOTER */
+footer,
+.small {
+  margin-top: 5rem;
+  font-size: .75rem;
+}
+
+/* FORMS */
+
+form {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(5, 1fr);
+  grid-gap: 1rem;
+  margin: 2rem .5rem;
+}
+
+.form-fields {
+  font-family: var(--sans-font);
+  font-size: 1rem;
+  padding: 1rem;
+  border: 2px solid var(--black); 
+  border-radius: 2rem;
+  color: var(--black);
+  text-align: center;
+  background-color: var(--white);
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+}
+
+button,
+.btn {
+  font-family: var(--sans-font);
+  font-weight: 900;
+  font-size: 1rem;
+  padding: 1rem;
+  border: 2px solid var(--black);
+  background-color: var(--black);
+  color: var(--white);
+  border-radius: 2rem;
+}
+  
+button:hover,
+.btn:hover {
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.btn-transparent {
+  background-color: rgba(0,0,0,0.4);
+  color: var(--white);
+  border-color: var(--white);
+}
+
+.btn-transparent:hover {
+  border-color: var(--black);
+  color: var(--black);
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* HERO */
+.hero {
+  height: 80px;
+  background-color: var(--blue);
+  width: 100%;
+}
+
+/* MISC */
+
+/* to hide empty Jade elements*/
+h1:empty,
+h2:empty,
+h3:empty,
+h4:empty,
+p:empty {
+  display: none;
+}
+
+.meta {
+  text-align: left;
+}
+
+/* MEDIA QUERIES */
+
+@media (min-width: 800px) {
+  .wrapper {
+    max-width: 767px;
+    margin: 0 auto;
+  }
+}
