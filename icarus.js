@@ -17,7 +17,6 @@ const strategies = require('./config/strategies');
 const authHelpers = require('./helpers/auth');
 const authRoutes = require('./app/routes/auth');
 const errorRoutes = require('./app/routes/error');
-// const userRoutes = require('./app/routes/user');
 const clientRoutes = require('./app/routes/client');
 
 const app = express();
@@ -65,7 +64,6 @@ mongoose.connection.on('connected', () => {
 });
 
 // Routes
-// app.use('/user', userRoutes);
 app.use(authRoutes);
 app.use(clientRoutes);
 app.use(errorRoutes);

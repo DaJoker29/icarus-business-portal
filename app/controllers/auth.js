@@ -17,7 +17,6 @@ const smtpCreds = {
 let transporter = nodemailer.createTransport(smtpCreds);
 
 /* TODO: Looks ugly. Refactor.*/
-
 function createAccount(req, res, next) {
   const { email, firstName, lastName, organization, phone } = req.body;
   const saltRounds = 10;
@@ -55,7 +54,6 @@ function createAccount(req, res, next) {
   });
 }
 
-/* TODO: Email Confirmation */
 function confirmUser(email) {
   // Check if confirmation exists
   Confirm.findOne({ email }, (err, confirm) => {
