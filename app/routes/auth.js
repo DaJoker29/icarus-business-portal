@@ -29,7 +29,7 @@ router.get('/logout', (req, res) => {
 router.post(
   '/login',
   passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/dashboard',
     failureRedirect: '/login',
   }),
 );

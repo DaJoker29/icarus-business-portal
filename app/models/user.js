@@ -4,14 +4,15 @@ const unique = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  email: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true, index: true },
   passwordHash: { type: String, required: true, select: false },
   firstName: { type: String },
   lastName: { type: String },
   organization: { type: String },
   phone: { type: String },
   servers: [Schema.Types.ObjectId],
-  // TODO: Expand User Model (createdOn, preferredContactMethod)
+  verified: { type: Boolean, required: true, default: false },
+  createdOn: { type: Date, required: true, default: Date.now() },
 });
 
 userSchema.plugin(unique);

@@ -1,4 +1,6 @@
 const dotenv = require('dotenv');
+const result = dotenv.config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
@@ -21,8 +23,6 @@ const app = express();
 
 console.log('Icarus is taking flight...\n');
 
-// Configure environment variables
-const result = dotenv.config();
 if (result.error) {
   throw result.error;
 }
