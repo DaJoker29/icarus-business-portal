@@ -49,7 +49,7 @@ function createAccount(req, res, next) {
           return next(err);
         }
         confirmUser(user.email);
-        return res.redirect('confirm', { email });
+        return res.redirect('/confirm', { email });
       });
     });
   });

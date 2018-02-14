@@ -11,6 +11,7 @@ const confirmSchema = new Schema({
     unique: true,
     default: randToken.generate(16),
   },
+  createdAt: { type: Date, expires: 60 * 60 * 24 * 7, default: Date.now() },
 });
 
 confirmSchema.plugin(unique);
