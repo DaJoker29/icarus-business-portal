@@ -5,4 +5,5 @@ block content
     h3 #{user.firstName} #{user.lastName}
     p #{user.organization}
     p #{user.email}
+    p.small Member since #{moment(user.createdOn).fromNow()}
     a.small(href="logout") (logout)

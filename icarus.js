@@ -11,6 +11,7 @@ const helmet = require('helmet');
 const passport = require('passport');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
+const moment = require('moment');
 
 const strategies = require('./config/strategies');
 const authHelpers = require('./helpers/auth');
@@ -50,6 +51,8 @@ app.use(helmet());
 app.use(session(sessionSettings));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.locals.moment = moment;
 
 passport.use(strategies.LOCAL);
 

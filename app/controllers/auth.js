@@ -4,6 +4,7 @@ const User = require('../models/user');
 const Confirm = require('../models/confirm');
 
 const smtpCreds = {
+  service: process.env.EMAIL_SERVICE,
   host: process.env.EMAIL_HOST,
   port: process.env.EMAIL_PORT,
   secure: false,
@@ -14,7 +15,6 @@ const smtpCreds = {
 };
 
 let transporter = nodemailer.createTransport(smtpCreds);
-console.log(smtpCreds);
 
 /* TODO: Looks ugly. Refactor.*/
 
@@ -81,7 +81,7 @@ function sendToken(object) {
     subject: 'Confirm you Email Address',
     text: `Howdy!\n\nPlease confirm your address by clicking the following link: ${
       process.env.HOST
-    }/confirm/${token}`,
+    }/confirm/token/${token}`,
   };
 
   transporter.sendMail(mailOptions, (err, info) => {
@@ -99,5 +99,27 @@ function resendConfirmation(req, res) {
   return res.redirect('/login');
 }
 
+function confirmToken(req, res) {
+  if (req.params.token) {
+    Confirm.findOne({ token: req.params.token }, (err, confirm) => {
+      const { email } = confirm;
+      if (err) throw err;
+      if (confirm) {
+        User.findOneAndUpdate(
+          { email },
+          { verified: true },
+          { upsert: true, new: true },
+          (err, user) => {
+            if (err) throw err;
+            return console.log(`New User Verified: ${user.email}`);
+          },
+        );
+      }
+    });
+  }
+  res.redirect('/login');
+}
+
 module.exports.CREATE_ACCT = createAccount;
 module.exports.RESEND_CONFIRM = resendConfirmation;
+module.exports.CONFIRM_TOKEN = confirmToken;
