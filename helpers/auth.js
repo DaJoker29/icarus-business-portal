@@ -18,6 +18,14 @@ function onlyUnauthenticated(req, res, next) {
   }
 }
 
+function unconfirmed(req, res, next) {
+  if (req.user && false === req.user.verified) {
+    res.redirect('confirm');
+  } else {
+    next();
+  }
+}
+
 /* TODO: Update OAuth Handler */
 function handleOAuth(req, accessToken, refreshToken, profile, done) {
   if (!req.user) {
@@ -70,3 +78,4 @@ module.exports.ENSURE_AUTH = ensureAuth;
 module.exports.SERIALIZE_USER = serializeUser;
 module.exports.DESERIALIZE_USER = deserializeUser;
 module.exports.ONLY_UNAUTHENTICATED = onlyUnauthenticated;
+module.exports.UNCONFIRMED = unconfirmed;

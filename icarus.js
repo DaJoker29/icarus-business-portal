@@ -1,4 +1,6 @@
 const dotenv = require('dotenv');
+const result = dotenv.config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
@@ -9,6 +11,7 @@ const helmet = require('helmet');
 const passport = require('passport');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
+const moment = require('moment');
 
 const strategies = require('./config/strategies');
 const authHelpers = require('./helpers/auth');
@@ -21,8 +24,6 @@ const app = express();
 
 console.log('Icarus is taking flight...\n');
 
-// Configure environment variables
-const result = dotenv.config();
 if (result.error) {
   throw result.error;
 }
@@ -50,6 +51,8 @@ app.use(helmet());
 app.use(session(sessionSettings));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.locals.moment = moment;
 
 passport.use(strategies.LOCAL);
 
