@@ -58,9 +58,12 @@ h3 {
 }
 
 /* FOOTER */
+footer {
+  margin-top: 10rem;
+}
+
 footer,
 .small {
-  margin-top: 5rem;
   font-size: .75rem;
 }
 
@@ -173,6 +176,25 @@ p:empty {
 
 .meta {
   text-align: left;
+}
+
+.userItem {
+  border: 1px dashed var(--black);
+  border-radius: 2rem;
+  margin: 1rem .5rem;
+  padding: .5rem;
+}
+
+.verified {
+  border-style: solid;
+}
+
+.admin {
+  border-color: var(--blue);
+}
+
+.bold {
+  font-weight: bolder;
 }
 
 /* MEDIA QUERIES */

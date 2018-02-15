@@ -1,14 +1,15 @@
 extends base
 
 block navigation
-  - var current = '/'
+  - var admin = user.isAdmin
   nav
     ul
       li(class={active: current === '/'})
         a(href="/") Home
-      li(class={active: current === '/account'})
+      li(class={active: current === 'account'})
         a(href="/account") Account
-      li(class={active: current === '/admin'})
-        a(href="/admin") Admin
+      if user.isAdmin
+        li(class={active: current === 'admin'})
+          a(href="/admin") Admin
 block content
   block main-content

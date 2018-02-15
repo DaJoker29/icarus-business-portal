@@ -13,6 +13,7 @@ const userSchema = new Schema({
   servers: [Schema.Types.ObjectId],
   verified: { type: Boolean, required: true, default: false },
   createdOn: { type: Date, required: true, default: Date.now() },
+  isAdmin: { type: Boolean, required: true, default: false },
 });
 
 userSchema.plugin(unique);

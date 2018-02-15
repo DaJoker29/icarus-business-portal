@@ -2,7 +2,6 @@ const User = require('../app/models/user');
 
 // Redirect to Login Page if not authenticated
 function ensureAuth(req, res, next) {
-  console.log(req.path);
   if (req.isAuthenticated() || req.path.includes('/assets')) {
     next();
   } else {
@@ -16,6 +15,17 @@ function onlyUnauthenticated(req, res, next) {
   } else {
     next();
   }
+}
+
+function ensureAdmin(req, res, next) {
+  User.findOne({ _id: req.user._id }, (err, doc) => {
+    if (err) return next(err);
+    if (doc.isAdmin) {
+      return next();
+    } else {
+      res.redirect('back');
+    }
+  });
 }
 
 function unconfirmed(req, res, next) {
@@ -79,3 +89,4 @@ module.exports.SERIALIZE_USER = serializeUser;
 module.exports.DESERIALIZE_USER = deserializeUser;
 module.exports.ONLY_UNAUTHENTICATED = onlyUnauthenticated;
 module.exports.UNCONFIRMED = unconfirmed;
+module.exports.ENSURE_ADMIN = ensureAdmin;
