@@ -1,0 +1,14 @@
+if servers
+  h3 Servers
+  ul.admin-list
+    each server in servers
+      li.userItem
+        div
+          p.bold #{server.LABEL} (#{server.LINODEID})
+          p Total Storage: #{numeral(server.TOTALHD).multiply(1000000).format('0.00b')}
+          p Total RAM: #{numeral(server.TOTALRAM).multiply(1000000).format('0.00b')}
+          p Total Bandwidth: #{numeral(server.TOTALXFER).multiply(1000000).format('0.00b')}
+          p Distro: #{server.DISTRIBUTIONVENDOR}
+          p Created #{moment(server.CREATE_DT).fromNow()} (#{moment(server.CREATE_DT).format('l')})
+          p Plan: #{server.PLANID}
+          p Status: #{server.STATUS}
