@@ -1,3 +1,4 @@
+/* Clean up form styles */
 body {
   --green: #80A035;
   --blue: #226666;
@@ -70,14 +71,21 @@ footer,
 /* FORMS */
 
 form {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(5, 1fr);
-  grid-gap: 1rem;
+  display: flex;
+  flex-flow: row wrap;
   margin: 2rem .5rem;
+  justify-content: center;
+  align-content: center;
+}
+
+form .form-fields,
+form button,
+form .btn {
+  flex: 0 0 75%;
 }
 
 .form-fields {
+  margin: 1rem 0; 
   font-family: var(--sans-font);
   font-size: 1rem;
   padding: 1rem;

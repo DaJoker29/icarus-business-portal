@@ -16,6 +16,14 @@ block main-content
             if user.phone
               p.small Ph: #{phoneNumber.format(phoneNumber.parse(user.phone, 'US'), 'National')}
             p.small Member since #{moment(user.createdOn).fromNow()} (#{moment(user.createdOn).format('l')})
+            p.small Servers #{user.servers}
+            form(action="/admin/link-server" method="POST")
+              input(type="hidden" name="selectedUser" value=user._id) 
+              select.form-fields(name="selectedServer")
+                each server in servers
+                  if server.assigned === false
+                    option(value=server.LINODEID) #{server.LABEL}
+              button(type="submit") Link!
   if servers
     h3 Servers
     ul.admin-list

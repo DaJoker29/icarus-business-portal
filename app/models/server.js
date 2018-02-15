@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const serverSchema = new Schema({
+  assigned: { type: Boolean, required: true, default: false },
   LINODEID: { type: Number, unique: true, index: true, required: true },
   TOTALXFER: { type: Number, required: true },
   TOTALRAM: { type: Number, required: true },

@@ -10,7 +10,7 @@ const userSchema = new Schema({
   lastName: { type: String },
   organization: { type: String },
   phone: { type: String },
-  servers: [Schema.Types.ObjectId],
+  servers: [Number],
   verified: { type: Boolean, required: true, default: false },
   createdOn: { type: Date, required: true, default: Date.now() },
   isAdmin: { type: Boolean, required: true, default: false },
