@@ -22,7 +22,7 @@
     "dist": "./tools/upgrade.sh",
     "reload": "./tools/reload-server.sh",
     "todo": "leasot -Sx {app,client,config,helpers,test,tools}/**/*.{js,html,css}",
-    "pull-linodes": "./helpers/pull-linodes.js"
+    "pull-servers": "./helpers/pull-servers.js"
   },
   "devDependencies": {
     "babel-eslint": "8.2.1",
