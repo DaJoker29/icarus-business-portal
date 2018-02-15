@@ -6,9 +6,14 @@
   "ext": "js json",
   "ignore": [
     "test",
-    "templates",
     "tools",
-    "client",
     "coverage"
+  ],
+  "watch": [
+    "app/controllers",
+    "app/models",
+    "app/routes",
+    "helpers",
+    "config"
   ]
 }

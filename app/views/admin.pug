@@ -6,13 +6,22 @@ block active
 block main-content
   if users
     h3 Users
-    ul
-      each val in users
-        li.userItem(class={verified: val.verified, admin: val.isAdmin})
+    ul.admin-list
+      each user in users
+        li.userItem(class={verified: user.verified, admin: user.isAdmin})
           div
-            p.bold= val.email
-            p #{val.firstName} #{val.lastName}
-            p.small= val.organization
-            if val.phone
-              p.small Ph: #{phoneNumber.format(phoneNumber.parse(val.phone, 'US'), 'National')}
-            p.small Member since #{moment(val.createdOn).fromNow()} (#{moment(val.createdOn).format('l')})
+            p #{user.firstName} #{user.lastName} #{!user.isAdmin ? '' : '(ADMIN)'}
+            p.bold #{user.email} #{user.verified ? '' : '(NOT VERIFIED)'}
+            p.small= user.organization
+            if user.phone
+              p.small Ph: #{phoneNumber.format(phoneNumber.parse(user.phone, 'US'), 'National')}
+            p.small Member since #{moment(user.createdOn).fromNow()} (#{moment(user.createdOn).format('l')})
+            p.small Servers #{user.servers}
+            form(action="/admin/link-server" method="POST")
+              input(type="hidden" name="selectedUser" value=user._id) 
+              select.form-fields(name="selectedServer")
+                each server in servers
+                  if server.assigned === false
+                    option(value=server.LINODEID) #{server.LABEL}
+              button(type="submit") Link!
+  include server-list

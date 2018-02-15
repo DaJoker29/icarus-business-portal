@@ -13,6 +13,7 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const moment = require('moment');
 const phoneNumber = require('libphonenumber-js');
+const numeral = require('numeral');
 
 const strategies = require('./config/strategies');
 const authHelpers = require('./helpers/auth');
@@ -54,6 +55,7 @@ app.use(passport.session());
 
 app.locals.moment = moment;
 app.locals.phoneNumber = phoneNumber;
+app.locals.numeral = numeral;
 
 passport.use(strategies.LOCAL);
 

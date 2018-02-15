@@ -8,5 +8,4 @@ block main-content
     p.small Member since #{moment(user.createdOn).fromNow()}
     a.small(href="logout") (logout)
 
-  h3 Hosting Plans
-  p 0 found
+  include server-list
