@@ -21,7 +21,8 @@
     "start": "yarn run dev",
     "dist": "./tools/upgrade.sh",
     "reload": "./tools/reload-server.sh",
-    "todo": "leasot -Sx {app,client,config,helpers,test,tools}/**/*.{js,html,css}"
+    "todo": "leasot -Sx {app,client,config,helpers,test,tools}/**/*.{js,html,css}",
+    "pull-linodes": "./helpers/pull-linodes.js"
   },
   "devDependencies": {
     "babel-eslint": "8.2.1",
