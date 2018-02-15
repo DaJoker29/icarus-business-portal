@@ -50,6 +50,7 @@
     "extract-text-webpack-plugin": "3.0.2",
     "helmet": "3.10.0",
     "leasot": "4.13.0",
+    "libphonenumber-js": "1.0.24",
     "mocha": "5.0.0",
     "moment": "2.20.1",
     "mongoose-unique-validator": "2.0.0",

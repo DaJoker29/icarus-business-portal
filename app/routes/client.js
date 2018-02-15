@@ -1,7 +1,9 @@
 const express = require('express');
 const ensureAuth = require('../../helpers/auth').ENSURE_AUTH;
+const ensureAdmin = require('../../helpers/auth').ENSURE_ADMIN;
 const unconfirmed = require('../../helpers/auth').UNCONFIRMED;
 const authCtrl = require('../controllers/auth');
+const User = require('../models/user');
 
 const router = express.Router();
 
@@ -18,7 +20,29 @@ router.post('/confirm/resend', authCtrl.RESEND_CONFIRM);
 router.get('/confirm/token/:token', authCtrl.CONFIRM_TOKEN);
 
 router.get('/', ensureAuth, unconfirmed, (req, res) => {
-  res.render('dashboard', { title: 'Dashboard', user: req.user });
+  res.render('dashboard', {
+    title: 'Dashboard',
+    user: req.user,
+    name: 'index',
+  });
+});
+
+router.get('/admin', ensureAuth, ensureAdmin, (req, res) => {
+  let userlist;
+
+  User.find({}, (err, docs) => {
+    if (err) throw err;
+    if (docs) {
+      userlist = docs;
+    } else {
+      userlist = [];
+    }
+    res.render('admin', {
+      title: 'Admin Panel',
+      user: req.user,
+      users: userlist,
+    });
+  });
 });
 
 module.exports = router;

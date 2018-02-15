@@ -1,0 +1,18 @@
+extends main-layout
+
+block active
+  - var current = 'admin'
+
+block main-content
+  if users
+    h3 Users
+    ul
+      each val in users
+        li.userItem(class={verified: val.verified, admin: val.isAdmin})
+          div
+            p.bold= val.email
+            p #{val.firstName} #{val.lastName}
+            p.small= val.organization
+            if val.phone
+              p.small Ph: #{phoneNumber.format(phoneNumber.parse(val.phone, 'US'), 'National')}
+            p.small Member since #{moment(val.createdOn).fromNow()} (#{moment(val.createdOn).format('l')})
