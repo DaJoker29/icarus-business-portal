@@ -1,9 +1,12 @@
-extends base
+extends main-layout
 
-block content
+block main-content
   .meta
     h3 #{user.firstName} #{user.lastName}
     p #{user.organization}
     p #{user.email}
     p.small Member since #{moment(user.createdOn).fromNow()}
     a.small(href="logout") (logout)
+
+  h3 Hosting Plans
+  p 0 found

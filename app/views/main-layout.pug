@@ -1,0 +1,14 @@
+extends base
+
+block navigation
+  - var current = '/'
+  nav
+    ul
+      li(class={active: current === '/'})
+        a(href="/") Home
+      li(class={active: current === '/account'})
+        a(href="/account") Account
+      li(class={active: current === '/admin'})
+        a(href="/admin") Admin
+block content
+  block main-content

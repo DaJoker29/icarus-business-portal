@@ -18,7 +18,7 @@ router.post('/confirm/resend', authCtrl.RESEND_CONFIRM);
 router.get('/confirm/token/:token', authCtrl.CONFIRM_TOKEN);
 
 router.get('/', ensureAuth, unconfirmed, (req, res) => {
-  res.render('dashboard', { title: 'Dashboard', user: req.user });
+  res.render('dashboard', { title: 'Dashboard', user: req.user, name: 'index' });
 });
 
 module.exports = router;
