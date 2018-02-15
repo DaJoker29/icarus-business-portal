@@ -6,13 +6,27 @@ block active
 block main-content
   if users
     h3 Users
-    ul
-      each val in users
-        li.userItem(class={verified: val.verified, admin: val.isAdmin})
+    ul.admin-list
+      each user in users
+        li.userItem(class={verified: user.verified, admin: user.isAdmin})
           div
-            p.bold= val.email
-            p #{val.firstName} #{val.lastName}
-            p.small= val.organization
-            if val.phone
-              p.small Ph: #{phoneNumber.format(phoneNumber.parse(val.phone, 'US'), 'National')}
-            p.small Member since #{moment(val.createdOn).fromNow()} (#{moment(val.createdOn).format('l')})
+            p #{user.firstName} #{user.lastName} #{!user.isAdmin ? '' : '(ADMIN)'}
+            p.bold #{user.email} #{user.verified ? '' : '(NOT VERIFIED)'}
+            p.small= user.organization
+            if user.phone
+              p.small Ph: #{phoneNumber.format(phoneNumber.parse(user.phone, 'US'), 'National')}
+            p.small Member since #{moment(user.createdOn).fromNow()} (#{moment(user.createdOn).format('l')})
+  if servers
+    h3 Servers
+    ul.admin-list
+      each server in servers
+        li.userItem
+          div
+            p.bold #{server.LABEL} (#{server.LINODEID})
+            p Total Storage: #{numeral(server.TOTALHD).multiply(1000000).format('0.00b')}
+            p Total RAM: #{numeral(server.TOTALRAM).multiply(1000000).format('0.00b')}
+            p Total Bandwidth: #{numeral(server.TOTALXFER).multiply(1000000).format('0.00b')}
+            p Distro: #{server.DISTRIBUTIONVENDOR}
+            p Created #{moment(server.CREATE_DT).fromNow()} (#{moment(server.CREATE_DT).format('l')})
+            p Plan: #{server.PLANID}
+            p Status: #{server.STATUS}

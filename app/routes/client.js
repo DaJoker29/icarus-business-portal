@@ -4,6 +4,7 @@ const ensureAdmin = require('../../helpers/auth').ENSURE_ADMIN;
 const unconfirmed = require('../../helpers/auth').UNCONFIRMED;
 const authCtrl = require('../controllers/auth');
 const User = require('../models/user');
+const Server = require('../models/server');
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ router.get('/', ensureAuth, unconfirmed, (req, res) => {
 });
 
 router.get('/admin', ensureAuth, ensureAdmin, (req, res) => {
-  let userlist;
+  let userlist, serverlist;
 
   User.find({}, (err, docs) => {
     if (err) throw err;
@@ -37,10 +38,19 @@ router.get('/admin', ensureAuth, ensureAdmin, (req, res) => {
     } else {
       userlist = [];
     }
-    res.render('admin', {
-      title: 'Admin Panel',
-      user: req.user,
-      users: userlist,
+    Server.find({}, (err, docs) => {
+      if (err) throw err;
+      if (docs) {
+        serverlist = docs;
+      } else {
+        serverlist = [];
+      }
+      res.render('admin', {
+        title: 'Admin Panel',
+        user: req.user,
+        users: userlist,
+        servers: serverlist,
+      });
     });
   });
 });

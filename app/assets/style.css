@@ -179,10 +179,24 @@ p:empty {
 }
 
 .userItem {
-  border: 1px dashed var(--black);
-  border-radius: 2rem;
-  margin: 1rem .5rem;
-  padding: .5rem;
+  border: .5px solid var(--black);
+  /*border-radius: 2rem;*/
+  margin: .5rem;
+  padding: 1rem;
+  background-color: var(--gold);
+  text-align: left;
+}
+
+.admin-list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.admin-list li {
+  flex: 1 0 100%;
 }
 
 .verified {
@@ -190,7 +204,7 @@ p:empty {
 }
 
 .admin {
-  border-color: var(--blue);
+  background-color: var(--blue);
 }
 
 .bold {
