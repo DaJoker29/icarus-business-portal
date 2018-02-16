@@ -16,7 +16,7 @@ body {
 }
 
 .wrapper {
-  text-align: center;
+  text-align: left;
   padding: 1rem;
 }
 
@@ -44,17 +44,20 @@ h4 {
   margin: 1rem 0 .5rem;
 }
 
-h1 {
+h1,
+.h1 {
   font-size: 4.236rem;
   margin-top: 3rem;
 }
 
-h2 {
+h2,
+.h2 {
   font-size: 2.618rem;
   margin-top: 2.5rem;
 }
 
-h3 {
+h3,
+.h3 {
   font-size: 1.618rem;
 }
 
@@ -71,17 +74,36 @@ footer,
 /* FORMS */
 
 form {
-  display: flex;
-  flex-flow: row wrap;
   margin: 2rem .5rem;
-  justify-content: center;
-  align-content: center;
 }
 
-form .form-fields,
-form button,
-form .btn {
-  flex: 0 0 75%;
+fieldset>div {
+  margin: .5rem 0;
+}
+
+legend {
+  display: block;
+  width: 100%;
+  border-bottom: 1px solid var(--black);
+  padding: .5rem;
+  text-align: left;
+  font-size: 2rem;
+  margin-bottom: .5rem;
+}
+
+label {
+  display: block;
+  width: 100%;
+  float: none;
+  text-align: left;
+  padding: .1rem .5rem 0 0;
+}
+
+input[type=text],
+input[type=email],
+input[type=password] {
+  padding: .5rem;
+  width: 100%;
 }
 
 .form-fields {
@@ -97,20 +119,27 @@ form .btn {
 }
 
 /* Buttons */
-button {
-  cursor: pointer;
-}
-
 button,
 .btn {
+  cursor: pointer;
+  display: inline-block;
   font-family: var(--sans-font);
   font-weight: 900;
   font-size: 1rem;
+  line-height: 1.2;
   padding: 1rem;
-  border: 2px solid var(--black);
-  background-color: var(--black);
+  margin: .5rem .5rem 0 0;
+  border: 1px solid rgba(0,0,0,0.1);
+  background-color: var(--blue);
   color: var(--white);
-  border-radius: 2rem;
+  border-radius: 3px;
+  float: right;
+  text-align: center;
+  outline: 0;
+}
+
+.btn-alt {
+  background-color: var(--red);
 }
   
 button:hover,
@@ -229,5 +258,17 @@ p:empty {
 
   nav li {
     flex: 1 1 auto;
+  }
+
+  label {
+    text-align: right;
+    width: 35%;
+    float: left;
+  }
+
+  input[type=text],
+  input[type=email],
+  input[type=password] {
+    width: 60%;
   }
 }
