@@ -4,18 +4,18 @@ block active
   - var current = 'account'
 
 block main-content
-  form(action="" method="POST")
+  form(action="/account" method="POST")
     fieldset
       legend.h3 Change Account Info (#{user.email})
       div
         label(for="firstName") First name
-        input(type="text" name="firstName" value=user.firstName)
+        input(type="text" name="firstName" placeholder="First Name" value=user.firstName)
       div
         label(for="lastName") Last Name
-        input(type="text" name="lastName" value=user.lastName)
+        input(type="text" name="lastName" placeholder="Last Name" value=user.lastName)
       div
-        label(for="organization") Organization or Business
-        input(type="text" name="organization" value=user.organization)
+        label(for="organization") Organization
+        input(type="text" name="organization" placeholder="Organization" value=user.organization)
       button(type="submit") Change Info
       a.btn.btn-alt(href="/") Cancel
   form(action="" method="POST")  

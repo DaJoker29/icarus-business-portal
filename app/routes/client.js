@@ -35,6 +35,13 @@ router.get('/account', ensureAuth, unconfirmed, (req, res) => {
   res.render('account', { title: 'My Account', user: req.user });
 });
 
+router.post('/account', ensureAuth, (req, res) => {
+  User.update({ _id: req.user._id }, { $set: req.body }, err => {
+    if (err) throw err;
+    res.redirect('back');
+  });
+});
+
 // TODO: Separate ADMIN Routes/Controllers
 router.get('/admin', ensureAuth, ensureAdmin, (req, res) => {
   let userlist, serverlist;
