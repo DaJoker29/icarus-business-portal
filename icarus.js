@@ -69,7 +69,6 @@ mongoose.connection.on('connected', () => {
   app.use(morgan('development' === process.env.NODE_ENV ? 'dev' : 'combined'));
   app.use(bodyParser.urlencoded({ extended: 'true' }));
   app.use(bodyParser.json());
-  app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
   app.use(methodOverride());
   app.use(helmet());
   app.use(session(sessionSettings));
