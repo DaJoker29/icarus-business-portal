@@ -1,0 +1,34 @@
+extends main-layout
+
+block active
+  - var current = 'account'
+
+block main-content
+  form(action="/account" method="POST")
+    fieldset
+      legend.h3 Change Account Info (#{user.email})
+      div
+        label(for="firstName") First name
+        input(type="text" name="firstName" placeholder="First Name" value=user.firstName)
+      div
+        label(for="lastName") Last Name
+        input(type="text" name="lastName" placeholder="Last Name" value=user.lastName)
+      div
+        label(for="organization") Organization
+        input(type="text" name="organization" placeholder="Organization" value=user.organization)
+      button(type="submit") Change Info
+      a.btn.btn-alt(href="/") Cancel
+  form(action="" method="POST")  
+    fieldset
+      legend.h3 Change Password (coming soon)
+      div
+        label(for="oldPassword") Current Password
+        input(type="password" name="oldPassword" placeholder="Current Password")
+      div
+        label(for="newPassword") New Password
+        input(type="password" name="newPassword" placeholder="New Password")
+      div
+        label(for="newPasswordConfirm") Confirm New Password
+        input(type="password" name="newPasswordConfirm" placeholder="Confirm New Password")
+      button(type="submit") Change Password
+      a.btn.btn-alt(href="/") Cancel

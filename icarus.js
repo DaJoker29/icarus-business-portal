@@ -14,6 +14,8 @@ const RedisStore = require('connect-redis')(session);
 const moment = require('moment');
 const phoneNumber = require('libphonenumber-js');
 const numeral = require('numeral');
+const VError = require('verror');
+const debug = require('debug')('icarus:init');
 
 const strategies = require('./config/strategies');
 const authHelpers = require('./helpers/auth');
@@ -23,57 +25,86 @@ const clientRoutes = require('./app/routes/client');
 
 const app = express();
 
-console.log('Icarus is taking flight...\n');
+/* Error/Shutdown Handling */
+process.on('SIGINT', gracefulExit);
+process.on('SIGTERM', gracefulExit);
+process.on('uncaughtException', err => {
+  console.error(err.stack);
+  debug('Icarus flew too high to the sun and CRASHED to the waves below...');
+  gracefulExit();
+});
 
+/* Check for ENV variables. */
 if (result.error) {
-  throw result.error;
+  throw new VError(result.error, 'Problem loading environment variables...');
+} else {
+  for (const [key, value] of Object.entries(result.parsed)) {
+    debug(`${key} set to ${value}`);
+  }
 }
-console.log('Environment Variables:');
-console.log(result.parsed);
 
-// Setup Session Settings
-const sessionSettings = {
-  resave: false,
-  secret: process.env.SESSION_SECRET,
-  saveUninitialized: false,
-  store: new RedisStore({ host: 'localhost', port: process.env.REDIS_PORT }),
-};
+mongoose.connection.on('error', err => {
+  if (err)
+    throw new VError(err, 'Problem connecting to database. Is Mongo active?');
+});
 
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'app/views'));
+mongoose.connection.on('disconnected', () => {
+  debug('Database connection has closed.');
+});
 
-app.use('/assets', express.static('app/assets'));
-app.use(morgan('development' === process.env.NODE_ENV ? 'dev' : 'combined'));
-app.use(bodyParser.urlencoded({ extended: 'true' }));
-app.use(bodyParser.json());
-app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
-app.use(methodOverride());
-app.use(helmet());
-app.use(session(sessionSettings));
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.locals.moment = moment;
-app.locals.phoneNumber = phoneNumber;
-app.locals.numeral = numeral;
-
-passport.use(strategies.LOCAL);
-
-passport.serializeUser(authHelpers.SERIALIZE_USER);
-passport.deserializeUser(authHelpers.DESERIALIZE_USER);
-
-mongoose.connect(process.env.DB);
 mongoose.connection.on('connected', () => {
-  console.log(`\nSuccessfully connected to database...`);
+  debug(`Successfully connected to database...`);
+
+  const sessionSettings = {
+    resave: false,
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: false,
+    store: new RedisStore({ host: 'localhost', port: process.env.REDIS_PORT }),
+  };
+
+  app.set('view engine', 'pug');
+  app.set('views', path.join(__dirname, 'app/views'));
+
+  app.use('/assets', express.static('app/assets'));
+  app.use(morgan('development' === process.env.NODE_ENV ? 'dev' : 'combined'));
+  app.use(bodyParser.urlencoded({ extended: 'true' }));
+  app.use(bodyParser.json());
+  app.use(methodOverride());
+  app.use(helmet());
+  app.use(session(sessionSettings));
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  app.locals.moment = moment;
+  app.locals.phoneNumber = phoneNumber;
+  app.locals.numeral = numeral;
+
+  passport.use(strategies.LOCAL);
+  passport.serializeUser(authHelpers.SERIALIZE_USER);
+  passport.deserializeUser(authHelpers.DESERIALIZE_USER);
+
+  // Routes
+  app.use(authRoutes);
+  app.use(clientRoutes);
+  app.use(errorRoutes);
+
+  // Launch Server
+  app.listen(process.env.PORT, err => {
+    if (err) throw err;
+    debug('Icarus is flying UP & UP...');
+  });
 });
 
-// Routes
-app.use(authRoutes);
-app.use(clientRoutes);
-app.use(errorRoutes);
+debug('Connecting to database...');
+mongoose.connect(process.env.DB);
 
-// Launch Server
-app.listen(process.env.PORT, err => {
-  if (err) throw err;
-  console.log(`\nListening for requests...`);
-});
+function gracefulExit() {
+  debug('Icarus is going DOWN...');
+  if (1 === mongoose.connection.readyState) {
+    mongoose.connection.close(() => {
+      process.exit(0);
+    });
+  } else {
+    process.exit(0);
+  }
+}

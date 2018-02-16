@@ -26,9 +26,19 @@ router.get('/', ensureAuth, unconfirmed, (req, res) => {
     res.render('dashboard', {
       title: 'Dashboard',
       user: req.user,
-      name: 'index',
       servers,
     });
+  });
+});
+
+router.get('/account', ensureAuth, unconfirmed, (req, res) => {
+  res.render('account', { title: 'My Account', user: req.user });
+});
+
+router.post('/account', ensureAuth, (req, res) => {
+  User.update({ _id: req.user._id }, { $set: req.body }, err => {
+    if (err) throw err;
+    res.redirect('back');
   });
 });
 
