@@ -1,0 +1,16 @@
+extends main-layout
+
+block active
+  - var current = 'account'
+
+block main-content
+  form(action="" method="POST")
+    label(for="firstName") First name
+    input.form-fields(type="text" name="firstName" value=user.firstName)
+    label(for="lastName") Last Name
+    input.form-fields(type="text" name="lastName" value=user.lastName)
+    label(for="organization") Organization or Business
+    input.form-fields(type="text" name="organization" value=user.organization)
+    label(for="email") Email Address
+    input.form-fields(type="text" name="email" value=user.email)
+    button(type="submit") Change Info
