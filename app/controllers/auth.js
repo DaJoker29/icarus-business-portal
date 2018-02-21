@@ -105,7 +105,7 @@ function confirmToken(req, res) {
       if (confirm) {
         User.findOneAndUpdate(
           { email },
-          { verified: true },
+          { isVerified: true },
           { upsert: true, new: true },
           (err, user) => {
             if (err) throw err;

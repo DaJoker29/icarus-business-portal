@@ -43,7 +43,7 @@ router.post('/account', ensureAuth, (req, res) => {
 });
 
 // TODO: Separate ADMIN Routes/Controllers
-router.get('/admin', ensureAuth, ensureAdmin, (req, res) => {
+router.get('/admin', ensureAuth, ensureAdmin, unconfirmed, (req, res) => {
   let userlist, serverlist;
 
   User.find({}, (err, docs) => {

@@ -29,7 +29,7 @@ function ensureAdmin(req, res, next) {
 }
 
 function unconfirmed(req, res, next) {
-  if (req.user && false === req.user.verified) {
+  if (req.user && false === req.user.isVerified) {
     res.redirect('confirm');
   } else {
     next();

@@ -16,7 +16,7 @@ const serverSchema = new Schema({
   DISTRIBUTIONVENDOR: {
     type: String,
     required: true,
-    default: 'NO Distribution/Vendor',
+    default: 'No Distribution/Vendor',
   },
 });
 

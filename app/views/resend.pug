@@ -1,8 +1,12 @@
 extends form-layout
 
 block form-content
-  h2 Resend a Email confirmation
   form(action="/confirm/resend" method="POST")
-    input.form-fields(type="email" name="email" placeholder="Email Address")
-    button(type="submit") Resend Confirmation
-    a.btn.btn-transparent(href="/login") Sign In
+    fieldset
+      legend Retry Email Confirmation
+
+      div
+        label(for="email") Email Address
+        input(type="email" name="email" placeholder="Email Address")
+      button(type="submit") Retry Confirmation
+    a(href="/login") Sign In

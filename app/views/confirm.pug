@@ -1,7 +1,8 @@
 extends form-layout
 
 block form-content
-  h2 A confirmation email has been sent to the email provided.
   form(action="/confirm/resend")
-    button(href="/confirm/resend") Resend Confirmation
+    fieldset
+      legend A confirmation email has been sent the email provided.
+      button(href="/confirm/resend") Resend Confirmation
     a(href="/login") Sign In
