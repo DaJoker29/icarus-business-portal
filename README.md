@@ -86,20 +86,26 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 - Continuous Integration/Deployment
 - Ticketing/Support System
 - Custom Podcast Hosting Interface
-### v1.0.0 - Data and UI (Deadline: February 23, 2018)
-- Authentication
+### v1.0.0 - Data and UI (Deadline: March 2, 2018)
+- Sign Up
+  - Check for Free Domain Availability
+  - Select Hosting Plan
+  - Add Add'l Domain Names
+  - ~Gather Account Information~
+  - Billing Info, Review Balance and Charge (via Stripe Checkout)
   - ~Email Confirmation~
-  - Change Password
 - User Actions
   - ~Users can create accounts with basic information.~
   - ~Users can edit account information~
   - ~Users can view current plans and allotments.~
   - Users can renew current plans and domains
   - Users can purchase new plans and domains
+  - Users can change password
 - Admin Actions
   - ~Admins can view current user and server information~
-  - ~Admins can link/unlink users with servers~
   - Admins can update server/domain information
+  - Admins can create new, verified accounts (for current customers)
+  - ~Admins can link existing servers with accounts~
 
 
 ## Authors
