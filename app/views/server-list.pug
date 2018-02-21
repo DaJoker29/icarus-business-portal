@@ -12,3 +12,20 @@ if servers
           p Created #{moment(server.CREATE_DT).fromNow()} (#{moment(server.CREATE_DT).format('l')})
           p Plan: #{server.PLANID}
           p Status: #{server.STATUS}
+          if current = 'admin'
+            if server.assignedTo && users
+              p Owner:&nbsp;
+                each user in users
+                  if user._id == server.assignedTo
+                    span.bold
+                      | #{user.email}
+            else if users
+              form(action="/admin/link-server" method="POST")
+                fieldset
+                  input(type="hidden" name="selectedServer" value=server.LINODEID) 
+                  div
+                    label(for="selectedUser") Unlinked Servers
+                    select(name="selectedUser")
+                      each user in users
+                        option(value=user._id) #{user.firstName} #{user.lastName} - #{user.email}
+                  button(type="submit") Link!

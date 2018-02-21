@@ -74,40 +74,20 @@ router.post('/admin/link-server', ensureAuth, ensureAdmin, (req, res) => {
   const { selectedUser, selectedServer } = req.body;
 
   console.log('Searching for server: ' + selectedServer);
-  Server.findOne({ LINODEID: selectedServer }, (err, server) => {
-    if (err) throw err;
-    if (server) {
-      console.log('Server found');
-      if (server.assigned === false) {
-        console.log('Updating User Record');
-        User.update(
-          { _id: selectedUser },
-          { $push: { servers: selectedServer } },
-          err => {
-            if (err) throw err;
-            console.log('Updating Server Record');
-            Server.update(
-              { LINODEID: selectedServer },
-              { $set: { assigned: true } },
-              err => {
-                if (err) throw err;
-                console.log(
-                  `Successfully linked ${selectedServer} to ${selectedUser}.`,
-                );
-                return res.redirect('/admin');
-              },
-            );
-          },
-        );
+  Server.update(
+    { LINODEID: selectedServer },
+    { $set: { assignedTo: selectedUser } },
+    { upsert: true },
+    (err, server) => {
+      if (err) throw err;
+      if (server) {
+        console.log('Server found and updated');
       } else {
-        console.log('Server already assigned');
-        return res.redirect('/admin');
+        console.log('No server found');
       }
-    } else {
-      console.log('No server found');
       return res.redirect('/admin');
-    }
-  });
+    },
+  );
 });
 
 module.exports = router;

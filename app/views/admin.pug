@@ -16,16 +16,4 @@ block main-content
             if user.phone
               p.small Ph: #{phoneNumber.format(phoneNumber.parse(user.phone, 'US'), 'National')}
             p.small Member since #{moment(user.createdOn).fromNow()} (#{moment(user.createdOn).format('l')})
-            p.small Servers #{user.servers}
-            form(action="/admin/link-server" method="POST")
-              fieldset
-                legend.small Link Server
-                input(type="hidden" name="selectedUser" value=user._id) 
-                div
-                  label(for="selectedServer") Unlinked Servers
-                  select.form-fields(name="selectedServer")
-                    each server in servers
-                      if server.assigned === false
-                        option(value=server.LINODEID) #{server.LABEL}
-                button(type="submit") Link!
   include server-list
