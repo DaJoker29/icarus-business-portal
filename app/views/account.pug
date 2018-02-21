@@ -6,7 +6,7 @@ block active
 block main-content
   form(action="/account" method="POST")
     fieldset
-      legend.h3 Change Account Info (#{user.email})
+      legend Change Account Info (#{user.email})
       div
         label(for="firstName") First name
         input(type="text" name="firstName" placeholder="First Name" value=user.firstName)

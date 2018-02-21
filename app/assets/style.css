@@ -74,21 +74,21 @@ footer,
 /* FORMS */
 
 form {
-  margin: 2rem .5rem;
+  padding: 2rem .5rem;
 }
 
 fieldset>div {
-  margin: .5rem 0;
+  margin: 1rem 0;
 }
 
 legend {
   display: block;
-  width: 100%;
   border-bottom: 1px solid var(--black);
-  padding: .5rem;
+  padding: 1rem 0;
   text-align: left;
   font-size: 2rem;
-  margin-bottom: .5rem;
+  line-height: 1.3;
+  margin-bottom: 2rem;
 }
 
 label {
@@ -104,18 +104,6 @@ input[type=email],
 input[type=password] {
   padding: .5rem;
   width: 100%;
-}
-
-.form-fields {
-  margin: 1rem 0; 
-  font-family: var(--sans-font);
-  font-size: 1rem;
-  padding: 1rem;
-  border: 2px solid var(--black); 
-  border-radius: 2rem;
-  color: var(--black);
-  text-align: center;
-  background-color: var(--white);
 }
 
 /* Buttons */
@@ -246,6 +234,14 @@ p:empty {
 
 .bold {
   font-weight: bolder;
+}
+
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
 }
 
 /* MEDIA QUERIES */
