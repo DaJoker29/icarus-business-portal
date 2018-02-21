@@ -70,14 +70,14 @@ No notes on deployment yet.
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/dajoker29/icarus-business-portal/tags).
 
 ## Roadmap
-### v2.0.0 - Gold Release/Locked API (Deadline: March 30, 2018)
+### v2.0.0 - Build Automation
 - Automated Build Process
   - Linode's automatically created and loaded with server stack
   - DNS is automatically configured
-  - CMS (WordPress or Podcast Manager) is automatically installed and given a basic configuration
+  - CMS (WordPress or podcast manager) is automatically installed and given a basic configuration
   - SSL Certificates are auto-generated and free auto-renewal setup
-- Automated Domain Names
-  - Domain Names are purchased and renewed automatically
+- Domain Names
+  - Backend Domain Name transactions(purchase/renewal) are automated
 - Month-To-Date Resource Tracking
   - RAM
   - DISK
@@ -85,6 +85,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 - Integration and Unit Testing Suites
 - Continuous Integration/Deployment
 - Ticketing/Support System
+- Custom Podcast Hosting Interface
 ### v1.0.0 - Data and UI (Deadline: February 23, 2018)
 - Authentication
   - ~Email Confirmation~
