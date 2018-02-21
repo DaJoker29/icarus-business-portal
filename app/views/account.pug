@@ -17,10 +17,10 @@ block main-content
         label(for="organization") Organization
         input(type="text" name="organization" placeholder="Organization" value=user.organization)
       button(type="submit") Change Info
-      a.btn.btn-alt(href="/") Cancel
+      a(href="/") Cancel
   form(action="" method="POST")  
     fieldset
-      legend.h3 Change Password (coming soon)
+      legend Change Password (coming soon)
       div
         label(for="oldPassword") Current Password
         input(type="password" name="oldPassword" placeholder="Current Password")
@@ -31,4 +31,4 @@ block main-content
         label(for="newPasswordConfirm") Confirm New Password
         input(type="password" name="newPasswordConfirm" placeholder="Confirm New Password")
       button(type="submit") Change Password
-      a.btn.btn-alt(href="/") Cancel
+      a(href="/") Cancel

@@ -24,7 +24,7 @@ if servers
                 fieldset
                   input(type="hidden" name="selectedServer" value=server.LINODEID) 
                   div
-                    label(for="selectedUser") Unlinked Servers
+                    label(for="selectedUser") Link to User:
                     select(name="selectedUser")
                       each user in users
                         option(value=user._id) #{user.firstName} #{user.lastName} - #{user.email}
