@@ -15,7 +15,7 @@ const moment = require('moment');
 const phoneNumber = require('libphonenumber-js');
 const numeral = require('numeral');
 const VError = require('verror');
-const debug = require('debug')('icarus:init');
+const debug = require('debug')(`icarus:${'development' === process.env.NODE_ENV ? 'test:init' : ':init'}`);
 
 const strategies = require('./config/strategies');
 const authHelpers = require('./helpers/auth');
@@ -57,9 +57,9 @@ mongoose.connection.on('connected', () => {
 
   const sessionSettings = {
     resave: false,
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || 'superdupersekrit',
     saveUninitialized: false,
-    store: new RedisStore({ host: 'localhost', port: process.env.REDIS_PORT }),
+    store: new RedisStore({ host: 'localhost', port: process.env.REDIS_PORT || 6379}),
   };
 
   app.set('view engine', 'pug');
@@ -89,14 +89,14 @@ mongoose.connection.on('connected', () => {
   app.use(errorRoutes);
 
   // Launch Server
-  app.listen(process.env.PORT, err => {
+  app.listen('production' === process.env.NODE_ENV ? process.env.PORT : process.env.TEST_PORT, err => {
     if (err) throw err;
     debug('Icarus is flying UP & UP...');
   });
 });
 
 debug('Connecting to database...');
-mongoose.connect(process.env.DB);
+mongoose.connect('production' === process.env.NODE_ENV ? process.env.DB : process.env.TEST_DB);
 
 function gracefulExit() {
   debug('Icarus is going DOWN...');

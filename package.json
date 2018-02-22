@@ -1,11 +1,14 @@
 {
   "name": "icarus-business-portal",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Zero Daedalus Client Portal",
-  "main": "app.js",
+  "main": "icarus.js",
   "repository": "git@github.com:DaJoker29/icarus-business-portal.git",
   "author": "Dewitt Buckingham <dj729@comcast.net>",
   "license": "MIT",
+  "engine": {
+    "node": "~8.9.4"
+  },
   "scripts": {
     "lint": "yarn eslint .",
     "fix": "yarn eslint --fix . || true",
@@ -13,7 +16,8 @@
     "preversion": "git checkout master && git merge --no-ff develop -m 'Pull changes for release bump'",
     "postversion": "git push && git push --tags && git checkout develop && git merge --no-ff master -m 'Sync Develop branch' && git push",
     "install": "ln -si ../../tools/pre-commit.sh .git/hooks/pre-commit",
-    "prod": "yarn run build && pm2 start process.json",
+    "prod": "pm2 start process.json",
+    "staging": "pm2 start test-process.json",
     "dev": "yarn run watch-server",
     "watch-server": "nodemon icarus.js --config nodemon.json",
     "watch-bundle": "webpack-dev-server --inline --hot --content-base client --config config/webpack.dev.js",
@@ -40,6 +44,7 @@
     "method-override": "2.3.10",
     "mongoose": "5.0.3",
     "morgan": "1.9.0",
+    "nodemon": "1.15.1",
     "prettier": "1.10.2"
   },
   "dependencies": {
