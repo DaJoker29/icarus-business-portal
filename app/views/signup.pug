@@ -1,15 +1,105 @@
 extends form-layout
 
 block form-content
-  h2 Create an Account
-  p Own your piece of the Internet.
   form(method='POST')
-    input.form-fields(type='email' name='email' required placeholder="Email Address")
-    input.form-fields(type='password' name='password' required placeholder="Password")
-    input.form-fields(type="text" name="firstName" placeholder="First Name")
-    input.form-fields(type="text" name="lastName" placeholder="Last Name")
-    input.form-fields(type="text" name="organization" placeholder="Organization or Business")
-    .sep
+    a(href="/login") Already a member? Log in.
+
+    fieldset
+      legend 1. Account Info
+        
+      div
+        label(for="email") Email Address*
+        input(type='email' name='email' required placeholder="Email Address")
+
+      div
+        label(for="firstName") First Name
+        input(type="text" name="firstName" placeholder="First Name")
+
+      div
+        label(for="lastName") Last Name
+        input(type="text" name="lastName" placeholder="Last Name")
+
+      div
+        label(for="organization") Organization
+        input(type="text" name="organization" placeholder="Organization (optional)")
+
+    fieldset
+      legend 2. Build Your Hosting Plan
+
+      .flex-table.flex-table--2cols
+        .flex-table-cell.flex-table-cell--gray(style={order: 1})
+          h3 Starter
+          p A basic plan for beginners
+        .flex-table-cell.flex-table-cell--gray(style={order: 2}) 1TB Bandwidth
+        .flex-table-cell.flex-table-cell--gray(style={order: 3}) 20GB SSD
+        .flex-table-cell.flex-table-cell--gray(style={order: 4}) 1GB RAM
+
+        .flex-table-cell.flex-table-cell--gold(style={order: 1}) 
+          h3 Prosumer
+          p Optimized for performance and security.
+        .flex-table-cell.flex-table-cell--gold(style={order: 2}) 2TB Bandwidth
+        .flex-table-cell.flex-table-cell--gold(style={order: 3}) 30GB SSD
+        .flex-table-cell.flex-table-cell--gold(style={order: 4}) 2GB RAM
+
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--blue(style={order: 5})
+          h3 Included in all plans
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--blue(style={order: 5}) Free WordPress install
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--blue(style={order: 5}) Free Domain Name
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--blue(style={order: 5}) Free SSL Certificates
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--blue(style={order: 5}) 24/7 Email and Chat Support
+
+      div
+        label(for="hostingPlan") Hosting Package
+        select(name="hostingPlan")
+          option(value="basic") Starter Plan - $195 (billed annually)
+          option(value="premium") Prosumer Plan - $295 a year (billed annually)
+
+    fieldset
+      legend 3. Choose a Domain Name
+
+      div
+        label(for="domainName") Domain Name
+        input(type="text" name="domainName" placheolder="Domain Name")
+
+    fieldset
+      legend 4. Subtotal
+
+      .flex-table.flex-table--2cols
+        .flex-table-cell Starter Plan
+        .flex-table-cell $195
+
+        .flex-table-cell 1x Domain Name
+        .flex-table-cell Free
+
+        .flex-table-cell.flex-table-cell--bold Subtotal
+        .flex-table-cell.flex-table-cell--bold $195
+
+        .flex-table-cell
+          h3 Total
+        .flex-table-cell
+          h3 $195
+
+    fieldset
+      legend 5. Billing Info
+
+      div
+        label(for="billingEmail") Email Address
+        input(type="email" name="billingEmail" placeholder="Payment receipts will be sent here.")
+
+      div
+        label(for="cardNumber") Name on Card
+        input(type="text" name="cardNumber" placeholder="Card number")
+
+      div
+        label(for="expirationDate") Expiration Date
+        input(type="date" name="expirationDate" placeholder="Name on Card")
+
+      div
+        label(for="cvc") CVC
+        input(type="text" name="cvc" placeholder="CVC")
+
+
+    fieldset
+      p After submitting your purchase, you will need to confirm your email address by clicking a link sent to the email above and asked to create an account password. You will then be notified when your hosting plan is ready.
+      
     button(type='submit') Submit
-    .sep
-    a.btn.btn-transparent(href="/login") Already a member? Log in.
