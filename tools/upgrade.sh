@@ -9,5 +9,5 @@ else
   git pull
   yarn install
   yarn test
-  yarn run reload
+  yarn run reload-staging
 fi
