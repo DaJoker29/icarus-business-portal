@@ -66,6 +66,7 @@ mongoose.connection.on('connected', () => {
   app.set('views', path.join(__dirname, 'app/views'));
 
   app.use('/assets', express.static('app/assets'));
+  app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow'}));
   app.use(morgan('development' === process.env.NODE_ENV ? 'dev' : 'combined'));
   app.use(bodyParser.urlencoded({ extended: 'true' }));
   app.use(bodyParser.json());
