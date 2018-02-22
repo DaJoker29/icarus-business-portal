@@ -15,7 +15,9 @@ const moment = require('moment');
 const phoneNumber = require('libphonenumber-js');
 const numeral = require('numeral');
 const VError = require('verror');
-const debug = require('debug')(`icarus:${'development' === process.env.NODE_ENV ? 'test:init' : ':init'}`);
+const debug = require('debug')(
+  `icarus:${'development' === process.env.NODE_ENV ? 'test:init' : ':init'}`,
+);
 
 const strategies = require('./config/strategies');
 const authHelpers = require('./helpers/auth');
@@ -59,14 +61,17 @@ mongoose.connection.on('connected', () => {
     resave: false,
     secret: process.env.SESSION_SECRET || 'superdupersekrit',
     saveUninitialized: false,
-    store: new RedisStore({ host: 'localhost', port: process.env.REDIS_PORT || 6379}),
+    store: new RedisStore({
+      host: 'localhost',
+      port: process.env.REDIS_PORT || 6379,
+    }),
   };
 
   app.set('view engine', 'pug');
   app.set('views', path.join(__dirname, 'app/views'));
 
   app.use('/assets', express.static('app/assets'));
-  app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow'}));
+  app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
   app.use(morgan('development' === process.env.NODE_ENV ? 'dev' : 'combined'));
   app.use(bodyParser.urlencoded({ extended: 'true' }));
   app.use(bodyParser.json());
@@ -90,14 +95,21 @@ mongoose.connection.on('connected', () => {
   app.use(errorRoutes);
 
   // Launch Server
-  app.listen('production' === process.env.NODE_ENV ? process.env.PORT : process.env.TEST_PORT, err => {
-    if (err) throw err;
-    debug('Icarus is flying UP & UP...');
-  });
+  app.listen(
+    'production' === process.env.NODE_ENV
+      ? process.env.PORT
+      : process.env.TEST_PORT,
+    err => {
+      if (err) throw err;
+      debug('Icarus is flying UP & UP...');
+    },
+  );
 });
 
 debug('Connecting to database...');
-mongoose.connect('production' === process.env.NODE_ENV ? process.env.DB : process.env.TEST_DB);
+mongoose.connect(
+  'production' === process.env.NODE_ENV ? process.env.DB : process.env.TEST_DB,
+);
 
 function gracefulExit() {
   debug('Icarus is going DOWN...');
