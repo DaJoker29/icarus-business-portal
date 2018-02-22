@@ -4,6 +4,7 @@ module.exports = {
     browser: true,
     mocha: true,
     mongo: true,
+    jQuery: true,
   },
   extends: ['last', 'prettier/react', 'plugin:react/recommended'],
   rules: {
