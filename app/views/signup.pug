@@ -28,12 +28,56 @@ block form-content
         input(type="text" name="organization" placeholder="Organization (optional)")
 
     fieldset
-      legend 2. Select Host Package
+      legend 2. Build Host Package
 
       .flex-table.flex-table--3cols
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--green(style={order:0})
+          h3 Select Hardware
+
+        .flex-table-cell.flex-table-cell--gold(style={order:1})
+          h3 STARTER
+          h3 $195/yr
+          p.italic Hobbyists and Small Blogs
+        .flex-table-cell.flex-table-cell--gold(style={order:2}) 20GB SSD
+        .flex-table-cell.flex-table-cell--gold(style={order:3}) 1GB Memory
+        .flex-table-cell.flex-table-cell--gold(style={order:4}) 1TB Transfer/Mo
+        .flex-table-cell.flex-table-cell--gold(style={order:5}) 1 Xeon Core
+
+        .flex-table-cell.flex-table-cell--gold(style={order:1})
+          h3 BUSINESS
+          h3 $295/yr
+          p.italic Freelancers/Small Business
+        .flex-table-cell.flex-table-cell--gold(style={order:2}) 30GB SSD
+        .flex-table-cell.flex-table-cell--gold(style={order:3}) 2GB Memory
+        .flex-table-cell.flex-table-cell--gold(style={order:4}) 2TB Transfer/Mo
+        .flex-table-cell.flex-table-cell--gold(style={order:5}) 1 Xeon Core
+
+        .flex-table-cell.flex-table-cell--gold(style={order:1})
+          h3 DEVELOPER
+          h3 $495/yr
+          p.italic For agencies and developers
+        .flex-table-cell.flex-table-cell--gold(style={order:2}) 48GB SSD
+        .flex-table-cell.flex-table-cell--gold(style={order:3}) 4GB Memory
+        .flex-table-cell.flex-table-cell--gold(style={order:4}) 3TB Transfer/Mo
+        .flex-table-cell.flex-table-cell--gold(style={order:5}) 2 Xeon Cores
+
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--green(style={order: 6})
+          span.italic Higher capacity servers available upon request.
+
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--green(style={order: 7})
+          div
+            label(for="hardware") Select Hardware
+            select#hardware(name="hardware")
+              option(value="starter") STARTER - $195 (billed annually)
+              option(value="business" selected) BUSINESS - $295 a year (billed annually)
+              option(value="developer") DEVELOPER - $495 a year (billed annually)
+
+      .flex-table.flex-table--3cols
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--green(style={order: 0}) 
+          h3 Select Support Plan
         .flex-table-cell.flex-table-cell--red(style={order: 1})
           h3  Hands-Off 
-          h3 $300/yr
+          h3 $0
           p.italic Generic WordPress Installation
         .flex-table-cell.flex-table-cell--red.bold(style={order: 2}) Free WordPress Install
         .flex-table-cell.flex-table-cell--red.bold(style={order: 3}) Free Domain Name
@@ -45,50 +89,47 @@ block form-content
         .flex-table-cell.flex-table-cell--green(style={order: 9})
         .flex-table-cell.flex-table-cell--green(style={order: 10})
         .flex-table-cell.flex-table-cell--green(style={order: 11})
+        .flex-table-cell.flex-table-cell--green(style={order: 12})
 
         .flex-table-cell.flex-table-cell--blue(style={order: 1})
           h3  Maintain
-          h3 $425/yr
+          h3 $125/yr
           p.italic Regular maintainance and optimizations
         .flex-table-cell.flex-table-cell--blue(style={order: 2}) Free WordPress Install
         .flex-table-cell.flex-table-cell--blue(style={order: 3}) Free Domain Name
         .flex-table-cell.flex-table-cell--blue(style={order: 4}) Free SSL Certificates
         .flex-table-cell.flex-table-cell--blue(style={order: 5}) 24/7 Email and Chat Support
-        .flex-table-cell.flex-table-cell--blue.bold(style={order: 6}) WordPress Updates
+        .flex-table-cell.flex-table-cell--blue.bold(style={order: 6}) Automatic WordPress Updates
         .flex-table-cell.flex-table-cell--blue.bold(style={order: 7}) Performance and Security Optimization
         .flex-table-cell.flex-table-cell--blue.bold(style={order: 8}) Daily Backups
         .flex-table-cell.flex-table-cell--green(style={order: 9})
         .flex-table-cell.flex-table-cell--green(style={order: 10})
         .flex-table-cell.flex-table-cell--green(style={order: 11})
+        .flex-table-cell.flex-table-cell--green(style={order: 12})
 
         .flex-table-cell.flex-table-cell--black(style={order: 1})
           h3  Hands-On 
-          h3 $550/yr
+          h3 $375/yr
           p.italic Professional Web Concierge Service
         .flex-table-cell.flex-table-cell--black(style={order: 2}) Free WordPress Install
         .flex-table-cell.flex-table-cell--black(style={order: 3}) Free Domain Name
         .flex-table-cell.flex-table-cell--black(style={order: 4}) Free SSL Certificates
         .flex-table-cell.flex-table-cell--black(style={order: 5}) 24/7 Email and Chat Support
-        .flex-table-cell.flex-table-cell--black(style={order: 6}) WordPress Updates
+        .flex-table-cell.flex-table-cell--black(style={order: 6}) Automatic WordPress Updates
         .flex-table-cell.flex-table-cell--black(style={order: 7}) Performance and Security Optimization
         .flex-table-cell.flex-table-cell--black(style={order: 8}) Daily Backups
-        .flex-table-cell.flex-table-cell--black.bold(style={order: 9}) SEO Strategy and Lead Generation
-        .flex-table-cell.flex-table-cell--black.bold(style={order: 10}) Staging Server
-        .flex-table-cell.flex-table-cell--black.bold(style={order: 11}) Analytics and Traffic Monitoring
+        .flex-table-cell.flex-table-cell--black.bold(style={order: 9}) Staging Server
+        .flex-table-cell.flex-table-cell--black.bold(style={order: 10}) SEO and Lead Generation
+        .flex-table-cell.flex-table-cell--black.bold(style={order: 11}) Analytics and Customer Insights
+        .flex-table-cell.flex-table-cell--black.bold(style={order: 12}) Phone Support
 
-        .flex-table-cell.flex-table-cell--full.flex-table-cell--gold(style={order: 50})
-          h3 Hardware Specs
-          p.italic Higher capacity servers available upon request.
-        .flex-table-cell.flex-table-cell--full.flex-table-cell--gold.bold(style={order: 50}) Intel Xeon CPU
-        .flex-table-cell.flex-table-cell--full.flex-table-cell--gold.bold(style={order: 50}) 30GB SSD
-        .flex-table-cell.flex-table-cell--full.flex-table-cell--gold.bold(style={order: 50}) 2TB Monthly Bandwidth
-
-      div
-        label(for="hostingPlan") Hosting Package
-        select#hosting-plan(name="hostingPlan")
-          option(value="hands-off") HANDS-OFF - $300 (billed annually)
-          option(value="maintain") MAINTAIN - $425 a year (billed annually)
-          option(value="hands-on") HANDS-ON - $550 a year (billed annually)
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--green(style={order: 13})
+          div
+            label(for="supportPlan") Support Plan
+            select#support-plan(name="supportPlan")
+              option(value="hands-off") HANDS-OFF - $0 (billed annually)
+              option(value="maintain" selected) MAINTAIN - $125 a year (billed annually)
+              option(value="hands-on") HANDS-ON - $375 a year (billed annually)
 
     fieldset
       legend 3. Choose Domain Name
@@ -101,8 +142,11 @@ block form-content
       legend 4. Subtotal
 
       .flex-table.flex-table--2cols
-        #plan_title.flex-table-cell
-        #plan_total.flex-table-cell
+        #hardware_title.flex-table-cell
+        #hardware_price.flex-table-cell
+
+        #support_title.flex-table-cell
+        #support_price.flex-table-cell
 
         .flex-table-cell 1x Domain Name
         .flex-table-cell Free
@@ -114,12 +158,12 @@ block form-content
         .flex-table-cell Free
 
         .flex-table-cell.flex-table-cell--bold Subtotal
-        .flex-table-cell.flex-table-cell--bold $195
+        .flex-table-cell.flex-table-cell--bold $420
 
         .flex-table-cell
           h3 Total
         .flex-table-cell
-          h3 $195
+          h3 $420
 
     fieldset
       legend 5. Billing Info
