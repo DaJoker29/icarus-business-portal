@@ -86,8 +86,9 @@ block form-content
       div
         label(for="hostingPlan") Hosting Package
         select#hosting-plan(name="hostingPlan")
-          option(value="starter") Starter Plan - $195 (billed annually)
-          option(value="prosumer") Prosumer Plan - $295 a year (billed annually)
+          option(value="hands-off") HANDS-OFF - $300 (billed annually)
+          option(value="maintain") MAINTAIN - $425 a year (billed annually)
+          option(value="hands-on") HANDS-ON - $550 a year (billed annually)
 
     fieldset
       legend 3. Choose Domain Name
@@ -104,6 +105,12 @@ block form-content
         #plan_total.flex-table-cell
 
         .flex-table-cell 1x Domain Name
+        .flex-table-cell Free
+
+        .flex-table-cell SSL Certificates
+        .flex-table-cell Free
+
+        .flex-table-cell WordPress Install
         .flex-table-cell Free
 
         .flex-table-cell.flex-table-cell--bold Subtotal
