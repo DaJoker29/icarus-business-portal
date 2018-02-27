@@ -86,7 +86,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 - Continuous Integration/Deployment
 - Ticketing/Support System
 - Custom Podcast Hosting Interface
-### v1.0.0 - Data and UI (Deadline: March 2, 2018)
+### v1.0.0 - Data and UI
 - Sign Up
   - Check for Free Domain Availability
   - Select Hosting Plan
@@ -106,6 +106,10 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
   - Admins can update server/domain information
   - Admins can create new, verified accounts (for current customers)
   - ~Admins can link existing servers with accounts~
+ 
+### v0.1.0 - Monitoring and Renewals
+- Users can renew their server/domains
+- Users can monitor their Current Resource (RAM, SSD, BANDWIDTH, LOAD)
 
 
 ## Authors
