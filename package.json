@@ -27,7 +27,8 @@
     "reload-prod": "./tools/reload-server.sh",
     "reload-staging": "./tools/reload-staging.sh",
     "todo": "leasot -Sx {app,client,config,helpers,test,tools}/**/*.{js,html,css}",
-    "pull-servers": "./cli/pull-servers.js"
+    "pull-servers": "./cli/pull-servers.js",
+    "create-user": "./cli/create-user.js"
   },
   "devDependencies": {
     "babel-eslint": "8.2.1",

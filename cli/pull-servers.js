@@ -13,7 +13,6 @@ const requestParams = {
 };
 
 program
-  .version('0.2.0')
   .option('-d, --dev', 'Run in dev mode.')
   .parse(process.argv);
 
