@@ -12,9 +12,7 @@ const requestParams = {
   api_action: 'linode.list',
 };
 
-program
-  .option('-d, --dev', 'Run in dev mode.')
-  .parse(process.argv);
+program.option('-d, --dev', 'Run in dev mode.').parse(process.argv);
 
 function populateLinodes() {
   mongoose.connect(program.dev ? process.env.TEST_DB : process.env.DB);

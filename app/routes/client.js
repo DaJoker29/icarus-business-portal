@@ -5,6 +5,7 @@ const unconfirmed = require('../../helpers/auth').UNCONFIRMED;
 const authCtrl = require('../controllers/auth');
 const User = require('../models/user');
 const Server = require('../models/server');
+const Resource = require('../models/resource');
 
 const router = express.Router();
 
@@ -20,13 +21,33 @@ router.post('/confirm/resend', authCtrl.RESEND_CONFIRM);
 
 router.get('/confirm/token/:token', authCtrl.CONFIRM_TOKEN);
 
-router.get('/', ensureAuth, unconfirmed, (req, res) => {
-  Server.find({ LINODEID: { $in: req.user.servers } }, (err, servers) => {
-    if (err) throw err;
-    res.render('dashboard', {
-      title: 'Dashboard',
-      user: req.user,
-      servers,
+router.get('/', ensureAuth, unconfirmed, (req, res, next) => {
+  let serverlist;
+
+  Server.find({ assignedTo: req.user._id }, (err, servers) => {
+    if (err) next(err);
+    Resource.find({}, null, { sort: { createdAt: -1 } }, (err, resources) => {
+      if (err) next(err);
+      serverlist = servers ? servers : [];
+      if (servers) {
+        serverlist = servers.map(server => {
+          const { LABEL } = server;
+          const resource = resources.find(e => {
+            return e.hostname.toLowerCase() == LABEL.toLowerCase();
+          });
+
+          return Object.assign(
+            {},
+            JSON.parse(JSON.stringify(server)),
+            JSON.parse(JSON.stringify(resource ? resource : {})),
+          );
+        });
+      }
+      res.render('dashboard', {
+        title: 'Dashboard',
+        user: req.user,
+        servers: serverlist,
+      });
     });
   });
 });
@@ -43,28 +64,37 @@ router.post('/account', ensureAuth, (req, res) => {
 });
 
 // TODO: Separate ADMIN Routes/Controllers
-router.get('/admin', ensureAuth, ensureAdmin, unconfirmed, (req, res) => {
+router.get('/admin', ensureAuth, ensureAdmin, unconfirmed, (req, res, next) => {
   let userlist, serverlist;
 
-  User.find({}, (err, docs) => {
-    if (err) throw err;
-    if (docs) {
-      userlist = docs;
-    } else {
-      userlist = [];
-    }
-    Server.find({}, (err, docs) => {
-      if (err) throw err;
-      if (docs) {
-        serverlist = docs;
-      } else {
-        serverlist = [];
-      }
-      res.render('admin', {
-        title: 'Admin Panel',
-        user: req.user,
-        users: userlist,
-        servers: serverlist,
+  User.find({}, (err, users) => {
+    if (err) next(err);
+    Server.find({}, (err, servers) => {
+      if (err) next(err);
+      serverlist = servers;
+      Resource.find({}, null, { sort: { createdAt: -1 } }, (err, resources) => {
+        if (err) next(err);
+        userlist = users ? users : [];
+        serverlist = servers ? servers : [];
+        if (servers) {
+          serverlist = servers.map(server => {
+            const resource = resources.find(
+              e => e.hostname.toLowerCase() === server.LABEL.toLowerCase(),
+            );
+
+            return Object.assign(
+              {},
+              JSON.parse(JSON.stringify(server)),
+              JSON.parse(JSON.stringify(resource ? resource : {})),
+            );
+          });
+        }
+        res.render('admin', {
+          title: 'Admin Panel',
+          user: req.user,
+          users: userlist,
+          servers: serverlist,
+        });
       });
     });
   });

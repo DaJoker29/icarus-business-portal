@@ -1,5 +1,9 @@
 extends main-layout
 
+
+block active
+  - var current = 'dashboard'
+
 block main-content
   div
     h3 #{user.firstName} #{user.lastName}
@@ -8,4 +12,5 @@ block main-content
     p.small Member since #{moment(user.createdOn).fromNow()}
     a.small(href="logout") (logout)
 
-  include server-list
+    if servers
+      include server-list
