@@ -5,19 +5,19 @@ function newResource(req, res, next) {
     const {
       hostname,
       uptime,
-      freeMem,
+      usedMem,
       totalMem,
       load,
-      availDisk,
+      usedDisk,
       totalDisk,
     } = req.body;
     const params = {
       hostname,
       uptime,
-      freeMem,
+      usedMem,
       totalMem,
       load,
-      availDisk,
+      usedDisk,
       totalDisk,
     };
 

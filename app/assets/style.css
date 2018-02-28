@@ -125,7 +125,8 @@ button {
   outline: 0;
 }
 
-.btn-alt {
+.btn-alt,
+.flex-table-cell--blue button {
   background-color: var(--red);
 }
   
@@ -173,24 +174,6 @@ nav li a {
 
 .active {
   background-color: var(--green);
-}
-
-/* Admin Styles */
-.admin-list {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: stretch;
-  align-content: stretch;
-}
-
-.admin-list li {
-  flex: 1 0 100%;
-  border: .5px solid var(--black);
-  margin: .5rem;
-  padding: 1rem;
-  background-color: var(--gold);
-  text-align: left;
 }
 
 /* Utilities */
