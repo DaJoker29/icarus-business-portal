@@ -24,6 +24,7 @@ const authHelpers = require('./helpers/auth');
 const authRoutes = require('./app/routes/auth');
 const errorRoutes = require('./app/routes/error');
 const clientRoutes = require('./app/routes/client');
+const resourceRoutes = require('./app/routes/resource');
 
 const app = express();
 
@@ -92,6 +93,7 @@ mongoose.connection.on('connected', () => {
   // Routes
   app.use(authRoutes);
   app.use(clientRoutes);
+  app.use(resourceRoutes);
   app.use(errorRoutes);
 
   // Launch Server
