@@ -135,4 +135,19 @@ router.post('/admin/link-server', ensureAuth, ensureAdmin, (req, res) => {
   );
 });
 
+router.post('/admin/server/:id', ensureAuth, ensureAdmin, (req, res, next) => {
+  if (req.body.expirationDate) {
+    Server.findOneAndUpdate(
+      { LINODEID: req.params.id },
+      { $set: { expires: req.body.expirationDate } },
+      err => {
+        if (err) next(err);
+        return res.redirect('/admin');
+      },
+    );
+  } else {
+    return res.redirect('/admin');
+  }
+});
+
 module.exports = router;
