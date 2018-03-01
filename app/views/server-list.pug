@@ -11,13 +11,16 @@ if servers
           p.bold.flex-table-cell.flex-table-cell--full.flex-table-cell--black #{server.LABEL}
           p.flex-table-cell.flex-table-cell--blue Storage: #{numeral(server.usedDisk).format('0b')} / #{numeral(server.totalDisk).format('0b')}
           p.flex-table-cell.flex-table-cell--blue RAM: #{numeral(server.usedMem).format('0b')} / #{numeral(server.totalMem).format('0b')}
-          p.flex-table-cell.flex-table-cell--blue Created: #{moment(server.CREATE_DT).fromNow()}
           p.flex-table-cell.flex-table-cell--blue Hosting Plan: #{hosting[server.PLANID - 1]}
           p.flex-table-cell.flex-table-cell--blue Support Plan: #{support[server.PLANID - 1]} 
           //- Need to make function ^^
           p.flex-table-cell.flex-table-cell--blue Status: #{status[server.STATUS + 1]}
           p.flex-table-cell.flex-table-cell--blue Last Updated: #{moment(server.createdAt).fromNow()}
+          p.flex-table-cell.flex-table-cell--blue Expires: #{moment(server.expires).fromNow()}
+          if current === 'dashboard'
+            a(href="/renew/" + server.LINODEID).flex-table-cell.flex-table-cell--gold.flex-table-cell--full  Renew Now
           if current === 'admin'
+            p.flex-table-cell.flex-table-cell--red Age: #{moment(server.createdOn).fromNow(true)} old
             p.flex-table-cell.flex-table-cell--red Server ID:  #{server.LINODEID}
             p.flex-table-cell.flex-table-cell--red Load: #{numeral(server.load).format('0.0')}
             p.flex-table-cell.flex-table-cell--red Uptime: #{moment(server.createdAt).subtract(server.uptime, 'seconds').fromNow(true)}
