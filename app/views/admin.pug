@@ -12,6 +12,7 @@ block main-content
           div
             p #{user.firstName} #{user.lastName} #{!user.isAdmin ? '' : '(ADMIN)'}
             p.bold #{user.email} #{user.isVerified ? '' : '(NOT VERIFIED)'}
+            p.small Stripe ID: #{user.stripeID}
             p.small= user.organization
             if user.phone
               p.small Ph: #{phoneNumber.format(phoneNumber.parse(user.phone, 'US'), 'National')}

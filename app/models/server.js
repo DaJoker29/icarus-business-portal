@@ -4,6 +4,12 @@ const Schema = mongoose.Schema;
 
 const serverSchema = new Schema({
   assignedTo: { type: String },
+  expires: {
+    type: Date,
+    default: Date.now() + 1000 * 60 * 60 * 24 * 365,
+    required: true,
+  },
+  createdOn: { type: Date, default: Date.now(), required: true },
   LINODEID: { type: Number, unique: true, index: true, required: true },
   TOTALXFER: { type: Number, required: true },
   TOTALRAM: { type: Number, required: true },

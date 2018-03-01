@@ -1,0 +1,22 @@
+extends form-layout
+
+block scripts
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js')
+  script(src="/assets/stripe.js")
+
+block form-content
+  form#payment-form(method="POST")
+    fieldset
+      legend Payment Information
+
+      .flex-table
+        .flex-table-cell.flex-table-cell--green
+          label(for="stripe-container") Credit or Debit Accepted
+        .flex-table-cell.flex-table-cell--green
+          #stripe-container
+
+      #card-errors(role="alert")
+      input(type="hidden" name="amount" value=amount)
+      input(type="hidden" name="description" value=description)
+
+      button Submit

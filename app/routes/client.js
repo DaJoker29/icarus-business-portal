@@ -3,6 +3,7 @@ const ensureAuth = require('../../helpers/auth').ENSURE_AUTH;
 const ensureAdmin = require('../../helpers/auth').ENSURE_ADMIN;
 const unconfirmed = require('../../helpers/auth').UNCONFIRMED;
 const authCtrl = require('../controllers/auth');
+const paymentCtrl = require('../controllers/payment');
 const User = require('../models/user');
 const Server = require('../models/server');
 const Resource = require('../models/resource');
@@ -62,6 +63,20 @@ router.post('/account', ensureAuth, (req, res) => {
     res.redirect('back');
   });
 });
+
+router.get('/renew/:id', ensureAuth, (req, res, next) => {
+  Server.findOne({ LINODEID: req.params.id }, (err, server) => {
+    if (err) next(err);
+    if (req.user._id == server.assignedTo) {
+      res.render('renew', { server, user: req.user });
+    } else {
+      console.log('Invalid credentials');
+      res.redirect('/');
+    }
+  });
+});
+
+router.post('/renew/:id', ensureAuth, paymentCtrl.RENEW_PLAN);
 
 // TODO: Separate ADMIN Routes/Controllers
 router.get('/admin', ensureAuth, ensureAdmin, unconfirmed, (req, res, next) => {
