@@ -4,20 +4,20 @@ const helpers = require('../../helpers');
 
 router.get(
   '/',
-  helpers.AUTH.ENSURE_AUTH,
-  helpers.AUTH.UNCONFIRMED,
+  helpers.AUTH.AUTHENTICATED,
+  helpers.AUTH.UNVERIFIED,
   controllers.USER.RENDER_DASH,
 );
 
 router.get(
   '/account',
-  helpers.AUTH.ENSURE_AUTH,
-  helpers.AUTH.UNCONFIRMED,
+  helpers.AUTH.AUTHENTICATED,
+  helpers.AUTH.UNVERIFIED,
   controllers.USER.RENDER_ACCOUNT,
 );
 router.post(
   '/account',
-  helpers.AUTH.ENSURE_AUTH,
+  helpers.AUTH.AUTHENTICATED,
   controllers.USER.CHANGE_ACCOUNT_INFO,
 );
 

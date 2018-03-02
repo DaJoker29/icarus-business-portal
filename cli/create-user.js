@@ -4,6 +4,7 @@ const program = require('commander');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+
 dotenv.config();
 
 const User = require('../app/models/user');
@@ -26,9 +27,9 @@ mongoose.connection.on('connected', () => {
       console.log(err);
       process.exit(1);
     }
-    bcrypt.hash(program.password, salt, (err, hash) => {
-      if (err) {
-        console.log(err);
+    bcrypt.hash(program.password, salt, (err2, hash) => {
+      if (err2) {
+        console.log(err2);
         process.exit(1);
       }
 
@@ -41,9 +42,9 @@ mongoose.connection.on('connected', () => {
       };
 
       // Submit new User object.
-      User.create(userData, (err, user) => {
-        if (err) {
-          console.log(err);
+      User.create(userData, (err3, user) => {
+        if (err3) {
+          console.log(err3);
           process.exit(1);
         }
         console.log(`New User Created: ${user.email}`);

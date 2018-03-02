@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+
 const result = dotenv.config();
 
 const express = require('express');
@@ -16,8 +17,10 @@ const phoneNumber = require('libphonenumber-js');
 const numeral = require('numeral');
 const VError = require('verror');
 const debug = require('debug')(
-  `icarus:${'development' === process.env.NODE_ENV ? 'test:init' : ':init'}`,
+  `icarus:${process.env.NODE_ENV === 'development' ? 'test:init' : ':init'}`,
 );
+
+const sep = '----------------------------------\n';
 
 const config = require('./config');
 const helpers = require('./helpers');
@@ -25,42 +28,34 @@ const routes = require('./app/routes');
 
 const app = express();
 
-/* Error/Shutdown Handling */
-process.on('SIGINT', gracefulExit);
-process.on('SIGTERM', gracefulExit);
-process.on('uncaughtException', err => {
-  console.error(err.stack);
-  debug('Icarus flew too high to the sun and CRASHED to the waves below...');
-  gracefulExit();
-});
-
-/* Check for ENV variables. */
+/* Check for environment variables. */
 if (result.error) {
   throw new VError(result.error, 'Problem loading environment variables...');
 } else {
-  for (const [key, value] of Object.entries(result.parsed)) {
-    debug(`${key} set to ${value}`);
-  }
+  debug(`${sep}Loading environment variables:`);
+  Object.entries(result.parsed).forEach(rule => {
+    debug(`${rule[0]} set to ${rule[1]}`);
+  });
 }
 
+// Database Connection Handlers
 mongoose.connection.on('error', err => {
-  if (err)
-    throw new VError(err, 'Problem connecting to database. Is Mongo active?');
+  if (err) throw new VError(err, 'Problem connecting to database.');
 });
 
 mongoose.connection.on('disconnected', () => {
-  debug('Database connection has closed.');
+  debug('Disconnected from database');
 });
 
 mongoose.connection.on('connected', () => {
-  debug(`Successfully connected to database...`);
+  debug('Successfully connected to database...');
 
   const sessionSettings = {
     resave: false,
     secret: process.env.SESSION_SECRET || 'superdupersekrit',
     saveUninitialized: false,
     store: new RedisStore({
-      host: 'localhost',
+      host: process.env.REDIS_HOST || 'localhost',
       port: process.env.REDIS_PORT || 6379,
     }),
   };
@@ -70,7 +65,7 @@ mongoose.connection.on('connected', () => {
 
   app.use('/assets', express.static('app/assets'));
   app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
-  app.use(morgan('development' === process.env.NODE_ENV ? 'dev' : 'combined'));
+  app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'combined'));
   app.use(bodyParser.urlencoded({ extended: 'true' }));
   app.use(bodyParser.json());
   app.use(methodOverride());
@@ -88,6 +83,7 @@ mongoose.connection.on('connected', () => {
   passport.deserializeUser(helpers.AUTH.DESERIALIZE_USER);
 
   // Load Routes dynamically
+  debug(`${sep}Loading in routes`);
   Object.entries(routes).forEach(route => {
     debug(`Loading ${route[0]} routes`);
     app.use(route[1]);
@@ -95,24 +91,24 @@ mongoose.connection.on('connected', () => {
 
   // Launch Server
   app.listen(
-    'production' === process.env.NODE_ENV
+    process.env.NODE_ENV === 'production'
       ? process.env.PORT
       : process.env.TEST_PORT,
     err => {
       if (err) throw err;
-      debug('Icarus is flying UP & UP...');
+      debug(`${sep}Icarus is flying UP & UP...`);
     },
   );
 });
 
-debug('Connecting to database...');
+debug(`${sep}Connecting to database...`);
 mongoose.connect(
-  'production' === process.env.NODE_ENV ? process.env.DB : process.env.TEST_DB,
+  process.env.NODE_ENV === 'production' ? process.env.DB : process.env.TEST_DB,
 );
 
 function gracefulExit() {
-  debug('Icarus is going DOWN...');
-  if (1 === mongoose.connection.readyState) {
+  debug(`${sep}Icarus is going DOWN...`);
+  if (mongoose.connection.readyState === 1) {
     mongoose.connection.close(() => {
       process.exit(0);
     });
@@ -120,3 +116,12 @@ function gracefulExit() {
     process.exit(0);
   }
 }
+
+/* Termination and Uncaught Exception Handlers */
+process.on('SIGINT', gracefulExit);
+process.on('SIGTERM', gracefulExit);
+process.on('uncaughtException', err => {
+  console.error(err.stack);
+  debug('Icarus flew too high to the sun and CRASHED to the waves below...');
+  gracefulExit();
+});

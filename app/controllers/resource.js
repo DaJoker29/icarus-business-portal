@@ -1,4 +1,5 @@
 const models = require('../models');
+const VError = require('verror');
 
 const Resource = models.RESOURCE;
 
@@ -23,9 +24,9 @@ function createResource(req, res, next) {
       totalDisk,
     };
 
-    Resource.create(params, err => {
+    return Resource.create(params, err => {
       if (err) {
-        next(err);
+        return next(new VError(err, 'Problem creating new resource'));
       }
       return res.sendStatus(200);
     });

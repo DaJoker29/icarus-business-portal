@@ -4,23 +4,23 @@ const helpers = require('../../helpers');
 
 router.get(
   '/admin',
-  helpers.AUTH.ENSURE_AUTH,
-  helpers.AUTH.ENSURE_ADMIN,
-  helpers.AUTH.UNCONFIRMED,
+  helpers.AUTH.AUTHENTICATED,
+  helpers.AUTH.ADMIN,
+  helpers.AUTH.UNVERIFIED,
   controllers.ADMIN.RENDER_ADMIN,
 );
 
 router.post(
   '/admin/link-server',
-  helpers.AUTH.ENSURE_AUTH,
-  helpers.AUTH.ENSURE_ADMIN,
+  helpers.AUTH.AUTHENTICATED,
+  helpers.AUTH.ADMIN,
   controllers.ADMIN.LINK_SERVER,
 );
 
 router.post(
   '/admin/server/:id',
-  helpers.AUTH.ENSURE_AUTH,
-  helpers.AUTH.ENSURE_ADMIN,
+  helpers.AUTH.AUTHENTICATED,
+  helpers.AUTH.ADMIN,
   controllers.ADMIN.CHANGE_SERVER_INFO,
 );
 

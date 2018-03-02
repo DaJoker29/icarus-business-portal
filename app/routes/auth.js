@@ -5,7 +5,7 @@ const passport = require('passport');
 
 router.get(
   '/signup',
-  helpers.AUTH.ONLY_UNAUTHENTICATED,
+  helpers.AUTH.UNAUTHENTICATED,
   controllers.AUTH.RENDER_SIGNUP,
 );
 
@@ -13,7 +13,7 @@ router.post('/signup', controllers.AUTH.CREATE_ACCOUNT);
 
 router.get(
   '/login',
-  helpers.AUTH.ONLY_UNAUTHENTICATED,
+  helpers.AUTH.UNAUTHENTICATED,
   controllers.AUTH.RENDER_LOGIN,
 );
 

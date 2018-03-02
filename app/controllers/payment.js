@@ -4,6 +4,7 @@ const stripe = require('stripe')(
     : process.env.TEST_STRIPE_SECRET_KEY,
 );
 const models = require('../models');
+const VError = require('verror');
 
 const User = models.USER;
 
@@ -20,7 +21,7 @@ function chargeCreditCard(id, amount, description) {
       customer: id,
     },
     (err, charge) => {
-      if (err) throw err;
+      if (err) throw new VError(err, `Problem charging Stripe user: ${id}`);
       console.log(`Successful Charge: ${charge.id}`);
     },
   );
@@ -38,14 +39,18 @@ function createStripeID(req, res, next) {
       source: stripeToken,
     },
     (err, customer) => {
-      if (err) next(err);
+      if (err)
+        next(new VError(err, `Problem creating Stripe ID: ${user.email}`));
       console.log(`Stripe Customer created: ${customer.id}`);
       User.findOneAndUpdate(
         { _id: user._id },
         { $set: { stripeID: customer.id } },
         { new: true },
         err => {
-          if (err) next(err);
+          if (err)
+            return next(
+              new VError(err, `Problem updating Stripe ID: ${user.id}`),
+            );
           if (serverID) {
             return res.redirect(`/renewal/${serverID}`);
           }

@@ -6,9 +6,12 @@ module.exports = {
     mongo: true,
     jquery: true,
   },
-  extends: ['last', 'prettier/react', 'plugin:react/recommended'],
+  extends: ['airbnb', 'prettier/react', 'last'],
   rules: {
     'no-console': 0,
+    'no-underscore-dangle': 0,
+    'consistent-return': 1,
+    'global-require': 0,
   },
-  plugins: ['json', 'import'],
+  plugins: ['json', 'import', 'prettier'],
 };

@@ -1,3 +1,4 @@
+const VError = require('verror');
 const models = require('../models');
 
 const User = models.USER;
@@ -8,48 +9,53 @@ function renderAdmin(req, res, next) {
   let userlist, serverlist;
 
   User.find({}, (err, users) => {
-    if (err) next(err);
-    Server.find({}, null, { sort: { expires: 1 } }, (err, servers) => {
-      if (err) next(err);
+    if (err) return next(new VError(err, 'Problem fetching users'));
+    return Server.find({}, null, { sort: { expires: 1 } }, (err, servers) => {
+      if (err) return next(new VError(err, 'Problem fetching servers'));
       serverlist = servers;
-      Resource.find({}, null, { sort: { createdAt: -1 } }, (err, resources) => {
-        if (err) next(err);
-        userlist = users ? users : [];
-        serverlist = servers ? servers : [];
-        if (servers) {
-          serverlist = servers.map(server => {
-            const resource = resources.find(
-              e => e.hostname.toLowerCase() === server.LABEL.toLowerCase(),
-            );
+      return Resource.find(
+        {},
+        null,
+        { sort: { createdAt: -1 } },
+        (err, resources) => {
+          if (err) next(new VError(err, 'Problem fetching server resources'));
+          userlist = users || [];
+          serverlist = servers || [];
+          if (servers) {
+            serverlist = servers.map(server => {
+              const resource = resources.find(
+                e => e.hostname.toLowerCase() === server.LABEL.toLowerCase(),
+              );
 
-            return Object.assign(
-              {},
-              JSON.parse(JSON.stringify(server)),
-              JSON.parse(JSON.stringify(resource ? resource : {})),
-            );
+              return Object.assign(
+                {},
+                JSON.parse(JSON.stringify(server)),
+                JSON.parse(JSON.stringify(resource || {})),
+              );
+            });
+          }
+          return res.render('admin', {
+            title: 'Admin Panel',
+            user: req.user,
+            users: userlist,
+            servers: serverlist,
           });
-        }
-        res.render('admin', {
-          title: 'Admin Panel',
-          user: req.user,
-          users: userlist,
-          servers: serverlist,
-        });
-      });
+        },
+      );
     });
   });
 }
 
-function linkServerToUser(req, res) {
+function linkServerToUser(req, res, next) {
   const { selectedUser, selectedServer } = req.body;
 
-  console.log('Searching for server: ' + selectedServer);
-  Server.update(
+  console.log(`Searching for server: ${selectedServer}`);
+  return Server.update(
     { LINODEID: selectedServer },
     { $set: { assignedTo: selectedUser } },
     { upsert: true },
     (err, server) => {
-      if (err) throw err;
+      if (err) next(new VError(err, 'Problem linking server'));
       if (server) {
         console.log('Server found and updated');
       } else {
@@ -63,17 +69,16 @@ function linkServerToUser(req, res) {
 function changeServerInfo(req, res, next) {
   // TODO: Route all server info changes through this function.
   if (req.body.expirationDate) {
-    Server.findOneAndUpdate(
+    return Server.findOneAndUpdate(
       { LINODEID: req.params.id },
       { $set: { expires: req.body.expirationDate } },
       err => {
-        if (err) next(err);
+        if (err) next(new VError(err, 'Problem changing expiration date'));
         return res.redirect('/admin');
       },
     );
-  } else {
-    return res.redirect('/admin');
   }
+  return res.redirect('/admin');
 }
 
 module.exports.RENDER_ADMIN = renderAdmin;

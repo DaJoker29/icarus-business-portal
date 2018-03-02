@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const models = require('../models');
+const VError = require('verror');
 
 const Confirm = models.CONFIRM;
 const User = models.USER;
@@ -15,14 +16,14 @@ const smtpCreds = {
   },
 };
 
-let transporter = nodemailer.createTransport(smtpCreds);
+const transporter = nodemailer.createTransport(smtpCreds);
 
 function renderResend(req, res) {
-  res.render('resend');
+  return res.render('resend');
 }
 
 function renderConfirmation(req, res) {
-  res.render('confirm');
+  return res.render('confirm');
 }
 
 function resendConfirmation(req, res) {
@@ -32,37 +33,40 @@ function resendConfirmation(req, res) {
   return res.redirect('/login');
 }
 
-function confirmToken(req, res) {
+function confirmToken(req, res, next) {
   if (req.params.token) {
-    Confirm.findOne({ token: req.params.token }, (err, confirm) => {
+    return Confirm.findOne({ token: req.params.token }, (err, confirm) => {
       const { email } = confirm;
-      if (err) throw err;
+      if (err) return next(new VError(err, 'Problem finding token'));
       if (confirm) {
-        User.findOneAndUpdate(
+        return User.findOneAndUpdate(
           { email },
           { isVerified: true },
           { upsert: true, new: true },
           (err, user) => {
-            if (err) throw err;
+            if (err)
+              return next(new VError(err, 'Problem verifiying user record'));
             return console.log(`New User Verified: ${user.email}`);
           },
         );
+      } else {
+        return next(new VError(err, 'No confirmation found'));
       }
     });
   }
-  res.redirect('/login');
+  return res.redirect('/login');
 }
 
 function confirmUser(email) {
   // Check if confirmation exists
-  Confirm.findOne({ email }, (err, confirm) => {
-    if (err) throw err;
+  return Confirm.findOne({ email }, (err, confirm) => {
+    if (err) throw new VError(err, 'Problem finding confirmation record');
     if (confirm) {
       // If confirmation already exists, resend current token
-      sendToken(confirm);
+      return sendToken(confirm);
     } else {
       // If no confirmation exists, create a new one and send it.
-      Confirm.create({ email }, (err, confirm) => {
+      return Confirm.create({ email }, (err, confirm) => {
         if (err) throw err;
         sendToken(confirm);
       });
@@ -76,7 +80,7 @@ function sendToken(object) {
     from: process.env.EMAIL_FROM,
     to: email,
     subject: 'Confirm you Email Address',
-    text: `Howdy!\n\nPlease confirm your address by clicking the following link: ${
+    text: `Howdy!\n\nPlease confirm your address by clicking this link: ${
       process.env.HOST
     }/confirm/token/${token}`,
   };
@@ -85,7 +89,7 @@ function sendToken(object) {
     if (err) {
       return console.log(err);
     }
-    console.log(`Message sent: ${info.messageId}`);
+    return console.log(`Message sent: ${info.messageId}`);
   });
 }
 

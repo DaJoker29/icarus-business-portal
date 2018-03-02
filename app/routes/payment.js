@@ -4,13 +4,13 @@ const controllers = require('../controllers');
 
 router.get(
   '/payment',
-  helpers.AUTH.ENSURE_AUTH,
+  helpers.AUTH.AUTHENTICATED,
   controllers.PAYMENT.RENDER_PAYMENT_FORM,
 );
 
 router.post(
   '/payment/customer',
-  helpers.AUTH.ENSURE_AUTH,
+  helpers.AUTH.AUTHENTICATED,
   controllers.PAYMENT.CREATE_STRIPE_ID,
 );
 

@@ -1,4 +1,4 @@
-$(function() {
+$(() => {
   setPlan();
   $('#hardware').change(setPlan);
   $('#support-plan').change(setPlan);

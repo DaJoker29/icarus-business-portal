@@ -1,5 +1,6 @@
 const models = require('../models');
 const paymentCtrl = require('./payment');
+const VError = require('verror');
 // TODO: Figure out why I can't call the controller module from here.
 
 const Server = models.SERVER;
@@ -16,8 +17,8 @@ function renewPlan(req, res) {
 
 function renderRenewal(req, res, next) {
   Server.findOne({ LINODEID: req.params.id }, (err, server) => {
-    if (err) next(err);
-    if (req.user._id == server.assignedTo) {
+    if (err) return next(new VError(err, 'Problem finding server'));
+    if (req.user.id === server.assignedTo) {
       if (req.user.stripeID) {
         return res.render('renewal', {
           title: 'Renew Server',
@@ -26,10 +27,10 @@ function renderRenewal(req, res, next) {
         });
       }
       return res.redirect(`/payment?server=${req.params.id}`);
-    } else {
-      console.log('Invalid credentials');
-      return res.redirect('/');
     }
+    return next(
+      new VError("User trying to renew server that isn't assigned to them."),
+    );
   });
 }
 
