@@ -1,59 +1,57 @@
-const User = require('../app/models/user');
+const VError = require('verror');
+const models = require('../app/models');
 
-// Redirect to Login Page if not authenticated
-function ensureAuth(req, res, next) {
+const User = models.USER;
+
+function authenticated(req, res, next) {
   if (
     req.isAuthenticated() ||
     req.path.includes('/assets') ||
     req.path.includes('/.well-known')
   ) {
-    next();
-  } else {
-    res.redirect('/login');
+    return next();
   }
+  return res.redirect('/login');
 }
 
-function onlyUnauthenticated(req, res, next) {
+function unauthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    res.redirect('/');
-  } else {
-    next();
+    return res.redirect('/');
   }
+  return next();
 }
 
-function ensureAdmin(req, res, next) {
-  User.findOne({ _id: req.user._id }, (err, doc) => {
-    if (err) return next(err);
-    if (doc.isAdmin) {
-      return next();
-    } else {
-      res.redirect('back');
-    }
-  });
-}
-
-function unconfirmed(req, res, next) {
-  if (req.user && false === req.user.isVerified) {
-    res.redirect('confirm');
-  } else {
-    next();
+function admin(req, res, next) {
+  if (req.user.isAdmin) {
+    return User.findOne({ _id: req.user._id }, (err, doc) => {
+      if (err) {
+        return next(new VError(err, 'Problem while checking Admin flag'));
+      }
+      if (doc.isAdmin) return next();
+      return res.redirect('/');
+    });
   }
+  return res.redirect('/');
 }
 
-// Passport Auth Helpers
+function unverified(req, res, next) {
+  if (req.user && req.user.isVerified === false) {
+    return res.redirect('confirm');
+  }
+  return next();
+}
+
 function serializeUser(user, done) {
-  done(null, user._id);
+  return done(null, user._id);
 }
 
 function deserializeUser(id, done) {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
+  User.findById(id, (err, user) => done(err, user));
 }
 
-module.exports.ENSURE_AUTH = ensureAuth;
+module.exports.AUTHENTICATED = authenticated;
 module.exports.SERIALIZE_USER = serializeUser;
 module.exports.DESERIALIZE_USER = deserializeUser;
-module.exports.ONLY_UNAUTHENTICATED = onlyUnauthenticated;
-module.exports.UNCONFIRMED = unconfirmed;
-module.exports.ENSURE_ADMIN = ensureAdmin;
+module.exports.UNAUTHENTICATED = unauthenticated;
+module.exports.UNVERIFIED = unverified;
+module.exports.ADMIN = admin;

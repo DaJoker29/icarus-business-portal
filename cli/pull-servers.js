@@ -3,9 +3,11 @@ const program = require('commander');
 const dotenv = require('dotenv');
 const request = require('request');
 const mongoose = require('mongoose');
+
 dotenv.config();
 
 const Server = require('../app/models/server');
+
 const linodeAPI = 'https://api.linode.com/';
 const requestParams = {
   api_key: process.env.LINODE_API_KEY,
@@ -64,9 +66,9 @@ function populateLinodes() {
           { LINODEID },
           { $set: update },
           { upsert: true, setDefaultsOnInsert: true },
-          (err, doc) => {
-            if (err) {
-              console.log(err);
+          error => {
+            if (error) {
+              console.log(error);
               process.exit(1);
             } else {
               console.log('No errors');

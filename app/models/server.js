@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 const serverSchema = new Schema({
   assignedTo: { type: String },
@@ -10,7 +10,12 @@ const serverSchema = new Schema({
     required: true,
   },
   createdOn: { type: Date, default: Date.now(), required: true },
-  LINODEID: { type: Number, unique: true, index: true, required: true },
+  LINODEID: {
+    type: Number,
+    unique: true,
+    index: true,
+    required: true,
+  },
   TOTALXFER: { type: Number, required: true },
   TOTALRAM: { type: Number, required: true },
   TOTALHD: { type: Number, required: true },

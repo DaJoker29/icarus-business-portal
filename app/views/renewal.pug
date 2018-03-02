@@ -17,4 +17,5 @@ block form-content
       - value = prices[hosting[server.PLANID - 1]];
       input(type="hidden" name="amount" value=value)
       input(type="hidden" name="description" value=`Renewing web server: ${server.LABEL}. ${hosting[server.PLANID - 1]} Plan.`)
+      input(type="hidden" name="server" value=server.LINODEID)
       button.flex-table-cell.flex-table-cell--black.flex-table-cell--full Pay Now

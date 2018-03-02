@@ -1,6 +1,9 @@
-const Resource = require('../models/resource');
+const VError = require('verror');
+const models = require('../models');
 
-function newResource(req, res, next) {
+const Resource = models.RESOURCE;
+
+function createResource(req, res, next) {
   if (req.body && req.body.hostname) {
     const {
       hostname,
@@ -21,9 +24,9 @@ function newResource(req, res, next) {
       totalDisk,
     };
 
-    Resource.create(params, err => {
+    return Resource.create(params, err => {
       if (err) {
-        next(err);
+        return next(new VError(err, 'Problem creating new resource'));
       }
       return res.sendStatus(200);
     });
@@ -32,4 +35,4 @@ function newResource(req, res, next) {
   }
 }
 
-module.exports.newResource = newResource;
+module.exports.CREATE_RESOURCE = createResource;

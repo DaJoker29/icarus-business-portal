@@ -5,9 +5,10 @@ block scripts
   script(src="/assets/stripe.js")
 
 block form-content
-  form#payment-form(method="POST")
+  form#payment-form(action="/payment/customer" method="POST")
     fieldset
-      legend Payment Information
+      legend Payment Method
+      p You'll only have to enter this information once. Future renewals will use the card on file.
 
       .flex-table
         .flex-table-cell.flex-table-cell--green
@@ -16,7 +17,10 @@ block form-content
           #stripe-container
 
       #card-errors(role="alert")
-      input(type="hidden" name="amount" value=amount)
-      input(type="hidden" name="description" value=description)
+      if (serverID)
+        input(type="hidden" name="serverID" value=serverID)
 
-      button Submit
+      p All transactions are processed via Stripe and no sensitive information is stored on Zero Daedalus servers.
+      button Add Payment Method
+
+  a(href="/") Not ready? Back to Dashboard.

@@ -1,10 +1,7 @@
-const express = require('express');
-const pageNotFound = require('../../helpers/error').PAGE_NOT_FOUND;
-const serverError = require('../../helpers/error').SERVER_ERROR;
+const router = require('express').Router();
+const helpers = require('../../helpers');
 
-const router = express.Router();
-
-router.use(serverError);
-router.use(pageNotFound);
+router.use(helpers.ERROR.PAGE_NOT_FOUND);
+router.use(helpers.ERROR.SERVER_ERROR);
 
 module.exports = router;

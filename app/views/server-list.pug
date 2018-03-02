@@ -18,7 +18,7 @@ if servers
           p.flex-table-cell.flex-table-cell--blue Last Updated: #{moment(server.createdAt).fromNow()}
           p.flex-table-cell.flex-table-cell--blue Expires: #{moment(server.expires).fromNow()}
           if current === 'dashboard'
-            a(href="/renew/" + server.LINODEID).flex-table-cell.flex-table-cell--gold.flex-table-cell--full  Renew Now
+            a(href="/renewal/" + server.LINODEID).flex-table-cell.flex-table-cell--gold.flex-table-cell--full  Renew Now
           if current === 'admin'
             p.flex-table-cell.flex-table-cell--red Age: #{moment(server.createdOn).fromNow(true)} old
             p.flex-table-cell.flex-table-cell--red Server ID:  #{server.LINODEID}

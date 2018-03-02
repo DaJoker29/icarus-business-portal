@@ -1,8 +1,6 @@
-const express = require('express');
-const resourceCtrl = require('../controllers/resource');
+const router = require('express').Router();
+const controllers = require('../controllers');
 
-const router = express.Router();
-
-router.post('/resource', resourceCtrl.newResource);
+router.post('/resource', controllers.RESOURCE.CREATE_RESOURCE);
 
 module.exports = router;
