@@ -4,7 +4,6 @@ const controllers = require('./index.js');
 
 const User = models.USER;
 
-/* TODO: Looks ugly. Refactor.*/
 function createAccount(req, res, next) {
   const { email, firstName, lastName, organization, phone } = req.body;
   const saltRounds = 10;

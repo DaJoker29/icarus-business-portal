@@ -19,14 +19,9 @@ const debug = require('debug')(
   `icarus:${'development' === process.env.NODE_ENV ? 'test:init' : ':init'}`,
 );
 
-const strategies = require('./config/strategies');
-const authHelpers = require('./helpers/auth');
+const config = require('./config');
+const helpers = require('./helpers');
 const routes = require('./app/routes');
-// const authRoutes = require('./app/routes/auth');
-// const errorRoutes = require('./app/routes/error');
-// const userRoutes = require('./app/routes/user');
-// const resourceRoutes = require('./app/routes/resource');
-// const confirmRoutes = require('./app/routes/confirm');
 
 const app = express();
 
@@ -88,9 +83,9 @@ mongoose.connection.on('connected', () => {
   app.locals.phoneNumber = phoneNumber;
   app.locals.numeral = numeral;
 
-  passport.use(strategies.LOCAL);
-  passport.serializeUser(authHelpers.SERIALIZE_USER);
-  passport.deserializeUser(authHelpers.DESERIALIZE_USER);
+  passport.use(config.STRATEGIES.LOCAL);
+  passport.serializeUser(helpers.AUTH.SERIALIZE_USER);
+  passport.deserializeUser(helpers.AUTH.DESERIALIZE_USER);
 
   // Load Routes dynamically
   Object.entries(routes).forEach(route => {

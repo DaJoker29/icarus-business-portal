@@ -1,4 +1,6 @@
-const Resource = require('../models/resource');
+const models = require('../models');
+
+const Resource = models.RESOURCE;
 
 function createResource(req, res, next) {
   if (req.body && req.body.hostname) {

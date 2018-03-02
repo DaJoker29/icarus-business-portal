@@ -1,4 +1,5 @@
-const User = require('../app/models/user');
+const models = require('../app/models');
+const User = models.USER;
 
 function ensureAuth(req, res, next) {
   if (
