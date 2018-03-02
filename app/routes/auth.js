@@ -1,30 +1,23 @@
-const express = require('express');
+const router = require('express').Router();
+const controllers = require('../controllers');
+const helpers = require('../../helpers');
 const passport = require('passport');
-const authCtrl = require('../controllers/auth');
-const onlyUnauth = require('../../helpers/auth').ONLY_UNAUTHENTICATED;
 
-const router = express.Router();
+router.get(
+  '/signup',
+  helpers.AUTH.ONLY_UNAUTHENTICATED,
+  controllers.AUTH.RENDER_SIGNUP,
+);
 
-// Sign Up/Create Account
-router.get('/signup', onlyUnauth, (req, res) => {
-  res.render('signup', {
-    title: 'Sign up below',
-  });
-});
+router.post('/signup', controllers.AUTH.CREATE_ACCOUNT);
 
-router.post('/signup', authCtrl.CREATE_ACCT);
+router.get(
+  '/login',
+  helpers.AUTH.ONLY_UNAUTHENTICATED,
+  controllers.AUTH.RENDER_LOGIN,
+);
 
-// Log In/Out
-router.get('/login', onlyUnauth, (req, res) => {
-  res.render('login', {
-    title: 'Welcome',
-  });
-});
-
-router.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/login');
-});
+router.get('/logout', controllers.AUTH.LOGOUT);
 
 router.post(
   '/login',

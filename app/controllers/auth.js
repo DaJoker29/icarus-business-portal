@@ -1,20 +1,8 @@
 const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
-const User = require('../models/user');
-const Confirm = require('../models/confirm');
+const models = require('../models');
+const controllers = require('./index.js');
 
-const smtpCreds = {
-  service: process.env.EMAIL_SERVICE,
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-};
-
-let transporter = nodemailer.createTransport(smtpCreds);
+const User = models.USER;
 
 /* TODO: Looks ugly. Refactor.*/
 function createAccount(req, res, next) {
@@ -47,77 +35,32 @@ function createAccount(req, res, next) {
           }
           return next(err);
         }
-        confirmUser(user.email);
+        controllers.CONFIRM.CONFIRM_USER(user.email);
         return res.redirect('/confirm', { email });
       });
     });
   });
 }
 
-function confirmUser(email) {
-  // Check if confirmation exists
-  Confirm.findOne({ email }, (err, confirm) => {
-    if (err) throw err;
-    if (confirm) {
-      // If confirmation already exists, resend current token
-      sendToken(confirm);
-    } else {
-      // If no confirmation exists, create a new one and send it.
-      Confirm.create({ email }, (err, confirm) => {
-        if (err) throw err;
-        sendToken(confirm);
-      });
-    }
+function renderSignUp(req, res) {
+  res.render('signup', {
+    title: 'Sign up below',
   });
 }
 
-function sendToken(object) {
-  const { email, token } = object;
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
-    to: email,
-    subject: 'Confirm you Email Address',
-    text: `Howdy!\n\nPlease confirm your address by clicking the following link: ${
-      process.env.HOST
-    }/confirm/token/${token}`,
-  };
-
-  transporter.sendMail(mailOptions, (err, info) => {
-    if (err) {
-      return console.log(err);
-    }
-    console.log(`Message sent: ${info.messageId}`);
+function renderLogin(req, res) {
+  res.render('login', {
+    title: 'Welcome',
   });
 }
 
-function resendConfirmation(req, res) {
-  if (req.body.email) {
-    confirmUser(req.body.email);
-  }
-  return res.redirect('/login');
-}
-
-function confirmToken(req, res) {
-  if (req.params.token) {
-    Confirm.findOne({ token: req.params.token }, (err, confirm) => {
-      const { email } = confirm;
-      if (err) throw err;
-      if (confirm) {
-        User.findOneAndUpdate(
-          { email },
-          { isVerified: true },
-          { upsert: true, new: true },
-          (err, user) => {
-            if (err) throw err;
-            return console.log(`New User Verified: ${user.email}`);
-          },
-        );
-      }
-    });
-  }
+// Log in handled by Passport.
+function logout(req, res) {
+  req.logout();
   res.redirect('/login');
 }
 
-module.exports.CREATE_ACCT = createAccount;
-module.exports.RESEND_CONFIRM = resendConfirmation;
-module.exports.CONFIRM_TOKEN = confirmToken;
+module.exports.CREATE_ACCOUNT = createAccount;
+module.exports.RENDER_SIGNUP = renderSignUp;
+module.exports.RENDER_LOGIN = renderLogin;
+module.exports.LOGOUT = logout;

@@ -1,6 +1,6 @@
 const Resource = require('../models/resource');
 
-function newResource(req, res, next) {
+function createResource(req, res, next) {
   if (req.body && req.body.hostname) {
     const {
       hostname,
@@ -32,4 +32,4 @@ function newResource(req, res, next) {
   }
 }
 
-module.exports.newResource = newResource;
+module.exports.CREATE_RESOURCE = createResource;

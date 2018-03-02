@@ -21,10 +21,12 @@ const debug = require('debug')(
 
 const strategies = require('./config/strategies');
 const authHelpers = require('./helpers/auth');
-const authRoutes = require('./app/routes/auth');
-const errorRoutes = require('./app/routes/error');
-const clientRoutes = require('./app/routes/client');
-const resourceRoutes = require('./app/routes/resource');
+const routes = require('./app/routes');
+// const authRoutes = require('./app/routes/auth');
+// const errorRoutes = require('./app/routes/error');
+// const userRoutes = require('./app/routes/user');
+// const resourceRoutes = require('./app/routes/resource');
+// const confirmRoutes = require('./app/routes/confirm');
 
 const app = express();
 
@@ -90,11 +92,11 @@ mongoose.connection.on('connected', () => {
   passport.serializeUser(authHelpers.SERIALIZE_USER);
   passport.deserializeUser(authHelpers.DESERIALIZE_USER);
 
-  // Routes
-  app.use(authRoutes);
-  app.use(clientRoutes);
-  app.use(resourceRoutes);
-  app.use(errorRoutes);
+  // Load Routes dynamically
+  Object.entries(routes).forEach(route => {
+    debug(`Loading ${route[0]} routes`);
+    app.use(route[1]);
+  });
 
   // Launch Server
   app.listen(
