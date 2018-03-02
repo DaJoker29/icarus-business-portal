@@ -3,8 +3,8 @@ const stripe = require('stripe')(
     ? process.env.LIVE_STRIPE_SECRET_KEY
     : process.env.TEST_STRIPE_SECRET_KEY,
 );
-const models = require('../models');
 const VError = require('verror');
+const models = require('../models');
 
 const User = models.USER;
 

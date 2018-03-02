@@ -1,6 +1,7 @@
+const VError = require('verror');
 const models = require('../models');
 const paymentCtrl = require('./payment');
-const VError = require('verror');
+
 // TODO: Figure out why I can't call the controller module from here.
 
 const Server = models.SERVER;

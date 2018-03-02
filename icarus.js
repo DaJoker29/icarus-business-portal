@@ -1,11 +1,12 @@
+const path = require('path');
 const dotenv = require('dotenv');
 
 const result = dotenv.config();
 
 const express = require('express');
 const mongoose = require('mongoose');
-const morgan = require('morgan');
-const path = require('path');
+const morganDebug = require('morgan-debug');
+
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const helmet = require('helmet');
@@ -17,7 +18,7 @@ const phoneNumber = require('libphonenumber-js');
 const numeral = require('numeral');
 const VError = require('verror');
 const debug = require('debug')(
-  `icarus:${process.env.NODE_ENV === 'development' ? 'test:init' : ':init'}`,
+  `icarus-${process.env.NODE_ENV === 'development' ? 'test-init' : 'init'}`,
 );
 
 const sep = '----------------------------------\n';
@@ -65,7 +66,12 @@ mongoose.connection.on('connected', () => {
 
   app.use('/assets', express.static('app/assets'));
   app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
-  app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'combined'));
+  app.use(
+    morganDebug(
+      'icarus-morgan',
+      process.env.NODE_ENV === 'development' ? 'dev' : 'combined',
+    ),
+  );
   app.use(bodyParser.urlencoded({ extended: 'true' }));
   app.use(bodyParser.json());
   app.use(methodOverride());

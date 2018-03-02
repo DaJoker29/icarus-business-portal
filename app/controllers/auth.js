@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
+const VError = require('verror');
 const models = require('../models');
 const controllers = require('./index.js');
-const VError = require('verror');
 
 const User = models.USER;
 

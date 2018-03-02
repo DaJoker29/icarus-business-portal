@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
-const models = require('../models');
 const VError = require('verror');
+const models = require('../models');
 
 const Confirm = models.CONFIRM;
 const User = models.USER;

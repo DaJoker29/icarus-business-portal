@@ -1,5 +1,5 @@
-const models = require('../models');
 const VError = require('verror');
+const models = require('../models');
 
 const Resource = models.RESOURCE;
 

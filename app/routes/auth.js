@@ -1,7 +1,7 @@
 const router = require('express').Router();
+const passport = require('passport');
 const controllers = require('../controllers');
 const helpers = require('../../helpers');
-const passport = require('passport');
 
 router.get(
   '/signup',
