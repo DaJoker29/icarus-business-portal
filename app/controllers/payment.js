@@ -4,15 +4,13 @@ const stripe = require('stripe')(
     : process.env.TEST_STRIPE_SECRET_KEY,
 );
 const VError = require('verror');
+const debug = require('debug')('icarus-payment');
 const models = require('../models');
 
 const User = models.USER;
 
 function chargeCreditCard(id, amount, description) {
-  console.log(id);
-  console.log(amount);
-  console.log(description);
-  console.log('Charging...');
+  debug(`Charging Customer: ${id} - ${amount} - ${description}`);
   stripe.charges.create(
     {
       amount,
@@ -22,7 +20,7 @@ function chargeCreditCard(id, amount, description) {
     },
     (err, charge) => {
       if (err) throw new VError(err, `Problem charging Stripe user: ${id}`);
-      console.log(`Successful Charge: ${charge.id}`);
+      debug(`Successful Charge: ${charge.id}`);
     },
   );
 }
@@ -30,8 +28,8 @@ function chargeCreditCard(id, amount, description) {
 function createStripeID(req, res, next) {
   const { user } = req;
   const { stripeToken, serverID } = req.body;
-  console.log(`Stripe Token: ${stripeToken}`);
-  console.log(`Generating Stripe Customer token for ${user.email}.`);
+  debug(`Stripe Token: ${stripeToken}`);
+  debug(`Generating Stripe Customer token for ${user.email}.`);
 
   stripe.customers.create(
     {
@@ -40,9 +38,11 @@ function createStripeID(req, res, next) {
     },
     (err, customer) => {
       if (err)
-        next(new VError(err, `Problem creating Stripe ID: ${user.email}`));
-      console.log(`Stripe Customer created: ${customer.id}`);
-      User.findOneAndUpdate(
+        return next(
+          new VError(err, `Problem creating Stripe ID: ${user.email}`),
+        );
+      debug(`Stripe Customer created: ${customer.id}`);
+      return User.findOneAndUpdate(
         { _id: user._id },
         { $set: { stripeID: customer.id } },
         { new: true },

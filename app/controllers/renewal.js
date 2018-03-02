@@ -1,4 +1,5 @@
 const VError = require('verror');
+const debug = require('debug')('icarus-renewal');
 const models = require('../models');
 const paymentCtrl = require('./payment');
 
@@ -13,6 +14,7 @@ function renewPlan(req, res) {
     req.body.amount,
     req.body.description,
   );
+  debug(`Renewing server ${req.body.server} for 1 year`);
   return res.redirect('/');
 }
 

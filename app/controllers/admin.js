@@ -1,4 +1,6 @@
 const VError = require('verror');
+const debug = require('debug')('icarus-admin');
+const moment = require('moment');
 const models = require('../models');
 
 const User = models.USER;
@@ -49,7 +51,6 @@ function renderAdmin(req, res, next) {
 function linkServerToUser(req, res, next) {
   const { selectedUser, selectedServer } = req.body;
 
-  console.log(`Searching for server: ${selectedServer}`);
   return Server.update(
     { LINODEID: selectedServer },
     { $set: { assignedTo: selectedUser } },
@@ -57,9 +58,9 @@ function linkServerToUser(req, res, next) {
     (err, server) => {
       if (err) next(new VError(err, 'Problem linking server'));
       if (server) {
-        console.log('Server found and updated');
+        debug(`Server ${selectedServer} linked to ${selectedUser}`);
       } else {
-        console.log('No server found');
+        debug('No server found');
       }
       return res.redirect('/admin');
     },
@@ -72,8 +73,14 @@ function changeServerInfo(req, res, next) {
     return Server.findOneAndUpdate(
       { LINODEID: req.params.id },
       { $set: { expires: req.body.expirationDate } },
-      err => {
-        if (err) next(new VError(err, 'Problem changing expiration date'));
+      (err, server) => {
+        if (err)
+          return next(new VError(err, 'Problem changing expiration date'));
+        debug(
+          `Server ${server.LINODEID} expiration date set to ${moment(
+            server.expires,
+          ).format('MMM d, YYYY')}`,
+        );
         return res.redirect('/admin');
       },
     );

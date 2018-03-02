@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const VError = require('verror');
+const debug = require('debug')('icarus-confirm');
 const models = require('../models');
 
 const Confirm = models.CONFIRM;
@@ -46,7 +47,8 @@ function confirmToken(req, res, next) {
           (err, user) => {
             if (err)
               return next(new VError(err, 'Problem verifiying user record'));
-            return console.log(`New User Verified: ${user.email}`);
+            debug(`New User Verified: ${user.email}`);
+            return res.redirect('/');
           },
         );
       } else {
@@ -58,14 +60,12 @@ function confirmToken(req, res, next) {
 }
 
 function confirmUser(email) {
-  // Check if confirmation exists
   return Confirm.findOne({ email }, (err, confirm) => {
     if (err) throw new VError(err, 'Problem finding confirmation record');
+    debug(`Confirmation token sent: ${email}`);
     if (confirm) {
-      // If confirmation already exists, resend current token
       return sendToken(confirm);
     } else {
-      // If no confirmation exists, create a new one and send it.
       return Confirm.create({ email }, (err, confirm) => {
         if (err) throw err;
         sendToken(confirm);
@@ -87,9 +87,9 @@ function sendToken(object) {
 
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
-      return console.log(err);
+      return debug(err);
     }
-    return console.log(`Message sent: ${info.messageId}`);
+    return debug(`Confirmation token sent: ${info.messageId}`);
   });
 }
 

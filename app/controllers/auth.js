@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const VError = require('verror');
+const debug = require('debug')('icarus-auth');
 const models = require('../models');
 const controllers = require('./index.js');
 
@@ -32,6 +33,7 @@ function createAccount(req, res, next) {
           }
           return next(new VError(err, 'Problem creating new User'));
         }
+        debug(`New user created: ${user.email}`);
         controllers.CONFIRM.CONFIRM_USER(user.email);
         return res.redirect('/confirm', { email });
       });
