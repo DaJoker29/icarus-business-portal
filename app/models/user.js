@@ -14,7 +14,11 @@ const userSchema = new Schema({
   firstName: { type: String },
   lastName: { type: String },
   organization: { type: String },
-  phone: { type: String },
+  phone: {
+    country: { type: String },
+    phone: { type: String },
+    ext: { type: String },
+  },
   createdOn: { type: Date, required: true, default: Date.now() },
   isVerified: { type: Boolean, required: true, default: false },
   isAdmin: { type: Boolean, required: true, default: false },

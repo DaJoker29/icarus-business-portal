@@ -101,6 +101,7 @@ input[type=text],
 input[type=email],
 input[type=password],
 input[type=date],
+input[type=tel],
 select,
 textarea {
   padding: .5rem;
@@ -329,6 +330,7 @@ nav li a {
   input[type=email],
   input[type=password],
   input[type=date],
+  input[type=tel],
   select,
   textarea {
     width: 60%;

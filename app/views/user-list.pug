@@ -9,7 +9,7 @@ if users
         .flex-table-cell.flex-table-cell--blue Stripe ID: #{user.stripeID}
       if user.organization
         .flex-table-cell.flex-table-cell--blue #{user.organization}
-      if user.phone
-        .flex-table-cell.flex-table-cell--blue Phone: #{phoneNumber.format(phoneNumber.parse(user.phone, 'US'), 'National')}
+      if user.phone.phone && user.phone.country
+        .flex-table-cell.flex-table-cell--blue Phone: #{phoneNumber.format(user.phone, 'National')}
       if user.createdOn
         .flex-table-cell.flex-table-cell--blue Member since #{moment(user.createdOn).fromNow()} (#{moment(user.createdOn).format('l')})

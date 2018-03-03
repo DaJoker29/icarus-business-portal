@@ -1,4 +1,6 @@
 const VError = require('verror');
+const debug = require('debug')('icarus-user');
+const phoneNumber = require('libphonenumber-js');
 const models = require('../models');
 
 const Server = models.SERVER;
@@ -50,11 +52,25 @@ function renderAccount(req, res) {
   return res.render('account', { title: 'My Account', user: req.user });
 }
 
-function changeAccountInfo(req, res, next) {
-  User.update({ _id: req.user._id }, { $set: req.body }, err => {
-    if (err) next(new VError(err, 'Problem updating account info'));
-    return res.redirect('back');
-  });
+async function changeAccountInfo(req, res, next) {
+  let update = req.body;
+  const { phone } = req.body;
+  const { id } = req.user;
+
+  if (phone) {
+    const parsed = phoneNumber.parse(phone, 'US');
+    update = Object.assign({}, req.body, { phone: parsed });
+  }
+
+  await User.findByIdAndUpdate(id, { $set: update }, { new: true })
+    .then(user => {
+      debug(`${user.email} account updated: ${JSON.stringify(update)}`);
+    })
+    .catch(e => {
+      return next(new VError(e, 'Problem updating account info'));
+    });
+
+  return res.redirect('/account');
 }
 
 module.exports.RENDER_DASH = renderDash;

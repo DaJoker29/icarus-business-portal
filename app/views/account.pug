@@ -14,6 +14,10 @@ block main-content
         label(for="lastName") Last Name
         input(type="text" name="lastName" placeholder="Last Name" value=user.lastName)
       div
+        - var value = user.phone.phone && user.phone.country ? phoneNumber.format(user.phone, 'National') : user.phone.phone
+        label(for="phone") Phone Number
+        input(type="tel" name="phone" placeholder="Phone Number" value=value)
+      div
         label(for="organization") Organization
         input(type="text" name="organization" placeholder="Organization" value=user.organization)
       button(type="submit") Change Info
