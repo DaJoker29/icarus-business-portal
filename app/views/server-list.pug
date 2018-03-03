@@ -22,7 +22,7 @@ if servers
           if current === 'dashboard'
             a(href="/renewal/" + server.LINODEID).flex-table-cell.flex-table-cell--gold.flex-table-cell--full  Renew Now
           if current === 'admin'
-            p.flex-table-cell.flex-table-cell--blue Age: #{moment(server.createdOn).fromNow(true)} old
+            p.flex-table-cell.flex-table-cell--blue Age: #{moment(server.CREATE_DT).fromNow(true)} old
             p.flex-table-cell.flex-table-cell--blue Server ID:  #{server.LINODEID}
             p.flex-table-cell.flex-table-cell--blue Load: #{numeral(server.load).format('0.0')}
             p.flex-table-cell.flex-table-cell--blue Uptime: #{moment(server.createdAt).subtract(server.uptime, 'seconds').fromNow(true)}
