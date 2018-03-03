@@ -1,51 +1,46 @@
 const VError = require('verror');
 const debug = require('debug')('icarus-admin');
 const moment = require('moment');
-const models = require('../models');
-
-const User = models.USER;
-const Server = models.SERVER;
-const Resource = models.RESOURCE;
+const {
+  USER: User,
+  SERVER: Server,
+  RESOURCE: Resource,
+  MESSAGE: Message,
+} = require('../models');
 
 function renderAdmin(req, res, next) {
-  let userlist, serverlist;
+  Promise.all([
+    User.find(),
+    Server.find({}, null, { sort: { expires: 1 } }),
+    Resource.find({}, null, { sort: { createdAt: -1 } }),
+    Message.find({}, null, { sort: { date: -1 } }),
+  ])
+    .then(([users, servers, resources, messages]) => {
+      let serverlist = servers || [];
+      if (servers && resources) {
+        serverlist = servers.map(server => {
+          const resource = resources.find(
+            e => e.hostname.toLowerCase() === server.LABEL.toLowerCase(),
+          );
 
-  User.find({}, (err, users) => {
-    if (err) return next(new VError(err, 'Problem fetching users'));
-    return Server.find({}, null, { sort: { expires: 1 } }, (err, servers) => {
-      if (err) return next(new VError(err, 'Problem fetching servers'));
-      serverlist = servers;
-      return Resource.find(
-        {},
-        null,
-        { sort: { createdAt: -1 } },
-        (err, resources) => {
-          if (err) next(new VError(err, 'Problem fetching server resources'));
-          userlist = users || [];
-          serverlist = servers || [];
-          if (servers) {
-            serverlist = servers.map(server => {
-              const resource = resources.find(
-                e => e.hostname.toLowerCase() === server.LABEL.toLowerCase(),
-              );
-
-              return Object.assign(
-                {},
-                JSON.parse(JSON.stringify(server)),
-                JSON.parse(JSON.stringify(resource || {})),
-              );
-            });
-          }
-          return res.render('admin', {
-            title: 'Admin Panel',
-            user: req.user,
-            users: userlist,
-            servers: serverlist,
-          });
-        },
-      );
+          return Object.assign(
+            {},
+            JSON.parse(JSON.stringify(server)),
+            JSON.parse(JSON.stringify(resource || {})),
+          );
+        });
+      }
+      return res.render('admin', {
+        title: 'Admin Panel',
+        user: req.user,
+        servers: serverlist,
+        users,
+        messages,
+      });
+    })
+    .catch(e => {
+      return next(new VError(e, 'Problem rendering admin page'));
     });
-  });
 }
 
 function linkServerToUser(req, res, next) {

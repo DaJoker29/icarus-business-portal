@@ -1,5 +1,5 @@
 if users
-  h3 Users
+  h3 Users (#{users.length})
   .flex-table.flex-table--2cols
     each user in users
       .flex-table-cell.flex-table-cell--black.flex-table-cell--full #{user.email} #{user.isVerified ? '' : '(Unverified)'}
