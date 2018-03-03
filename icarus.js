@@ -20,8 +20,9 @@ const VError = require('verror');
 const debug = require('debug')(
   `icarus-${process.env.NODE_ENV === 'development' ? 'test-init' : 'init'}`,
 );
-
-const sep = '----------------------------------\n';
+const envDebug = require('debug')('icarus-env');
+const routeDebug = require('debug')('icarus-routes');
+const dbDebug = require('debug')('icarus-database');
 
 const config = require('./config');
 const helpers = require('./helpers');
@@ -33,9 +34,8 @@ const app = express();
 if (result.error) {
   throw new VError(result.error, 'Problem loading environment variables...');
 } else {
-  debug(`${sep}Loading environment variables:`);
   Object.entries(result.parsed).forEach(rule => {
-    debug(`${rule[0]} set to ${rule[1]}`);
+    envDebug(`${rule[0]} = ${rule[1]}`);
   });
 }
 
@@ -45,11 +45,11 @@ mongoose.connection.on('error', err => {
 });
 
 mongoose.connection.on('disconnected', () => {
-  debug('Disconnected from database');
+  dbDebug('Disconnected from database.');
 });
 
 mongoose.connection.on('connected', () => {
-  debug('Successfully connected to database...');
+  dbDebug('Successfully connected to database.');
 
   const sessionSettings = {
     resave: false,
@@ -88,12 +88,18 @@ mongoose.connection.on('connected', () => {
   passport.serializeUser(helpers.AUTH.SERIALIZE_USER);
   passport.deserializeUser(helpers.AUTH.DESERIALIZE_USER);
 
-  // Load Routes dynamically
-  debug(`${sep}Loading in routes`);
-  Object.entries(routes).forEach(route => {
-    debug(`Loading ${route[0]} routes`);
-    app.use(route[1]);
-  });
+  Object.entries(routes)
+    .sort(a => {
+      // ERROR routes must be loaded last.
+      if (a[0] === 'ERROR') {
+        return 1;
+      }
+      return 0;
+    })
+    .forEach(route => {
+      routeDebug(`${route[0]} routes - Loaded`);
+      app.use(route[1]);
+    });
 
   // Launch Server
   app.listen(
@@ -101,19 +107,19 @@ mongoose.connection.on('connected', () => {
       ? process.env.PORT
       : process.env.TEST_PORT,
     err => {
-      if (err) throw err;
-      debug(`${sep}Icarus is flying UP & UP...`);
+      if (err) throw new VError(err, 'Problem launching express server');
+      debug(`Icarus is flying UP & UP...`);
     },
   );
 });
 
-debug(`${sep}Connecting to database...`);
+dbDebug(`Connecting to database...`);
 mongoose.connect(
   process.env.NODE_ENV === 'production' ? process.env.DB : process.env.TEST_DB,
 );
 
 function gracefulExit() {
-  debug(`${sep}Icarus is going DOWN...`);
+  debug(`Icarus is going DOWN...`);
   if (mongoose.connection.readyState === 1) {
     mongoose.connection.close(() => {
       process.exit(0);
