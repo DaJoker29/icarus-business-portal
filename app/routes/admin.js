@@ -11,13 +11,6 @@ router.get(
 );
 
 router.post(
-  '/admin/link-server',
-  helpers.AUTH.AUTHENTICATED,
-  helpers.AUTH.ADMIN,
-  controllers.ADMIN.LINK_SERVER,
-);
-
-router.post(
   '/admin/server/:id',
   helpers.AUTH.AUTHENTICATED,
   helpers.AUTH.ADMIN,

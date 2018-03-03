@@ -1,6 +1,5 @@
 const VError = require('verror');
 const debug = require('debug')('icarus-admin');
-const moment = require('moment');
 const {
   USER: User,
   SERVER: Server,
@@ -43,46 +42,21 @@ function renderAdmin(req, res, next) {
     });
 }
 
-function linkServerToUser(req, res, next) {
-  const { selectedUser, selectedServer } = req.body;
-
-  return Server.update(
-    { LINODEID: selectedServer },
-    { $set: { assignedTo: selectedUser } },
-    { upsert: true },
-    (err, server) => {
-      if (err) next(new VError(err, 'Problem linking server'));
-      if (server) {
-        debug(`Server ${selectedServer} linked to ${selectedUser}`);
-      } else {
-        debug('No server found');
-      }
-      return res.redirect('/admin');
-    },
-  );
-}
-
-function changeServerInfo(req, res, next) {
-  // TODO: Route all server info changes through this function.
-  if (req.body.expirationDate) {
-    return Server.findOneAndUpdate(
+async function changeServerInfo(req, res, next) {
+  if (req.body) {
+    await Server.findOneAndUpdate(
       { LINODEID: req.params.id },
-      { $set: { expires: req.body.expirationDate } },
-      (err, server) => {
-        if (err)
-          return next(new VError(err, 'Problem changing expiration date'));
-        debug(
-          `Server ${server.LINODEID} expiration date set to ${moment(
-            server.expires,
-          ).format('MMM d, YYYY')}`,
-        );
-        return res.redirect('/admin');
-      },
-    );
+      { $set: req.body },
+    )
+      .then(server => {
+        debug(`Server ${server.LINODEID} updated: ${JSON.stringify(req.body)}`);
+      })
+      .catch(e => {
+        return next(new VError(e, 'Problem changing server information'));
+      });
   }
   return res.redirect('/admin');
 }
 
 module.exports.RENDER_ADMIN = renderAdmin;
-module.exports.LINK_SERVER = linkServerToUser;
 module.exports.CHANGE_SERVER_INFO = changeServerInfo;

@@ -1,8 +1,8 @@
 const debug = require('debug')('icarus-support');
 const { MESSAGE: Message } = require('../models');
 
-async function renderSupport(req, res) {
-  await Message.find({ owner: req.user.email }, null, { sort: { date: -1 } })
+function renderSupport(req, res) {
+  return Message.find({ owner: req.user.email }, null, { sort: { date: -1 } })
     .then(messages => {
       res.render('support', {
         title: 'Contact Support',
@@ -26,10 +26,8 @@ async function submitMessage(req, res) {
     })
     .catch(e => {
       debug(`Error saving message: ${e}`);
-    })
-    .then(() => {
-      res.redirect('/support');
     });
+  res.redirect('/support');
 }
 
 module.exports.RENDER_SUPPORT = renderSupport;
