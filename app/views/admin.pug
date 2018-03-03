@@ -4,17 +4,5 @@ block active
   - var current = 'admin'
 
 block main-content
-  if users
-    h3 Users
-    ul.admin-list
-      each user in users
-        li.userItem(class={verified: user.isVerified, admin: user.isAdmin})
-          div
-            p #{user.firstName} #{user.lastName} #{!user.isAdmin ? '' : '(ADMIN)'}
-            p.bold #{user.email} #{user.isVerified ? '' : '(NOT VERIFIED)'}
-            p.small Stripe ID: #{user.stripeID}
-            p.small= user.organization
-            if user.phone
-              p.small Ph: #{phoneNumber.format(phoneNumber.parse(user.phone, 'US'), 'National')}
-            p.small Member since #{moment(user.createdOn).fromNow()} (#{moment(user.createdOn).format('l')})
+  include user-list
   include server-list
