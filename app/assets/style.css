@@ -101,7 +101,8 @@ input[type=text],
 input[type=email],
 input[type=password],
 input[type=date],
-select {
+select,
+textarea {
   padding: .5rem;
   width: 100%;
 }
@@ -328,7 +329,8 @@ nav li a {
   input[type=email],
   input[type=password],
   input[type=date],
-  select {
+  select,
+  textarea {
     width: 60%;
   }
 }

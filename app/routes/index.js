@@ -6,5 +6,6 @@ module.exports = {
   ADMIN: require('./admin'),
   PAYMENT: require('./payment'),
   RENEWAL: require('./renewal'),
+  SUPPORT: require('./support'),
   ERROR: require('./error'),
 };

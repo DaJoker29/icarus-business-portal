@@ -3,4 +3,5 @@ module.exports = {
   SERVER: require('./server'),
   CONFIRM: require('./confirm'),
   RESOURCE: require('./resource'),
+  MESSAGE: require('./message'),
 };

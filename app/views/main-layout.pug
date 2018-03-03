@@ -8,6 +8,8 @@ block navigation
         a(href="/") Home
       li(class={active: current === 'account'})
         a(href="/account") Account
+      li(class={active: current === 'support'})
+        a(href="/support") Support
       if user.isAdmin
         li(class={active: current === 'admin'})
           a(href="/admin") Admin
