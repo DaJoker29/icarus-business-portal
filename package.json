@@ -1,6 +1,6 @@
 {
   "name": "icarus-business-portal",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Zero Daedalus Client Portal",
   "main": "icarus.js",
   "repository": "git@github.com:DaJoker29/icarus-business-portal.git",
