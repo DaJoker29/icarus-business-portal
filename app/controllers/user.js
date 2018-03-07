@@ -1,51 +1,45 @@
 const VError = require('verror');
 const debug = require('debug')('icarus-user');
 const phoneNumber = require('libphonenumber-js');
-const models = require('../models');
-
-const Server = models.SERVER;
-const Resource = models.RESOURCE;
-const User = models.USER;
+const { Server, Resource, Payment, User } = require('../models');
 
 function renderDash(req, res, next) {
   let serverlist;
+  const { email, stripeID } = req.user;
 
-  Server.find(
-    { assignedTo: req.user._id },
-    null,
-    { sort: { expires: 1 } },
-    (err, servers) => {
-      if (err) return next(new VError(err, 'Problem fetching servers'));
-      return Resource.find(
-        {},
-        null,
-        { sort: { createdAt: -1 } },
-        (err2, resources) => {
-          if (err2) next(new VError(err2, 'Problem fetching resource data'));
-          serverlist = servers || [];
-          if (servers) {
-            serverlist = servers.map(server => {
-              const { LABEL } = server;
-              const resource = resources.find(
-                e => e.hostname.toLowerCase() === LABEL.toLowerCase(),
-              );
+  Promise.all([
+    Server.find({ assignedTo: email }, null, { sort: { expires: 1 } }),
+    Resource.find({}, null, { sort: { createdAt: -1 } }),
+    Payment.find({ customer: stripeID }, null, {
+      sort: { created: -1 },
+    }),
+  ])
+    .then(([servers, resources, payments]) => {
+      serverlist = servers || [];
+      if (servers) {
+        serverlist = servers.map(server => {
+          const { LABEL } = server;
+          const resource = resources.find(
+            e => e.hostname.toLowerCase() === LABEL.toLowerCase(),
+          );
 
-              return Object.assign(
-                {},
-                JSON.parse(JSON.stringify(server)),
-                JSON.parse(JSON.stringify(resource || {})),
-              );
-            });
-          }
-          return res.render('dashboard', {
-            title: 'Dashboard',
-            user: req.user,
-            servers: serverlist,
-          });
-        },
-      );
-    },
-  );
+          return Object.assign(
+            {},
+            JSON.parse(JSON.stringify(server)),
+            JSON.parse(JSON.stringify(resource || {})),
+          );
+        });
+      }
+      return res.render('dashboard', {
+        title: 'Dashboard',
+        user: req.user,
+        servers: serverlist,
+        payments,
+      });
+    })
+    .catch(e => {
+      next(new VError(e, 'Problem fetching data'));
+    });
 }
 
 function renderAccount(req, res) {

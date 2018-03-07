@@ -1,11 +1,6 @@
 const VError = require('verror');
 const debug = require('debug')('icarus-admin');
-const {
-  USER: User,
-  SERVER: Server,
-  RESOURCE: Resource,
-  MESSAGE: Message,
-} = require('../models');
+const { User, Server, Resource, Message, Payment } = require('../models');
 
 function renderAdmin(req, res, next) {
   Promise.all([
@@ -13,8 +8,9 @@ function renderAdmin(req, res, next) {
     Server.find({}, null, { sort: { expires: 1 } }),
     Resource.find({}, null, { sort: { createdAt: -1 } }),
     Message.find({}, null, { sort: { date: -1 } }),
+    Payment.find({}, null, { sort: { created: -1 } }),
   ])
-    .then(([users, servers, resources, messages]) => {
+    .then(([users, servers, resources, messages, payments]) => {
       let serverlist = servers || [];
       if (servers && resources) {
         serverlist = servers.map(server => {
@@ -35,6 +31,7 @@ function renderAdmin(req, res, next) {
         servers: serverlist,
         users,
         messages,
+        payments,
       });
     })
     .catch(e => {

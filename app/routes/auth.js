@@ -1,23 +1,15 @@
 const router = require('express').Router();
 const passport = require('passport');
-const controllers = require('../controllers');
-const helpers = require('../../helpers');
+const { Auth: AuthCtrl } = require('../controllers');
+const { Auth: AuthHelper } = require('../../helpers');
 
-router.get(
-  '/signup',
-  helpers.AUTH.UNAUTHENTICATED,
-  controllers.AUTH.RENDER_SIGNUP,
-);
+router.get('/signup', AuthHelper.UNAUTHENTICATED, AuthCtrl.RENDER_SIGNUP);
 
-router.post('/signup', controllers.AUTH.CREATE_ACCOUNT);
+router.post('/signup', AuthCtrl.CREATE_ACCOUNT);
 
-router.get(
-  '/login',
-  helpers.AUTH.UNAUTHENTICATED,
-  controllers.AUTH.RENDER_LOGIN,
-);
+router.get('/login', AuthHelper.UNAUTHENTICATED, AuthCtrl.RENDER_LOGIN);
 
-router.get('/logout', controllers.AUTH.LOGOUT);
+router.get('/logout', AuthCtrl.LOGOUT);
 
 router.post(
   '/login',

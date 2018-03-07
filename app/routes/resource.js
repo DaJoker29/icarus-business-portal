@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const controllers = require('../controllers');
+const { Resource } = require('../controllers');
 
-router.post('/resource', controllers.RESOURCE.CREATE_RESOURCE);
+router.post('/resource', Resource.CREATE_RESOURCE);
 
 module.exports = router;

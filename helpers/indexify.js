@@ -13,7 +13,7 @@ function indexify(namespace) {
   files.forEach(file => {
     if (file === 'index.js') return;
     const value = file.slice(0, -3);
-    const key = value.toUpperCase();
+    const key = value.charAt(0).toUpperCase() + value.slice(1);
 
     index[key] = require(`${dir}/${value}`);
   });

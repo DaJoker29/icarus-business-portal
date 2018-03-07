@@ -24,13 +24,15 @@ const envDebug = require('debug')('icarus-env');
 const routeDebug = require('debug')('icarus-routes');
 const dbDebug = require('debug')('icarus-database');
 
-const config = require('./config');
-const helpers = require('./helpers');
+const { Strategies } = require('./config');
+const { Auth } = require('./helpers');
 const routes = require('./app/routes');
 
 const app = express();
 
-/* Check for environment variables. */
+/**
+ * Check for envirnment variables
+ */
 if (result.error) {
   throw new VError(result.error, 'Problem loading environment variables...');
 } else {
@@ -84,14 +86,14 @@ mongoose.connection.on('connected', () => {
   app.locals.phoneNumber = phoneNumber;
   app.locals.numeral = numeral;
 
-  passport.use(config.STRATEGIES.LOCAL);
-  passport.serializeUser(helpers.AUTH.SERIALIZE_USER);
-  passport.deserializeUser(helpers.AUTH.DESERIALIZE_USER);
+  passport.use(Strategies.LOCAL);
+  passport.serializeUser(Auth.SERIALIZE_USER);
+  passport.deserializeUser(Auth.DESERIALIZE_USER);
 
   Object.entries(routes)
     .sort(a => {
       // ERROR routes must be loaded last.
-      if (a[0] === 'ERROR') {
+      if (a[0] === 'Error') {
         return 1;
       }
       return 0;

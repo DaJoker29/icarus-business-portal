@@ -1,7 +1,5 @@
 const VError = require('verror');
-const models = require('../app/models');
-
-const User = models.USER;
+const { User } = require('../app/models');
 
 function authenticated(req, res, next) {
   if (

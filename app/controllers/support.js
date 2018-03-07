@@ -1,5 +1,5 @@
 const debug = require('debug')('icarus-support');
-const { MESSAGE: Message } = require('../models');
+const { Message } = require('../models');
 
 function renderSupport(req, res) {
   return Message.find({ owner: req.user.email }, null, { sort: { date: -1 } })

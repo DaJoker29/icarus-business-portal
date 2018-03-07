@@ -1,17 +1,9 @@
 const router = require('express').Router();
-const helpers = require('../../helpers');
-const controllers = require('../controllers');
+const { Auth } = require('../../helpers');
+const { Support } = require('../controllers');
 
-router.get(
-  '/support',
-  helpers.AUTH.AUTHENTICATED,
-  controllers.SUPPORT.RENDER_SUPPORT,
-);
+router.get('/support', Auth.AUTHENTICATED, Support.RENDER_SUPPORT);
 
-router.post(
-  '/support',
-  helpers.AUTH.AUTHENTICATED,
-  controllers.SUPPORT.SUBMIT_MESSAGE,
-);
+router.post('/support', Auth.AUTHENTICATED, Support.SUBMIT_MESSAGE);
 
 module.exports = router;

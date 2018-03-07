@@ -5,24 +5,48 @@ const stripe = require('stripe')(
 );
 const VError = require('verror');
 const debug = require('debug')('icarus-payment');
-const models = require('../models');
+const { User, Payment } = require('../models');
 
-const User = models.USER;
-
-function chargeCreditCard(id, amount, description) {
-  debug(`Charging Customer: ${id} - ${amount} - ${description}`);
-  stripe.charges.create(
-    {
+async function chargeCreditCard(req, res, next) {
+  const { amount, description } = req.body;
+  const { stripeID } = req.user;
+  debug(`Charging Customer: ${stripeID} - ${amount} - ${description}`);
+  await stripe.charges
+    .create({
       amount,
       description,
       currency: 'usd',
-      customer: id,
-    },
-    (err, charge) => {
-      if (err) throw new VError(err, `Problem charging Stripe user: ${id}`);
-      debug(`Successful Charge: ${charge.id}`);
-    },
-  );
+      customer: stripeID,
+    })
+    .then(({ id, created, amount, description, currency, customer }) => {
+      debug(`Charge successful: ${id}`);
+      const payment = new Payment({
+        id,
+        created,
+        amount,
+        description,
+        currency,
+        customer,
+      });
+
+      payment
+        .save()
+        .then(doc => {
+          debug(`Payment saved: ${doc.customer}`);
+        })
+        .catch(e => {
+          throw new VError(e, 'Error saving payment information');
+        });
+      return next();
+    })
+    .catch(e => {
+      debug(`Charge failed: ${stripeID} - ${e.type}`);
+      return res.render('message', {
+        title: 'Transaction Failed',
+        message:
+          'There was a problem processing your transaction. Please contact support for more information.',
+      });
+    });
 }
 
 function createStripeID(req, res, next) {
