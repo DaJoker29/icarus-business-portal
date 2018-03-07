@@ -24,7 +24,7 @@ const envDebug = require('debug')('icarus-env');
 const routeDebug = require('debug')('icarus-routes');
 const dbDebug = require('debug')('icarus-database');
 
-const { Strategies } = require('./config');
+const { Strategies, Plans } = require('./config');
 const { Auth } = require('./helpers');
 const routes = require('./app/routes');
 
@@ -85,6 +85,7 @@ mongoose.connection.on('connected', () => {
   app.locals.moment = moment;
   app.locals.phoneNumber = phoneNumber;
   app.locals.numeral = numeral;
+  app.locals.plans = Plans;
 
   passport.use(Strategies.LOCAL);
   passport.serializeUser(Auth.SERIALIZE_USER);

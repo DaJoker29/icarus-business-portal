@@ -2,21 +2,19 @@ extends form-layout
 
 
 block form-content
-  - const hosting = ['Starter', 'Business', 'Developer'];
-  - const prices = {'Starter': 19500,'Business': 29500,'Developer': 49500};
-
+  - total = plans.hosting[server.hostingPlan].price + plans.support[server.supportPlan].price;
   form(method="POST")
     a(href="/") Not ready to renew? Return to Dashboard.
 
-    .flex-table.flex-table--2cols
+    .flex-table.flex-table--3cols
       .flex-table-cell.flex-table-cell--green.flex-table-cell--full
         h3 Renewing Server: #{server.LABEL} (#{server.LINODEID})
-      .flex-table-cell.flex-table-cell--green Plan: #{hosting[server.PLANID - 1]}
-      .flex-table-cell.flex-table-cell--green Expires: #{moment(server.expires).format('MMM Do, YYYY')}
-      .flex-table-cell.flex-table-cell--white.flex-table-cell--full Total: #{numeral(prices[hosting[server.PLANID - 1]]).divide(100).format('$0,0')}
-      - value = prices[hosting[server.PLANID - 1]];
-      input(type="hidden" name="amount" value=value)
-      input(type="hidden" name="description" value=`Renewing web server: ${server.LABEL}. ${hosting[server.PLANID - 1]} Plan.`)
+      .flex-table-cell.flex-table-cell--green Expiration Date: #{moment(server.expires).format('MMM Do, YYYY')}
+      .flex-table-cell.flex-table-cell--white.flex-table-cell--full #{plans.hosting[server.hostingPlan].name} Hosting - #{numeral(plans.hosting[server.hostingPlan].price).format('$0,0')}
+      .flex-table-cell.flex-table-cell--white.flex-table-cell--full #{plans.support[server.supportPlan].name} Support - #{numeral(plans.support[server.supportPlan].price).format('$0,0')}
+      .flex-table-cell.flex-table-cell--white.flex-table-cell--full Total: #{numeral(total).format('$0,0')}
+      input(type="hidden" name="amount" value=total * 100)
+      input(type="hidden" name="description" value=`Web server: ${server.LABEL} - ${plans.hosting[server.hostingPlan].name}/${plans.support[server.supportPlan].name}`)
       input(type="hidden" name="server" value=server.LINODEID)
       input(type="hidden" name="expires" value=server.expires)
       button.flex-table-cell.flex-table-cell--black.flex-table-cell--full Pay Now
