@@ -1,0 +1,18 @@
+extends main-layout
+
+
+block active
+  - var current = 'dashboard'
+
+block main-content
+  div
+    h3 #{user.firstName} #{user.lastName}
+    p #{user.organization}
+    p #{user.email}
+    p.small Member since #{moment(user.createdOn).fromNow()}
+    a.small(href="logout") (logout)
+
+    if servers
+      include server-list
+    if payments
+      include payment-list

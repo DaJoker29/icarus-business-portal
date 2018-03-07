@@ -1,0 +1,191 @@
+extends form-layout
+
+block scripts
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js')
+  script(src='/assets/signup.js')
+
+block form-content
+  form(method='POST')
+    a(href="/login") Already a member? Log in.
+
+    fieldset
+      legend 1. Account Info
+        
+      div
+        label(for="email") Email Address*
+        input(type='email' name='email' required placeholder="Email Address")
+
+      div
+        label(for="firstName") First Name
+        input(type="text" name="firstName" placeholder="First Name")
+
+      div
+        label(for="lastName") Last Name
+        input(type="text" name="lastName" placeholder="Last Name")
+
+      div
+        label(for="organization") Organization
+        input(type="text" name="organization" placeholder="Organization (optional)")
+
+    fieldset
+      legend 2. Build Host Package
+
+      .flex-table.flex-table--3cols
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--green(style={order:0})
+          h3 Select Hardware
+
+        .flex-table-cell.flex-table-cell--gold(style={order:1})
+          h3 STARTER
+          h3 $195/yr
+          p.italic Hobbyists and Small Blogs
+        .flex-table-cell.flex-table-cell--gold(style={order:2}) 20GB SSD
+        .flex-table-cell.flex-table-cell--gold(style={order:3}) 1GB Memory
+        .flex-table-cell.flex-table-cell--gold(style={order:4}) 1TB Transfer/Mo
+        .flex-table-cell.flex-table-cell--gold(style={order:5}) 1 Xeon Core
+
+        .flex-table-cell.flex-table-cell--gold(style={order:1})
+          h3 BUSINESS
+          h3 $295/yr
+          p.italic Freelancers/Small Business
+        .flex-table-cell.flex-table-cell--gold(style={order:2}) 30GB SSD
+        .flex-table-cell.flex-table-cell--gold(style={order:3}) 2GB Memory
+        .flex-table-cell.flex-table-cell--gold(style={order:4}) 2TB Transfer/Mo
+        .flex-table-cell.flex-table-cell--gold(style={order:5}) 1 Xeon Core
+
+        .flex-table-cell.flex-table-cell--gold(style={order:1})
+          h3 DEVELOPER
+          h3 $495/yr
+          p.italic For agencies and developers
+        .flex-table-cell.flex-table-cell--gold(style={order:2}) 48GB SSD
+        .flex-table-cell.flex-table-cell--gold(style={order:3}) 4GB Memory
+        .flex-table-cell.flex-table-cell--gold(style={order:4}) 3TB Transfer/Mo
+        .flex-table-cell.flex-table-cell--gold(style={order:5}) 2 Xeon Cores
+
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--green(style={order: 6})
+          span.italic Higher capacity servers available upon request.
+
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--green(style={order: 7})
+          div
+            label(for="hardware") Select Hardware
+            select#hardware(name="hardware")
+              option(value="starter") STARTER - $195 (billed annually)
+              option(value="business" selected) BUSINESS - $295 a year (billed annually)
+              option(value="developer") DEVELOPER - $495 a year (billed annually)
+
+      .flex-table.flex-table--3cols
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--green(style={order: 0}) 
+          h3 Select Support Plan
+        .flex-table-cell.flex-table-cell--red(style={order: 1})
+          h3  Hands-Off 
+          h3 $0
+          p.italic Generic WordPress Installation
+        .flex-table-cell.flex-table-cell--red.bold(style={order: 2}) Free WordPress Install
+        .flex-table-cell.flex-table-cell--red.bold(style={order: 3}) Free Domain Name
+        .flex-table-cell.flex-table-cell--red.bold(style={order: 4}) Free SSL Certificates
+        .flex-table-cell.flex-table-cell--red.bold(style={order: 5}) 24/7 Email and Chat Support
+        .flex-table-cell.flex-table-cell--green(style={order: 6})
+        .flex-table-cell.flex-table-cell--green(style={order: 7})
+        .flex-table-cell.flex-table-cell--green(style={order: 8})
+        .flex-table-cell.flex-table-cell--green(style={order: 9})
+        .flex-table-cell.flex-table-cell--green(style={order: 10})
+        .flex-table-cell.flex-table-cell--green(style={order: 11})
+        .flex-table-cell.flex-table-cell--green(style={order: 12})
+
+        .flex-table-cell.flex-table-cell--blue(style={order: 1})
+          h3  Maintain
+          h3 $125/yr
+          p.italic Regular maintainance and optimizations
+        .flex-table-cell.flex-table-cell--blue(style={order: 2}) Free WordPress Install
+        .flex-table-cell.flex-table-cell--blue(style={order: 3}) Free Domain Name
+        .flex-table-cell.flex-table-cell--blue(style={order: 4}) Free SSL Certificates
+        .flex-table-cell.flex-table-cell--blue(style={order: 5}) 24/7 Email and Chat Support
+        .flex-table-cell.flex-table-cell--blue.bold(style={order: 6}) Automatic WordPress Updates
+        .flex-table-cell.flex-table-cell--blue.bold(style={order: 7}) Performance and Security Optimization
+        .flex-table-cell.flex-table-cell--blue.bold(style={order: 8}) Daily Backups
+        .flex-table-cell.flex-table-cell--green(style={order: 9})
+        .flex-table-cell.flex-table-cell--green(style={order: 10})
+        .flex-table-cell.flex-table-cell--green(style={order: 11})
+        .flex-table-cell.flex-table-cell--green(style={order: 12})
+
+        .flex-table-cell.flex-table-cell--black(style={order: 1})
+          h3  Hands-On 
+          h3 $375/yr
+          p.italic Professional Web Concierge Service
+        .flex-table-cell.flex-table-cell--black(style={order: 2}) Free WordPress Install
+        .flex-table-cell.flex-table-cell--black(style={order: 3}) Free Domain Name
+        .flex-table-cell.flex-table-cell--black(style={order: 4}) Free SSL Certificates
+        .flex-table-cell.flex-table-cell--black(style={order: 5}) 24/7 Email and Chat Support
+        .flex-table-cell.flex-table-cell--black(style={order: 6}) Automatic WordPress Updates
+        .flex-table-cell.flex-table-cell--black(style={order: 7}) Performance and Security Optimization
+        .flex-table-cell.flex-table-cell--black(style={order: 8}) Daily Backups
+        .flex-table-cell.flex-table-cell--black.bold(style={order: 9}) Staging Server
+        .flex-table-cell.flex-table-cell--black.bold(style={order: 10}) SEO and Lead Generation
+        .flex-table-cell.flex-table-cell--black.bold(style={order: 11}) Analytics and Customer Insights
+        .flex-table-cell.flex-table-cell--black.bold(style={order: 12}) Phone Support
+
+        .flex-table-cell.flex-table-cell--full.flex-table-cell--green(style={order: 13})
+          div
+            label(for="supportPlan") Support Plan
+            select#support-plan(name="supportPlan")
+              option(value="hands-off") HANDS-OFF - $0 (billed annually)
+              option(value="maintain" selected) MAINTAIN - $125 a year (billed annually)
+              option(value="hands-on") HANDS-ON - $375 a year (billed annually)
+
+    fieldset
+      legend 3. Choose Domain Name
+
+      div
+        label(for="domainName") Domain Name
+        input(type="text" name="domainName" placheolder="Domain Name")
+
+    fieldset
+      legend 4. Subtotal
+
+      .flex-table.flex-table--2cols
+        #hardware_title.flex-table-cell
+        #hardware_price.flex-table-cell
+
+        #support_title.flex-table-cell
+        #support_price.flex-table-cell
+
+        .flex-table-cell 1x Domain Name
+        .flex-table-cell Free
+
+        .flex-table-cell SSL Certificates
+        .flex-table-cell Free
+
+        .flex-table-cell WordPress Install
+        .flex-table-cell Free
+
+        .flex-table-cell.flex-table-cell--bold Subtotal
+        .flex-table-cell.flex-table-cell--bold $420
+
+        .flex-table-cell
+          h3 Total
+        .flex-table-cell
+          h3 $420
+
+    fieldset
+      legend 5. Billing Info
+
+      div
+        label(for="billingEmail") Email Address
+        input(type="email" name="billingEmail" placeholder="Payment receipts will be sent here.")
+
+      div
+        label(for="cardNumber") Name on Card
+        input(type="text" name="cardNumber" placeholder="Card number")
+
+      div
+        label(for="expirationDate") Expiration Date
+        input(type="date" name="expirationDate" placeholder="Name on Card")
+
+      div
+        label(for="cvc") CVC
+        input(type="text" name="cvc" placeholder="CVC")
+
+
+    fieldset
+      p After submitting your purchase, you will need to confirm your email address by clicking a link sent to the email above and asked to create an account password. You will then be notified when your hosting plan is ready.
+
+    button(type='submit') Submit

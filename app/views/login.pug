@@ -1,0 +1,15 @@
+extends form-layout
+
+block form-content
+  form(method='POST')
+    fieldset
+      legend Welcome! Sign in below to access your dashboard.
+
+      div
+        label(for="email") Email Address
+        input(type='email' name='email' required placeholder="Email Address")
+      div
+        label(for="password") Password
+        input(type='password' name='password' required placeholder="Password")
+      button(type='submit') Sign In
+    a(href="/signup") Don't have an account? Sign up here.

@@ -1,0 +1,20 @@
+{
+  "verbose": true,
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js json",
+  "ignore": [
+    "test",
+    "tools",
+    "coverage"
+  ],
+  "watch": [
+    "app/controllers",
+    "app/models",
+    "app/routes",
+    "helpers",
+    "config",
+    "icarus.js"
+  ]
+}

@@ -1,0 +1,10 @@
+extends main-layout
+
+block active
+  - var current = 'admin'
+
+block main-content
+  include user-list
+  include server-list
+  include message-list
+  include payment-list

@@ -1,0 +1,26 @@
+extends form-layout
+
+block scripts
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js')
+  script(src="/assets/stripe.js")
+
+block form-content
+  form#payment-form(action="/payment/customer" method="POST")
+    fieldset
+      legend Payment Method
+      p You'll only have to enter this information once. Future renewals will use the card on file.
+
+      .flex-table
+        .flex-table-cell.flex-table-cell--green
+          label(for="stripe-container") Credit or Debit Accepted
+        .flex-table-cell.flex-table-cell--green
+          #stripe-container
+
+      #card-errors(role="alert")
+      if (serverID)
+        input(type="hidden" name="serverID" value=serverID)
+
+      p All transactions are processed via Stripe and no sensitive information is stored on Zero Daedalus servers.
+      button Add Payment Method
+
+  a(href="/") Not ready? Back to Dashboard.
