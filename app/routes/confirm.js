@@ -1,12 +1,12 @@
 const router = require('express').Router();
-const controllers = require('../controllers');
+const { Confirm } = require('../controllers');
 
-router.get('/confirm', controllers.CONFIRM.RENDER_CONFIRM);
+router.get('/confirm', Confirm.RENDER_CONFIRM);
 
-router.get('/confirm/resend', controllers.CONFIRM.RENDER_RESEND);
+router.get('/confirm/resend', Confirm.RENDER_RESEND);
 
-router.post('/confirm/resend', controllers.CONFIRM.RESEND_CONFIRM);
+router.post('/confirm/resend', Confirm.RESEND_CONFIRM);
 
-router.get('/confirm/token/:token', controllers.CONFIRM.CONFIRM_TOKEN);
+router.get('/confirm/token/:token', Confirm.CONFIRM_TOKEN);
 
 module.exports = router;

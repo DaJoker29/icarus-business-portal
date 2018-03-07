@@ -1,7 +1,5 @@
 const VError = require('verror');
-const models = require('../models');
-
-const Resource = models.RESOURCE;
+const { Resource } = require('../models');
 
 function createResource(req, res, next) {
   if (req.body && req.body.hostname) {

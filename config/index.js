@@ -1,3 +1,3 @@
-module.exports = {
-  STRATEGIES: require('./strategies'),
-};
+const { indexify } = require('../helpers/indexify');
+
+module.exports = indexify('config');

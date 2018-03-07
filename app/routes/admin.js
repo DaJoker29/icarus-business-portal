@@ -1,27 +1,20 @@
 const router = require('express').Router();
-const controllers = require('../controllers');
-const helpers = require('../../helpers');
+const { Admin } = require('../controllers');
+const { Auth } = require('../../helpers');
 
 router.get(
   '/admin',
-  helpers.AUTH.AUTHENTICATED,
-  helpers.AUTH.ADMIN,
-  helpers.AUTH.UNVERIFIED,
-  controllers.ADMIN.RENDER_ADMIN,
-);
-
-router.post(
-  '/admin/link-server',
-  helpers.AUTH.AUTHENTICATED,
-  helpers.AUTH.ADMIN,
-  controllers.ADMIN.LINK_SERVER,
+  Auth.AUTHENTICATED,
+  Auth.ADMIN,
+  Auth.UNVERIFIED,
+  Admin.RENDER_ADMIN,
 );
 
 router.post(
   '/admin/server/:id',
-  helpers.AUTH.AUTHENTICATED,
-  helpers.AUTH.ADMIN,
-  controllers.ADMIN.CHANGE_SERVER_INFO,
+  Auth.AUTHENTICATED,
+  Auth.ADMIN,
+  Admin.CHANGE_SERVER_INFO,
 );
 
 module.exports = router;

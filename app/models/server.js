@@ -10,6 +10,8 @@ const serverSchema = new Schema({
     required: true,
   },
   createdOn: { type: Date, default: Date.now(), required: true },
+  hostingPlan: { type: String, default: 'starter', required: true },
+  supportPlan: { type: String, default: 'handsOff', required: true },
   LINODEID: {
     type: Number,
     unique: true,

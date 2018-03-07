@@ -1,49 +1,41 @@
-- const hosting = ['Starter', 'Business', 'Developer'];
-- const support = ['Hands-Off', 'Maintain', 'Hands-On'];
 - const status = ['Being Created', 'Brand New', 'Running', 'Powered Off'];
 
 if servers
-  h3 Servers
+  h3 Servers (#{servers.length})
   ul
     each server in servers
       li
-        div.flex-table.flex-table--2cols
+        div.flex-table.flex-table--3cols
           p.bold.flex-table-cell.flex-table-cell--full.flex-table-cell--black #{server.LABEL}
+          if current === 'admin' && server.assignedTo
+            p.flex-table-cell.flex-table-cell--blue.flex-table-cell--full Owner: #{server.assignedTo}
           p.flex-table-cell.flex-table-cell--blue Storage: #{numeral(server.usedDisk).format('0b')} / #{numeral(server.totalDisk).format('0b')}
           p.flex-table-cell.flex-table-cell--blue RAM: #{numeral(server.usedMem).format('0b')} / #{numeral(server.totalMem).format('0b')}
-          p.flex-table-cell.flex-table-cell--blue Hosting Plan: #{hosting[server.PLANID - 1]}
-          p.flex-table-cell.flex-table-cell--blue Support Plan: #{support[server.PLANID - 1]} 
-          //- Need to make function ^^
+          p.flex-table-cell.flex-table-cell--blue Hosting Plan: #{plans.hosting[server.hostingPlan].name}
+          p.flex-table-cell.flex-table-cell--blue Support Plan: #{plans.support[server.supportPlan].name} 
           p.flex-table-cell.flex-table-cell--blue Status: #{status[server.STATUS + 1]}
           p.flex-table-cell.flex-table-cell--blue Last Updated: #{moment(server.createdAt).fromNow()}
           p.flex-table-cell.flex-table-cell--blue Expires: #{moment(server.expires).fromNow()}
           if current === 'dashboard'
             a(href="/renewal/" + server.LINODEID).flex-table-cell.flex-table-cell--gold.flex-table-cell--full  Renew Now
           if current === 'admin'
-            p.flex-table-cell.flex-table-cell--red Age: #{moment(server.createdOn).fromNow(true)} old
-            p.flex-table-cell.flex-table-cell--red Server ID:  #{server.LINODEID}
-            p.flex-table-cell.flex-table-cell--red Load: #{numeral(server.load).format('0.0')}
-            p.flex-table-cell.flex-table-cell--red Uptime: #{moment(server.createdAt).subtract(server.uptime, 'seconds').fromNow(true)}
-            form(action="/admin/server/" + server.LINODEID  method="POST").flex-table-cell.flex-table-cell--red.flex-table-cell--full
+            p.flex-table-cell.flex-table-cell--blue Age: #{moment(server.CREATE_DT).fromNow(true)} old
+            p.flex-table-cell.flex-table-cell--blue Server ID:  #{server.LINODEID}
+            p.flex-table-cell.flex-table-cell--blue Load: #{numeral(server.load).format('0.0')}
+            p.flex-table-cell.flex-table-cell--blue Uptime: #{moment(server.createdAt).subtract(server.uptime, 'seconds').fromNow(true)}
+            form(action="/admin/server/" + server.LINODEID method="POST").flex-table-cell.flex-table-cell--red.flex-table-cell--full
               fieldset
-                span Change Expiration
                 div
-                  label(for="expirationDate")
-                  input(type="date" name="expirationDate" value=moment(server.expires).format('YYYY-MM-DD'))
+                  label(for="expires") Change Expiration Date
+                  input(type="date" name="expires" value=moment(server.expires).format('YYYY-MM-DD'))
                 button Change
-            if server.assignedTo && users
-              p.flex-table-cell.flex-table-cell--red Owner:&nbsp;
-                each user in users
-                  if user._id == server.assignedTo
-                    span
-                      | #{user.email}
-            else if users
-              form.flex-table-cell.flex-table-cell--red.flex-table-cell--full(action="/admin/link-server" method="POST")
-                fieldset
-                  input(type="hidden" name="selectedServer" value=server.LINODEID) 
-                  div
-                    label(for="selectedUser") Link to User:
-                    select(name="selectedUser")
-                      each user in users
-                        option(value=user._id) #{user.firstName} #{user.lastName} - #{user.email}
-                  button(type="submit") Link!
+            form(action="/admin/server/" + server.LINODEID method="POST").flex-table-cell.flex-table-cell--red.flex-table-cell--full
+              fieldset
+                div
+                  label(for="assignedTo") Change Owner
+                  select(name="assignedTo")
+                    each user in users
+                      - var email = user.email
+                      - var selected = server.assignedTo == user.email
+                      option(value=email, selected=selected) #{user.firstName} #{user.lastName} - #{user.email}
+                button(type="submit") Change

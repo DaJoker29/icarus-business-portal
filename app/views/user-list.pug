@@ -1,0 +1,15 @@
+if users
+  h3 Users (#{users.length})
+  .flex-table.flex-table--3cols
+    each user in users
+      .flex-table-cell.flex-table-cell--black.flex-table-cell--full #{user.email} #{user.isVerified ? '' : '(Unverified)'}
+      if user.firstName || user.lastName
+        .flex-table-cell.flex-table-cell--red #{user.firstName} #{user.lastName} #{!user.isAdmin ? '' : '(Admin)'}
+      if user.stripeID
+        .flex-table-cell.flex-table-cell--blue Stripe ID: #{user.stripeID}
+      if user.organization
+        .flex-table-cell.flex-table-cell--blue #{user.organization}
+      if user.phone.phone && user.phone.country
+        .flex-table-cell.flex-table-cell--blue Phone: #{phoneNumber.format(user.phone, 'National')}
+      if user.createdOn
+        .flex-table-cell.flex-table-cell--blue Member since #{moment(user.createdOn).fromNow()} (#{moment(user.createdOn).format('l')})

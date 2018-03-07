@@ -1,0 +1,8 @@
+h3 Payments (#{payments.length})
+.flex-table.flex-table--3cols
+  each payment in payments
+    .flex-table-cell.flex-table-cell--full.flex-table-cell--black #{moment.unix(payment.created).format('MMM Do, YYYY')} - #{moment.unix(payment.created).fromNow()} - #{numeral(payment.amount).divide(100).format('$0')}
+    .flex-table-cell.flex-table-cell--blue.flex-table-cell--ful #{payment.description}
+    if current === 'admin'
+      .flex-table-cell.flex-table-cell--blue Charge ID: #{payment.id}
+      .flex-table-cell.flex-table-cell--blue Customer ID (Stripe): #{payment.customer}

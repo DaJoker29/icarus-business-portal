@@ -1,0 +1,8 @@
+if messages
+  h3 Messages (#{messages.length})
+  .flex-table.flex-table--2cols
+    each message in messages
+      .flex-table-cell.flex-table-cell--black.flex-table-cell--full #{message.owner}
+      .flex-table-cell.flex-table-cell--red #{moment(message.date).format('MMM d, YYYY, h:mm:ss a')}
+      .flex-table-cell.flex-table-cell--red #{message.isAssigned ? 'Assigned' : 'Unassigned'} -  #{message.isCompleted ? 'Completed' : 'Open'}
+      .flex-table-cell.flex-table-cell--blue.flex-table-cell--full #{message.content}

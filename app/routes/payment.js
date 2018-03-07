@@ -1,17 +1,9 @@
 const router = require('express').Router();
-const helpers = require('../../helpers');
-const controllers = require('../controllers');
+const { Auth } = require('../../helpers');
+const { Payment } = require('../controllers');
 
-router.get(
-  '/payment',
-  helpers.AUTH.AUTHENTICATED,
-  controllers.PAYMENT.RENDER_PAYMENT_FORM,
-);
+router.get('/payment', Auth.AUTHENTICATED, Payment.RENDER_PAYMENT_FORM);
 
-router.post(
-  '/payment/customer',
-  helpers.AUTH.AUTHENTICATED,
-  controllers.PAYMENT.CREATE_STRIPE_ID,
-);
+router.post('/payment/customer', Auth.AUTHENTICATED, Payment.CREATE_STRIPE_ID);
 
 module.exports = router;

@@ -1,4 +1,3 @@
-module.exports = {
-  AUTH: require('./auth'),
-  ERROR: require('./error'),
-};
+const { indexify } = require('./indexify');
+
+module.exports = indexify('helpers');

@@ -1,10 +1,7 @@
 const nodemailer = require('nodemailer');
 const VError = require('verror');
 const debug = require('debug')('icarus-confirm');
-const models = require('../models');
-
-const Confirm = models.CONFIRM;
-const User = models.USER;
+const { Confirm, User } = require('../models');
 
 const smtpCreds = {
   service: process.env.EMAIL_SERVICE,

@@ -20,6 +20,7 @@ module.exports = {
     'consistent-return': 1,
     'global-require': 0,
     'import-order-autofix/order': 1,
+    'prefer-destructuring': 1,
   },
   plugins: ['json', 'import', 'prettier', 'import-order-autofix'],
 };

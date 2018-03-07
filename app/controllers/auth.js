@@ -1,10 +1,8 @@
 const bcrypt = require('bcrypt');
 const VError = require('verror');
 const debug = require('debug')('icarus-auth');
-const models = require('../models');
-const controllers = require('./index.js');
-
-const User = models.USER;
+const { User } = require('../models');
+const { Confirm } = require('./index.js');
 
 function createAccount(req, res, next) {
   const { email, firstName, lastName, organization, phone } = req.body;
@@ -34,7 +32,7 @@ function createAccount(req, res, next) {
           return next(new VError(err, 'Problem creating new User'));
         }
         debug(`New user created: ${user.email}`);
-        controllers.CONFIRM.CONFIRM_USER(user.email);
+        Confirm.CONFIRM_USER(user.email);
         return res.redirect('/confirm', { email });
       });
     });
@@ -53,7 +51,6 @@ function renderLogin(req, res) {
   });
 }
 
-// Log in handled by Passport.
 function logout(req, res) {
   req.logout();
   res.redirect('/login');
