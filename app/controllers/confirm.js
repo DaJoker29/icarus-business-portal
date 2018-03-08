@@ -33,42 +33,36 @@ function resendConfirmation(req, res) {
 
 function confirmToken(req, res, next) {
   if (req.params.token) {
-    return Confirm.findOne({ token: req.params.token }, (err, confirm) => {
-      const { email } = confirm;
-      if (err) return next(new VError(err, 'Problem finding token'));
-      if (confirm) {
+    const { token } = req.params;
+    return Confirm.findOne({ token })
+      .then(({ email }) => {
         return User.findOneAndUpdate(
           { email },
           { isVerified: true },
           { upsert: true, new: true },
-          (err, user) => {
-            if (err)
-              return next(new VError(err, 'Problem verifiying user record'));
-            debug(`New User Verified: ${user.email}`);
-            return res.redirect('/');
-          },
         );
-      } else {
-        return next(new VError(err, 'No confirmation found'));
-      }
-    });
+      })
+      .then(({ email }) => {
+        debug(`New User Verified: ${email}`);
+        return res.redirect('/');
+      })
+      .catch(e => next(new VError(e, 'Problem verifiying user record')));
   }
   return res.redirect('/login');
 }
 
 function confirmUser(email) {
-  return Confirm.findOne({ email }, (err, confirm) => {
-    if (err) throw new VError(err, 'Problem finding confirmation record');
-    debug(`Confirmation token sent: ${email}`);
-    if (confirm) {
-      return sendToken(confirm);
-    } else {
-      return Confirm.create({ email }, (err, confirm) => {
-        if (err) throw err;
-        sendToken(confirm);
-      });
-    }
-  });
+  Confirm.findOne({ email })
+    .then(confirm => {
+      debug(`Sending confirmation token to: ${email}`);
+      if (confirm) {
+        return confirm;
+      } else {
+        return Confirm.create({ email });
+      }
+    })
+    .then(confirm => sendToken(confirm))
+    .catch(e => debug(new VError(e, 'Problem finding confirmation record')));
 }
 
 function sendToken(object) {
@@ -82,12 +76,12 @@ function sendToken(object) {
     }/confirm/token/${token}`,
   };
 
-  transporter.sendMail(mailOptions, (err, info) => {
-    if (err) {
-      return debug(err);
-    }
-    return debug(`Confirmation token sent: ${info.messageId}`);
-  });
+  transporter
+    .sendMail(mailOptions)
+    .then(({ messageId }) => {
+      debug(`Confirmation token sent: ${messageId}`);
+    })
+    .catch(e => debug(e));
 }
 
 module.exports.RENDER_RESEND = renderResend;

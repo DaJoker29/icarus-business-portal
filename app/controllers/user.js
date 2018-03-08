@@ -46,7 +46,7 @@ function renderAccount(req, res) {
   return res.render('account', { title: 'My Account', user: req.user });
 }
 
-async function changeAccountInfo(req, res, next) {
+function changeAccountInfo(req, res, next) {
   let update = req.body;
   const { phone } = req.body;
   const { id } = req.user;
@@ -56,15 +56,14 @@ async function changeAccountInfo(req, res, next) {
     update = Object.assign({}, req.body, { phone: parsed });
   }
 
-  await User.findByIdAndUpdate(id, { $set: update }, { new: true })
+  User.findByIdAndUpdate(id, { $set: update }, { new: true })
     .then(user => {
       debug(`${user.email} account updated: ${JSON.stringify(update)}`);
+      res.redirect('/account');
     })
     .catch(e => {
-      return next(new VError(e, 'Problem updating account info'));
+      next(new VError(e, 'Problem updating account info'));
     });
-
-  return res.redirect('/account');
 }
 
 module.exports.RENDER_DASH = renderDash;

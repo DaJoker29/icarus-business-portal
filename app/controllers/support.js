@@ -15,7 +15,7 @@ function renderSupport(req, res) {
     });
 }
 
-async function submitMessage(req, res) {
+async function submitMessage(req, res, next) {
   const { message } = req.body;
   const { email } = req.user;
   const newMessage = new Message({ content: message, owner: email });
@@ -23,11 +23,12 @@ async function submitMessage(req, res) {
     .save()
     .then(doc => {
       debug(`Message saved: ${doc}`);
+      res.redirect('/support');
     })
     .catch(e => {
       debug(`Error saving message: ${e}`);
+      next(new Error(e, `Error submitting message from user: ${email}`));
     });
-  res.redirect('/support');
 }
 
 module.exports.RENDER_SUPPORT = renderSupport;
