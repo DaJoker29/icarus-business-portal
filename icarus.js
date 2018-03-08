@@ -1,12 +1,11 @@
 const path = require('path');
 const dotenv = require('dotenv');
 
-const result = dotenv.config();
+const env = dotenv.config();
 
 const express = require('express');
 const mongoose = require('mongoose');
 const morganDebug = require('morgan-debug');
-
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const helmet = require('helmet');
@@ -17,9 +16,8 @@ const moment = require('moment');
 const phoneNumber = require('libphonenumber-js');
 const numeral = require('numeral');
 const VError = require('verror');
-const debug = require('debug')(
-  `icarus-${process.env.NODE_ENV === 'development' ? 'test-init' : 'init'}`,
-);
+
+const debug = require('debug')('icarus-init');
 const envDebug = require('debug')('icarus-env');
 const routeDebug = require('debug')('icarus-routes');
 const dbDebug = require('debug')('icarus-database');
@@ -28,20 +26,31 @@ const { Strategies, Plans } = require('./config');
 const { Auth } = require('./helpers');
 const routes = require('./app/routes');
 
-const app = express();
-
 /**
  * Check for envirnment variables
  */
-if (result.error) {
-  throw new VError(result.error, 'Problem loading environment variables...');
+if (env.error) {
+  throw new VError(env.error, 'Problem loading environment variables...');
 } else {
-  Object.entries(result.parsed).forEach(rule => {
+  Object.entries(env.parsed).forEach(rule => {
     envDebug(`${rule[0]} = ${rule[1]}`);
   });
 }
 
-// Database Connection Handlers
+/**
+ * Variables and Constants
+ */
+
+const app = express();
+const { NODE_ENV } = process.env;
+const port =
+  NODE_ENV === 'production' ? process.env.PORT : process.env.TEST_PORT;
+const db = NODE_ENV === 'production' ? process.env.DB : process.env.TEST_DB;
+
+/**
+ * Database Connection Handlers
+ */
+
 mongoose.connection.on('error', err => {
   if (err) throw new VError(err, 'Problem connecting to database.');
 });
@@ -63,6 +72,10 @@ mongoose.connection.on('connected', () => {
     }),
   };
 
+  /**
+   * Express/Passport Configuration
+   */
+
   app.set('view engine', 'pug');
   app.set('views', path.join(__dirname, 'app/views'));
 
@@ -71,7 +84,7 @@ mongoose.connection.on('connected', () => {
   app.use(
     morganDebug(
       'icarus-morgan',
-      process.env.NODE_ENV === 'development' ? 'dev' : 'combined',
+      NODE_ENV === 'development' ? 'dev' : 'combined',
     ),
   );
   app.use(bodyParser.urlencoded({ extended: 'true' }));
@@ -91,10 +104,14 @@ mongoose.connection.on('connected', () => {
   passport.serializeUser(Auth.SERIALIZE_USER);
   passport.deserializeUser(Auth.DESERIALIZE_USER);
 
+  /**
+   * Load express routes
+   */
+
   Object.entries(routes)
     .sort(a => {
-      // ERROR routes must be loaded last.
       if (a[0] === 'Error') {
+        // Error routes must be loaded last.
         return 1;
       }
       return 0;
@@ -104,22 +121,34 @@ mongoose.connection.on('connected', () => {
       app.use(route[1]);
     });
 
-  // Launch Server
-  app.listen(
-    process.env.NODE_ENV === 'production'
-      ? process.env.PORT
-      : process.env.TEST_PORT,
-    err => {
-      if (err) throw new VError(err, 'Problem launching express server');
-      debug(`Icarus is flying UP & UP...`);
-    },
-  );
+  /**
+   * Launch Server
+   */
+
+  app.listen(port, err => {
+    if (err) throw new VError(err, 'Problem launching express server');
+    debug(`Icarus is flying UP & UP... => http://localhost:${port}`);
+  });
 });
 
-dbDebug(`Connecting to database...`);
-mongoose.connect(
-  process.env.NODE_ENV === 'production' ? process.env.DB : process.env.TEST_DB,
-);
+/**
+ * Connect to database
+ */
+
+dbDebug(`Connecting to database: ${db}`);
+mongoose.connect(db);
+
+/**
+ * Termination and Exit handling
+ */
+
+process.on('SIGINT', gracefulExit);
+process.on('SIGTERM', gracefulExit);
+process.on('uncaughtException', err => {
+  console.error(err.stack);
+  debug('Icarus flew too high to the sun and CRASHED to the waves below...');
+  gracefulExit();
+});
 
 function gracefulExit() {
   debug(`Icarus is going DOWN...`);
@@ -131,12 +160,3 @@ function gracefulExit() {
     process.exit(0);
   }
 }
-
-/* Termination and Uncaught Exception Handlers */
-process.on('SIGINT', gracefulExit);
-process.on('SIGTERM', gracefulExit);
-process.on('uncaughtException', err => {
-  console.error(err.stack);
-  debug('Icarus flew too high to the sun and CRASHED to the waves below...');
-  gracefulExit();
-});
