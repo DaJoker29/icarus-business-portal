@@ -32,9 +32,14 @@ async function renewPlan(req, res) {
 }
 
 function renderRenewal(req, res, next) {
-  Server.findOne({ LINODEID: req.params.id }, (err, server) => {
-    if (err) return next(new VError(err, 'Problem finding server'));
-    if (req.user.email === server.assignedTo) {
+  Server.findOne({ LINODEID: req.params.id })
+    .then(server => {
+      if (req.user.email !== server.assignedTo) {
+        throw new VError(
+          "User trying to renew server that isn't assigned to them.",
+        );
+      }
+
       if (req.user.stripeID) {
         return res.render('renewal', {
           title: 'Renew Server',
@@ -43,11 +48,8 @@ function renderRenewal(req, res, next) {
         });
       }
       return res.redirect(`/payment?server=${req.params.id}`);
-    }
-    return next(
-      new VError("User trying to renew server that isn't assigned to them."),
-    );
-  });
+    })
+    .catch(e => next(new VError(e, 'Problem rendering renewal page')));
 }
 
 module.exports.RENEW_PLAN = renewPlan;

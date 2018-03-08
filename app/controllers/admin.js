@@ -25,7 +25,7 @@ function renderAdmin(req, res, next) {
           );
         });
       }
-      return res.render('admin', {
+      res.render('admin', {
         title: 'Admin Panel',
         user: req.user,
         servers: serverlist,
@@ -34,9 +34,7 @@ function renderAdmin(req, res, next) {
         payments,
       });
     })
-    .catch(e => {
-      return next(new VError(e, 'Problem rendering admin page'));
-    });
+    .catch(e => next(new VError(e, 'Problem rendering admin page')));
 }
 
 async function changeServerInfo(req, res, next) {
@@ -45,14 +43,12 @@ async function changeServerInfo(req, res, next) {
       { LINODEID: req.params.id },
       { $set: req.body },
     )
-      .then(server => {
-        debug(`Server ${server.LINODEID} updated: ${JSON.stringify(req.body)}`);
-      })
-      .catch(e => {
-        return next(new VError(e, 'Problem changing server information'));
-      });
+      .then(server =>
+        debug(`Server ${server.LINODEID} updated: ${JSON.stringify(req.body)}`),
+      )
+      .catch(e => next(new VError(e, 'Problem changing server information')));
   }
-  return res.redirect('/admin');
+  res.redirect('/admin');
 }
 
 module.exports.RENDER_ADMIN = renderAdmin;
