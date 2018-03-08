@@ -8,11 +8,9 @@ function createAccount(req, res, next) {
   const { email, firstName, lastName, organization, phone } = req.body;
   const saltRounds = 10;
 
-  bcrypt.genSalt(saltRounds, (err, salt) => {
-    if (err) return next(new VError(err, 'Problem generating password salt'));
-    return bcrypt.hash(req.body.password, salt, (err, hash) => {
-      if (err) return next(new VError(err, 'Problem generating password hash'));
-
+  bcrypt
+    .hash(req.body.password, saltRounds)
+    .then(hash => {
       const userData = {
         email,
         firstName,
@@ -22,21 +20,14 @@ function createAccount(req, res, next) {
         passwordHash: hash,
       };
 
-      return User.create(userData, (err, user) => {
-        if (err) {
-          if (err.message.startsWith('user validation failed')) {
-            res.render('signup', {
-              error: 'That email address is already in use',
-            });
-          }
-          return next(new VError(err, 'Problem creating new User'));
-        }
-        debug(`New user created: ${user.email}`);
-        Confirm.CONFIRM_USER(user.email);
-        return res.redirect('/confirm', { email });
-      });
-    });
-  });
+      return User.create(userData);
+    })
+    .then(user => {
+      debug(`New user created: ${user.email}`);
+      Confirm.CONFIRM_USER(user.email);
+      res.redirect('/confirm', { email });
+    })
+    .catch(e => next(new VError(e, 'Problem creating new user')));
 }
 
 function renderSignUp(req, res) {

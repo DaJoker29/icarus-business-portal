@@ -1,4 +1,4 @@
-const LocalStrategy = require('passport-local').Strategy;
+const { Strategy: LocalStrategy } = require('passport-local');
 
 const bcrypt = require('bcrypt');
 const VError = require('verror');
@@ -7,24 +7,12 @@ const { User } = require('../app/models');
 const local = new LocalStrategy(
   { usernameField: 'email' },
   (email, password, done) => {
-    User.findOne({ email }, 'passwordHash email', (err, doc) => {
-      if (err) {
-        return done(new VError(err, 'Problem retrieving user info'));
-      }
-      if (doc) {
-        return bcrypt.compare(password, doc.passwordHash, (error, res) => {
-          if (error) {
-            return done(new VError(error, 'Problem confirming password'));
-          }
-          if (res === false) {
-            return done(null, false);
-          }
-          return done(null, doc);
-        });
-      } else {
-        return done(new VError('No user matching that email address'));
-      }
-    });
+    User.findOne({ email }, 'passwordHash email')
+      .then(doc => {
+        const found = bcrypt.compareSync(password, doc.passwordHash);
+        return done(null, found ? doc : false);
+      })
+      .catch(e => done(new VError(e, 'Problem with authentication')));
   },
 );
 

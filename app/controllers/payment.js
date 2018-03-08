@@ -7,11 +7,11 @@ const VError = require('verror');
 const debug = require('debug')('icarus-payment');
 const { User, Payment } = require('../models');
 
-async function chargeCreditCard(req, res, next) {
+function chargeCreditCard(req, res, next) {
   const { amount, description } = req.body;
   const { stripeID } = req.user;
   debug(`Charging Customer: ${stripeID} - ${amount} - ${description}`);
-  await stripe.charges
+  stripe.charges
     .create({
       amount,
       description,
@@ -29,18 +29,14 @@ async function chargeCreditCard(req, res, next) {
         customer,
       });
 
-      payment
-        .save()
-        .then(doc => {
-          debug(`Payment saved: ${doc.customer}`);
-        })
-        .catch(e => {
-          throw new VError(e, 'Error saving payment information');
-        });
-      return next();
+      return payment.save();
+    })
+    .then(doc => {
+      debug(`Payment saved: ${doc.customer}`);
+      next();
     })
     .catch(e => {
-      debug(`Charge failed: ${stripeID} - ${e.type}`);
+      debug(`Error while charging Credit Card: ${stripeID} - ${e}`);
       return res.render('message', {
         title: 'Transaction Failed',
         message:
@@ -51,38 +47,30 @@ async function chargeCreditCard(req, res, next) {
 
 function createStripeID(req, res, next) {
   const { user } = req;
-  const { stripeToken, serverID } = req.body;
+  const { stripeToken } = req.body;
   debug(`Stripe Token: ${stripeToken}`);
   debug(`Generating Stripe Customer token for ${user.email}.`);
 
-  stripe.customers.create(
-    {
+  stripe.customers
+    .create({
       email: user.email,
       source: stripeToken,
-    },
-    (err, customer) => {
-      if (err)
-        return next(
-          new VError(err, `Problem creating Stripe ID: ${user.email}`),
-        );
+    })
+    .then(customer => {
       debug(`Stripe Customer created: ${customer.id}`);
       return User.findOneAndUpdate(
         { _id: user._id },
         { $set: { stripeID: customer.id } },
         { new: true },
-        err => {
-          if (err)
-            return next(
-              new VError(err, `Problem updating Stripe ID: ${user.id}`),
-            );
-          if (serverID) {
-            return res.redirect(`/renewal/${serverID}`);
-          }
-          return res.redirect('/');
-        },
       );
-    },
-  );
+    })
+    .then(() => {
+      if (req.body.serverID) {
+        return res.redirect(`/renewal/${req.body.serverID}`);
+      }
+      return res.redirect('/');
+    })
+    .catch(e => next(new VError(e, `Problem updating Stripe ID: ${user.id}`)));
 }
 
 function renderPaymentForm(req, res) {

@@ -22,15 +22,11 @@ function createResource(req, res, next) {
       totalDisk,
     };
 
-    return Resource.create(params, err => {
-      if (err) {
-        return next(new VError(err, 'Problem creating new resource'));
-      }
-      return res.sendStatus(200);
-    });
-  } else {
-    return res.sendStatus(400);
+    return Resource.create(params)
+      .then(() => res.sendStatus(200))
+      .catch(e => next(new VError(e, 'Problem creating new resource')));
   }
+  return res.sendStatus(400);
 }
 
 module.exports.CREATE_RESOURCE = createResource;
