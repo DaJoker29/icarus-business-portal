@@ -1,15 +1,26 @@
 const router = require('express').Router();
-const { User } = require('../controllers');
-const { Auth } = require('../../helpers');
+const { Auth, User } = require('../controllers');
+const { Auth: AuthHelpers } = require('../../helpers');
 
-router.get('/', Auth.AUTHENTICATED, Auth.UNVERIFIED, User.RENDER_DASH);
+router.get(
+  '/',
+  AuthHelpers.AUTHENTICATED,
+  AuthHelpers.UNVERIFIED,
+  User.RENDER_DASH,
+);
 
 router.get(
   '/account',
-  Auth.AUTHENTICATED,
-  Auth.UNVERIFIED,
+  AuthHelpers.AUTHENTICATED,
+  AuthHelpers.UNVERIFIED,
   User.RENDER_ACCOUNT,
 );
-router.post('/account', Auth.AUTHENTICATED, User.CHANGE_ACCOUNT_INFO);
+router.post('/account', AuthHelpers.AUTHENTICATED, User.CHANGE_ACCOUNT_INFO);
+
+router.post(
+  '/account/password',
+  AuthHelpers.AUTHENTICATED,
+  Auth.CHANGE_PASSWORD,
+);
 
 module.exports = router;
