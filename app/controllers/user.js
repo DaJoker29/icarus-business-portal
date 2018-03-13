@@ -42,6 +42,10 @@ function renderDash(req, res, next) {
     });
 }
 
+function renderAdd(req, res) {
+  return res.render('add', { title: 'Add a server', user: req.user });
+}
+
 function renderAccount(req, res) {
   return res.render('account', { title: 'My Account', user: req.user });
 }
@@ -68,4 +72,5 @@ function changeAccountInfo(req, res, next) {
 
 module.exports.RENDER_DASH = renderDash;
 module.exports.RENDER_ACCOUNT = renderAccount;
+module.exports.RENDER_ADD = renderAdd;
 module.exports.CHANGE_ACCOUNT_INFO = changeAccountInfo;

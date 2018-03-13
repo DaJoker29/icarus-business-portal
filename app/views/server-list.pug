@@ -39,3 +39,5 @@ if servers
                       - var selected = server.assignedTo == user.email
                       option(value=email, selected=selected) #{user.firstName} #{user.lastName} - #{user.email}
                 button(type="submit") Change
+  if current === 'dashboard'
+    a(href="/add") &plus; Add a Server
