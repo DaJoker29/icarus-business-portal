@@ -19,12 +19,4 @@ router.post(
   }),
 );
 
-router.post(
-  '/login',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-  }),
-);
-
 module.exports = router;

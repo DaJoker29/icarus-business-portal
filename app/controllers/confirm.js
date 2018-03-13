@@ -21,38 +21,26 @@ function renderResend(req, res) {
 }
 
 function renderConfirmation(req, res) {
-  return res.render('confirm');
+  return res.render('confirm', {
+    email: req.query.email ? req.query.email : '',
+  });
 }
 
 function resendConfirmation(req, res) {
   if (req.body.email) {
-    confirmUser(req.body.email);
+    createConfirmation(req.body.email);
   }
-  return res.redirect('/login');
+  return res.redirect(`/confirm?email=${req.body.email}`);
 }
 
-function confirmToken(req, res, next) {
-  if (req.params.token) {
-    const { token } = req.params;
-    return Confirm.findOne({ token })
-      .then(({ email }) => {
-        return User.findOneAndUpdate(
-          { email },
-          { isVerified: true },
-          { upsert: true, new: true },
-        );
-      })
-      .then(({ email }) => {
-        debug(`New User Verified: ${email}`);
-        return res.redirect('/');
-      })
-      .catch(e => next(new VError(e, 'Problem verifiying user record')));
-  }
-  return res.redirect('/login');
-}
-
-function confirmUser(email) {
-  Confirm.findOne({ email })
+function createConfirmation(email) {
+  return User.findOne({ email })
+    .then(user => {
+      if (user) {
+        return Confirm.findOne({ email });
+      }
+      throw new VError(`That user does not exist.`);
+    })
     .then(confirm => {
       debug(`Sending confirmation token to: ${email}`);
       if (confirm) {
@@ -62,7 +50,9 @@ function confirmUser(email) {
       }
     })
     .then(confirm => sendToken(confirm))
-    .catch(e => debug(new VError(e, 'Problem finding confirmation record')));
+    .catch(e => {
+      debug(new VError(e, 'Problem finding confirmation record'));
+    });
 }
 
 function sendToken(object) {
@@ -73,7 +63,7 @@ function sendToken(object) {
     subject: 'Confirm you Email Address',
     text: `Howdy!\n\nPlease confirm your address by clicking this link: ${
       process.env.HOST
-    }/confirm/token/${token}`,
+    }/confirm/${token}`,
   };
 
   transporter
@@ -87,5 +77,4 @@ function sendToken(object) {
 module.exports.RENDER_RESEND = renderResend;
 module.exports.RENDER_CONFIRM = renderConfirmation;
 module.exports.RESEND_CONFIRM = resendConfirmation;
-module.exports.CONFIRM_TOKEN = confirmToken;
-module.exports.CONFIRM_USER = confirmUser;
+module.exports.CREATE_CONFIRM = createConfirmation;
