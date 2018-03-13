@@ -1,6 +1,6 @@
 # Icarus
 
-Web Interface to allow [Zero Daedalus](https://zerodaedalus.com) customers to create and manage hosting plans and domain names. Providing transparency and streamlined access to support, if needed.
+Web portal for [Zero Daedalus](https://zerodaedalus.com) customers to manage hosting plans and services.
 
 ## Getting Started
 
@@ -12,6 +12,9 @@ Web Interface to allow [Zero Daedalus](https://zerodaedalus.com) customers to cr
 - NodeJS
 - Yarn
 - MongoDB
+
+### Server Monitoring
+Server monitoring is currently being provided by [this utility](https://github.com/DaJoker29/icarus-resources).
 
 ### Installing
 An `.env` file must be created in the root of the directory.
@@ -55,8 +58,6 @@ TEST_STRIPE_SECRET_KEY=
 No notes on testing yet.
 
 ## Deployment
-Currently there are three types of deployments: Dev and Prod
-
 To start a test deployment in the console with automatic restarting, use `yarn start`
 
 To start a staging deployment on a live server, use `yarn run staging`
@@ -80,43 +81,7 @@ To start a production deployment on a live server, use `yarn run prod`
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/dajoker29/icarus-business-portal/tags).
 
 ## Roadmap
-### v2.0.0 - Build Automation
-- Automated Build Process
-  - Linode's automatically created and loaded with server stack
-  - DNS is automatically configured
-  - CMS (WordPress or podcast manager) is automatically installed and given a basic configuration
-  - SSL Certificates are auto-generated and free auto-renewal setup
-- Domain Names
-  - Backend Domain Name transactions(purchase/renewal) are automated
-- Month-To-Date Resource Tracking
-  - RAM
-  - DISK
-  - Bandwidth
-- Integration and Unit Testing Suites
-- Continuous Integration/Deployment
-- Ticketing/Support System
-- Custom Podcast Hosting Interface
-### v1.0.0 - Essential Tools
-- Sign Up
-  - Check for Free Domain Availability
-  - Select Hosting Plan
-  - Add Add'l Domain Names
-  - ~Gather Account Information~
-  - ~Billing Info, Review Balance and Charge (via Stripe Checkout)~
-  - ~Email Confirmation~
-- User Actions
-  - ~Users can create accounts with basic information.~
-  - ~Users can edit account information~
-  - ~Users can view current plans and allotments.~
-  - Users can purchase new plans and domains
-  - Users can change password
-  - ~Users can renew their server/domains~
-  - ~Users can monitor their Current Resource (RAM, SSD, BANDWIDTH, LOAD)~
-- Admin Actions
-  - ~Admins can view current user and server information~
-  - ~Admins can update server/domain information~
-  - ~Admins can create new, verified accounts (for current customers)~
-  - ~Admins can link existing servers with accounts~
+Check out [ROADMAP.md](ROADMAP.md)
 
 
 ## Authors
