@@ -27,6 +27,12 @@ Icarus is a client portal for clients of [Zero Daedalus custom web solutions](ht
 **Error-Handling and Communication**
 > Streamline how errors (and other event messages) are handled and communicated to both the user and the developer.
 
+**Podcast Hosting Service**
+> Looking to offer an exclusive podcast hosting service with a simple UI for submitting new episodes.
+
+**Social Login**
+> Allow users to log in using Facebook or Google accounts for security purposes.
+
 **Continuous Deployment**
 > Automatically pulling development builds into the staging server for testing and new master builds into production after testing.
 
