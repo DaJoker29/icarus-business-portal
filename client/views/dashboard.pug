@@ -5,14 +5,12 @@ block active
   - var current = 'dashboard'
 
 block main-content
-  div
-    h3 #{user.firstName} #{user.lastName}
-    p #{user.organization}
-    p #{user.email}
-    p.small Member since #{moment(user.createdOn).fromNow()}
+  .meta
+    p Signed in as #{user.email}
     a.small(href="logout") (logout)
-
-    if servers
-      include server-list
-    if payments
-      include payment-list
+  div
+    if user.firstName
+      h3 Welcome, #{user.firstName}
+    else
+      h3 Welcome.
+    include server-list

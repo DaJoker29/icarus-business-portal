@@ -1,23 +1,25 @@
 - const status = ['Being Created', 'Brand New', 'Running', 'Powered Off'];
 
 if servers
-  h3 Servers (#{servers.length})
+  if current === 'dashboard'
+    a(href="/add") &plus; Add a Server
   ul
     each server in servers
       li
         div.flex-table.flex-table--3cols
-          p.bold.flex-table-cell.flex-table-cell--full.flex-table-cell--black #{server.LABEL}
+          p.bold.flex-table-cell.flex-table-cell--black.flex-table-cell--double #{server.LABEL}
+          if status[server.STATUS + 1] == 'Running'
+            p.flex-table-cell.flex-table-cell--green Status: Running
+          else
+            p.flex-table-cell.flex-table-cell--blue Status: Powered Down
           if current === 'admin' && server.assignedTo
             p.flex-table-cell.flex-table-cell--blue.flex-table-cell--full Owner: #{server.assignedTo}
-          p.flex-table-cell.flex-table-cell--blue Storage: #{numeral(server.usedDisk).format('0b')} / #{numeral(server.totalDisk).format('0b')}
-          p.flex-table-cell.flex-table-cell--blue RAM: #{numeral(server.usedMem).format('0b')} / #{numeral(server.totalMem).format('0b')}
-          p.flex-table-cell.flex-table-cell--blue Hosting Plan: #{plans.hosting[server.hostingPlan].name}
-          p.flex-table-cell.flex-table-cell--blue Support Plan: #{plans.support[server.supportPlan].name} 
-          p.flex-table-cell.flex-table-cell--blue Status: #{status[server.STATUS + 1]}
-          p.flex-table-cell.flex-table-cell--blue Last Updated: #{moment(server.createdAt).fromNow()}
+          p.flex-table-cell.flex-table-cell--blue CPU: #{numeral(server.load).format('0%')}
+          p.flex-table-cell.flex-table-cell--blue Storage: #{numeral(server.usedDisk).format('0.0b')} / #{numeral(server.totalDisk).format('0.0b')}
+          p.flex-table-cell.flex-table-cell--blue RAM: #{numeral(server.usedMem).format('0.0b')} / #{numeral(server.totalMem).format('0.0b')}
           p.flex-table-cell.flex-table-cell--blue Expires: #{moment(server.expires).fromNow()}
           if current === 'dashboard'
-            a(href="/renewal/" + server.LINODEID).flex-table-cell.flex-table-cell--gold.flex-table-cell--full  Renew Now
+            a(href="/renewal/" + server.LINODEID).flex-table-cell.flex-table-cell--gold.flex-table-cell--double  Renew Now
           if current === 'admin'
             p.flex-table-cell.flex-table-cell--blue Age: #{moment(server.CREATE_DT).fromNow(true)} old
             p.flex-table-cell.flex-table-cell--blue Server ID:  #{server.LINODEID}
@@ -39,5 +41,3 @@ if servers
                       - var selected = server.assignedTo == user.email
                       option(value=email, selected=selected) #{user.firstName} #{user.lastName} - #{user.email}
                 button(type="submit") Change
-  if current === 'dashboard'
-    a(href="/add") &plus; Add a Server
