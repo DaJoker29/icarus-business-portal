@@ -80,6 +80,7 @@ mongoose.connection.on('connected', () => {
   app.set('views', path.join(__dirname, 'client/views'));
 
   app.use('/assets', express.static('build'));
+  app.use('/assets/img', express.static('client/img'));
   app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
   app.use(
     morganDebug(
