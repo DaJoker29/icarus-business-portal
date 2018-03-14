@@ -12,6 +12,7 @@ const serverSchema = new Schema({
   createdOn: { type: Date, default: Date.now(), required: true },
   hostingPlan: { type: String, default: 'starter', required: true },
   supportPlan: { type: String, default: 'handsOff', required: true },
+  ipAddress: { type: String, default: '127.0.0.1', required: true },
   LINODEID: {
     type: Number,
     unique: true,

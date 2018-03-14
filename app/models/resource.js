@@ -11,6 +11,7 @@ const resourceSchema = new Schema({
   usedDisk: { type: Number },
   totalDisk: { type: Number },
   createdAt: { type: Date, expires: 60 * 60 * 24 * 7, default: Date.now() },
+  ipAddress: { type: String },
 });
 
 module.exports = mongoose.model('resource', resourceSchema);
