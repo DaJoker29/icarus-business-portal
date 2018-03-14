@@ -5,13 +5,17 @@ block navigation
   nav
     ul
       li(class={active: current === 'dashboard'})
-        a(href="/") Home
+        a(href="/")
+          i.fas.fa-home
       li(class={active: current === 'account'})
-        a(href="/account") Account
+        a(href="/account")
+          i.fas.fa-user
       li(class={active: current === 'support'})
-        a(href="/support") Support
+        a(href="/support")
+          i.fas.fa-question
       if user.isAdmin
         li(class={active: current === 'admin'})
-          a(href="/admin") Admin
+          a(href="/admin")
+            i.fas.fa-cog
 block content
   block main-content

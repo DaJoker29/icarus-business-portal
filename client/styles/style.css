@@ -139,7 +139,10 @@ button:hover {
 
 /* Navigation */
 nav {
-  display: block;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }
 
 nav ul {
@@ -148,22 +151,25 @@ nav ul {
   overflow: hidden;
   background-color: var(--black);
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   justify-content: center;
   align-items: stretch;
   align-content: stretch;
 }
 
 nav li {
-  flex: 0 0 100%;
+  flex: 1 0 auto;
 }
 
 nav li a {
   color: var(--white);
   display: block;
-  width: 10rem;
   padding: 1rem .5rem;
   margin: 0 auto;
+}
+
+nav li a:hover {
+  color: var(--blue);
 }
 
 .active {
@@ -315,14 +321,14 @@ nav li a {
     width: 100%;
     height: 100%;
     filter: blur(3px) contrast(50%) brightness(125%);
-    margin: -7rem auto; /* Needs to cancel out the .wrapper top margin and padding */
+    margin: -8rem auto; /* Needs to cancel out the .wrapper top margin and padding */
   }
 
   .wrapper {
     max-width: 767px;
     margin: 5rem auto;
-    border-radius: 1rem;
     height: auto;
+    padding: 3rem 5rem;
   }
 
   fieldset>div {
@@ -331,8 +337,19 @@ nav li a {
     margin-left: auto;
   }
 
-  nav li {
-    flex: 1 1 auto;
+  nav ul {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: stre;
   }
 
+  nav li {
+    flex: 0 1 auto;
+    padding: 1rem;
+  }
 }
