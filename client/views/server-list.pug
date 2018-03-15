@@ -5,7 +5,7 @@ if servers
     each server in servers
       li
         div.flex-table.flex-table--3cols
-          p.bold.flex-table-cell.flex-table-cell--black.flex-table-cell--double #{server.LABEL}
+          a(href="/server/" + server.LINODEID).bold.flex-table-cell.flex-table-cell--black.flex-table-cell--double #{server.LABEL} / #{server.ipAddress}
           if status[server.STATUS + 1] == 'Running'
             p.flex-table-cell.flex-table-cell--green Status: Running
           else
@@ -15,7 +15,7 @@ if servers
           p.flex-table-cell.flex-table-cell--blue CPU: #{numeral(server.load).format('0%')}
           p.flex-table-cell.flex-table-cell--blue Storage: #{numeral(server.usedDisk).format('0.0b')} / #{numeral(server.totalDisk).format('0.0b')}
           p.flex-table-cell.flex-table-cell--blue RAM: #{numeral(server.usedMem).format('0.0b')} / #{numeral(server.totalMem).format('0.0b')}
-          p.flex-table-cell.flex-table-cell--blue Expires: #{moment(server.expires).fromNow()}
+          p.flex-table-cell.flex-table-cell--red Expires #{moment(server.expires).fromNow()}
           if current === 'dashboard'
             a(href="/renewal/" + server.LINODEID).flex-table-cell.flex-table-cell--gold.flex-table-cell--double  Renew Now
           if current === 'admin'

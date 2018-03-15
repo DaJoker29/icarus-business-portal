@@ -1,0 +1,20 @@
+extends main-layout
+
+block main-content
+  - const status = ['Being Created', 'Brand New', 'Running', 'Powered Off'];
+  h3 #{server.LABEL.toUpperCase()} / #{server.ipAddress}
+  ul
+    if status[server.STATUS + 1] == 'Running'
+      li Currently Online
+    else
+      li Currently Powered Down
+  ul
+    li #{numeral(server.load).format('0.00')} - Total CPU Load
+    li #{numeral(server.usedDisk / server.totalDisk).format('0%')} (#{numeral(server.usedDisk).format('0b')}) - Storage Used
+    li #{numeral(server.usedMem / server.totalMem).format('0%')} (#{numeral(server.usedMem).format('0b')}) - Memory in use
+  ul
+    li Expires in #{moment(server.expires).fromNow(true)}
+    li Created #{moment(server.CREATE_DT).fromNow(true)} ago
+    li Last rebooted #{moment(server.createdAt).subtract(server.uptime, 'seconds').fromNow(true)} ago
+  ul
+    li Server ID:  #{server.LINODEID}
