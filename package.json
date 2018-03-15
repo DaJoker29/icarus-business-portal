@@ -28,8 +28,9 @@
     "reload-prod": "./tools/reload-server.sh",
     "reload-staging": "./tools/reload-staging.sh",
     "todo": "leasot -Sx {app,client,config,helpers,test,tools}/**/*.{js,html,css}",
-    "pull-servers": "./cli/pull-servers.js",
-    "create-user": "./cli/create-user.js"
+    "pull-servers": "./scripts/pull-servers.js",
+    "create-user": "./scripts/create-user.js",
+    "add-domain": "./scripts/add-domain.js"
   },
   "devDependencies": {
     "babel-eslint": "8.2.1",

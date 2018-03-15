@@ -56,12 +56,16 @@ ul + ul {
   margin-top: 1rem;
 }
 
+ul ul {
+  margin-left: 1rem;
+}
+
 h1,
 h2,
 h3,
 h4 {
-  margin-top: 1em;
-  margin-bottom: .5em;
+  margin-top: .5em;
+  margin-bottom: .25em;
   font-weight: 900;
 }
 
@@ -277,6 +281,7 @@ nav li a:hover {
 .flex-table-cell--green {
   outline: 0;
   background-color: var(--green);
+  color: var(--black);
 }
 
 .flex-table-cell--white {

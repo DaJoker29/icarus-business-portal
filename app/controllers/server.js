@@ -6,7 +6,7 @@ function renderServerDetail(req, res, next) {
   const { user } = req;
 
   Promise.all([
-    Server.findOne({ LINODEID: id }),
+    Server.findOne({ LINODEID: id }).populate('domains'),
     Resource.find({}, null, { sort: { createdAt: -1 } }),
   ])
     .then(([server, resources]) => {

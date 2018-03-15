@@ -13,6 +13,7 @@ const serverSchema = new Schema({
   hostingPlan: { type: String, default: 'starter', required: true },
   supportPlan: { type: String, default: 'handsOff', required: true },
   ipAddress: { type: String, default: '127.0.0.1', required: true },
+  domains: [{ type: Schema.Types.ObjectId, ref: 'domain' }],
   LINODEID: {
     type: Number,
     unique: true,

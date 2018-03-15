@@ -5,11 +5,11 @@ if servers
     each server in servers
       li
         div.flex-table.flex-table--3cols
-          a(href="/server/" + server.LINODEID).bold.flex-table-cell.flex-table-cell--black.flex-table-cell--double #{server.LABEL} / #{server.ipAddress}
+          a(href="/server/" + server.LINODEID).bold.flex-table-cell.flex-table-cell--black.flex-table-cell--double #{server.domains[0].name.toUpperCase()}
           if status[server.STATUS + 1] == 'Running'
-            p.flex-table-cell.flex-table-cell--green Status: Running
+            p.flex-table-cell.flex-table-cell--green Online
           else
-            p.flex-table-cell.flex-table-cell--blue Status: Powered Down
+            p.flex-table-cell.flex-table-cell--blue Offline
           if current === 'admin' && server.assignedTo
             p.flex-table-cell.flex-table-cell--blue.flex-table-cell--full Owner: #{server.assignedTo}
           p.flex-table-cell.flex-table-cell--blue CPU: #{numeral(server.load).format('0%')}
