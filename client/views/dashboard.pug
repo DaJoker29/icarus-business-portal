@@ -1,0 +1,16 @@
+extends main-layout
+
+
+block active
+  - var current = 'dashboard'
+
+block main-content
+  .meta
+    p Signed in as #{user.email}
+    a.small(href="logout") (logout)
+  div
+    if user.firstName
+      h3 Welcome, #{user.firstName}
+    else
+      h3 Welcome.
+    include server-list

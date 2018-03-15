@@ -1,0 +1,29 @@
+extends main-layout
+
+block main-content
+  - const status = ['Being Created', 'Brand New', 'Running', 'Powered Off'];
+  h2 #{server.domains[0].name.toUpperCase()}
+  ul
+    if status[server.STATUS + 1] == 'Running'
+      li Currently Online
+    else
+      li Currently Powered Down
+  ul
+
+    li Renews in #{moment(server.expires).fromNow(true)} - 
+      |
+      a(href="/renewal/" + server.LINODEID) Renew Here
+    li Created #{moment(server.CREATE_DT).fromNow(true)} ago
+  ul
+    li #{numeral(server.load).format('0.00')} - Total CPU Load
+    li #{numeral(server.usedDisk / server.totalDisk).format('0%')} (#{numeral(server.usedDisk).format('0b')}) - Storage Used
+    li #{numeral(server.usedMem / server.totalMem).format('0%')} (#{numeral(server.usedMem).format('0b')}) - Memory in use
+  ul
+    li Server ID:  #{server.LINODEID}
+    li Hostname: #{server.LABEL}
+    li IP Address: #{server.ipAddress}
+  ul
+    li Domain Name(s):
+      ul
+        each domain in server.domains
+          li #{domain.name}

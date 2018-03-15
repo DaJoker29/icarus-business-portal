@@ -1,7 +1,9 @@
 $(() => {
-  setPlan();
-  $('#hardware').change(setPlan);
-  $('#support-plan').change(setPlan);
+  if ($('#hardware').length && $('#support-plan').length) {
+    setPlan();
+    $('#hardware').change(setPlan);
+    $('#support-plan').change(setPlan);
+  }
 });
 
 function setPlan() {

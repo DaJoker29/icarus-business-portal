@@ -8,7 +8,9 @@ function renderDash(req, res, next) {
   const { email, stripeID } = req.user;
 
   Promise.all([
-    Server.find({ assignedTo: email }, null, { sort: { expires: 1 } }),
+    Server.find({ assignedTo: email }, null, { sort: { expires: 1 } }).populate(
+      'domains',
+    ),
     Resource.find({}, null, { sort: { createdAt: -1 } }),
     Payment.find({ customer: stripeID }, null, {
       sort: { created: -1 },

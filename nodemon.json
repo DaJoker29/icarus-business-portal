@@ -7,12 +7,16 @@
   "ignore": [
     "test",
     "tools",
-    "coverage"
+    "coverage",
+    "client/styles",
+    "client/scripts",
+    "build"
   ],
   "watch": [
     "app/controllers",
     "app/models",
     "app/routes",
+    "client/views",
     "helpers",
     "config",
     "icarus.js"
