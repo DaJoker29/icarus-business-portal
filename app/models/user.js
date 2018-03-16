@@ -10,7 +10,7 @@ const userSchema = new Schema({
     unique: true,
     index: true,
   },
-  passwordHash: { type: String, required: true, select: false },
+  passwordHash: { type: String, select: false },
   firstName: { type: String },
   lastName: { type: String },
   organization: { type: String },

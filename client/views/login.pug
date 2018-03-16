@@ -1,0 +1,15 @@
+extends form-layout
+
+block form-content
+  form(method='POST')
+    fieldset
+      legend Howdy! Sign in below.
+
+      div
+        label(for="email") Email Address
+        input(type='email' name='email' required)
+      div
+        label(for="password") Password
+        input(type='password' name='password' required)
+      div
+        button(type='submit') Sign In

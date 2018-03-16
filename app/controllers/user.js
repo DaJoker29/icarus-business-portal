@@ -8,7 +8,9 @@ function renderDash(req, res, next) {
   const { email, stripeID } = req.user;
 
   Promise.all([
-    Server.find({ assignedTo: email }, null, { sort: { expires: 1 } }),
+    Server.find({ assignedTo: email }, null, { sort: { expires: 1 } }).populate(
+      'domains',
+    ),
     Resource.find({}, null, { sort: { createdAt: -1 } }),
     Payment.find({ customer: stripeID }, null, {
       sort: { created: -1 },
@@ -42,6 +44,10 @@ function renderDash(req, res, next) {
     });
 }
 
+function renderAdd(req, res) {
+  return res.render('add', { title: 'Add a server', user: req.user });
+}
+
 function renderAccount(req, res) {
   return res.render('account', { title: 'My Account', user: req.user });
 }
@@ -68,4 +74,5 @@ function changeAccountInfo(req, res, next) {
 
 module.exports.RENDER_DASH = renderDash;
 module.exports.RENDER_ACCOUNT = renderAccount;
+module.exports.RENDER_ADD = renderAdd;
 module.exports.CHANGE_ACCOUNT_INFO = changeAccountInfo;

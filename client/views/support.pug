@@ -1,0 +1,32 @@
+extends main-layout
+
+
+block active
+  - var current = 'support'
+
+block main-content
+  form(action="" method="POST")
+    fieldset
+      legend Send Message to Staff
+      p Message will be sent directly to the webmaster.
+
+      div
+        label(for="message") Message
+        textarea#message(name="message", rows="10" placeholder="Message goes here...")
+      button Send
+
+  if (messages)
+    fieldset
+      legend Previous Messages
+      
+    .flex-table.flex-table--1cols
+      each message in messages
+        if message.isCompleted
+          - var status = 'Completed'
+        else if message.isAssigned
+          - var status = 'Working on It'
+        else
+          - var status = 'Under Review'
+        .flex-table-cell.flex-table-cell--black
+          span #{moment(message.date).format('MMM d, YYYY, h:mm:ss a')} - #{status}
+          p= message.content

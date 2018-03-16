@@ -1,0 +1,14 @@
+extends form-layout
+
+block form-content
+  form(method="POST")
+    fieldset
+      legend A confirmation email has been sent the email provided.
+      p Please check your inbox for a confirmation token. Be sure to check your spam folder. If the message hasn't been delivered for a while, feel free to use the form below to resend the confirmation.
+
+      div
+        label(for="email") Email Address
+        input(type="email" name="email" placeholder="Email Address" value=email)
+
+      button(href="/confirm/resend") Resend Confirmation
+    a(href="/login") Sign In
