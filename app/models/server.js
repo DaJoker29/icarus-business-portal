@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const serverSchema = new Schema({
-  assignedTo: { type: String },
+  assignedTo: { type: Schema.Types.ObjectId, ref: 'user' },
   expires: {
     type: Date,
     default: Date.now() + 1000 * 60 * 60 * 24 * 365,

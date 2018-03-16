@@ -2,17 +2,18 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const messageSchema = new Schema({
-  date: {
+const ticketSchema = new Schema({
+  createdOn: {
     type: Date,
     default: Date.now(),
     required: true,
     expires: 60 * 60 * 24 * 180,
   },
-  content: { type: String, required: true },
+  createdBy: { type: Schema.Types.ObjectId, ref: 'user' },
   isAssigned: { type: Boolean, required: true, default: false },
   isComplete: { type: Boolean, required: true, default: false },
-  owner: { type: String, required: true },
+  isClosed: { type: Boolean, required: true, default: false },
+  comments: [{ type: Schema.Types.ObjectId, ref: 'comment' }],
 });
 
-module.exports = mongoose.model('message', messageSchema);
+module.exports = mongoose.model('ticket', ticketSchema);

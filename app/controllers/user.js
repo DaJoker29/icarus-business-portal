@@ -5,10 +5,10 @@ const { Server, Resource, Payment, User } = require('../models');
 
 function renderDash(req, res, next) {
   let serverlist;
-  const { email, stripeID } = req.user;
+  const { _id, stripeID } = req.user;
 
   Promise.all([
-    Server.find({ assignedTo: email }, null, { sort: { expires: 1 } }).populate(
+    Server.find({ assignedTo: _id }, null, { sort: { expires: 1 } }).populate(
       'domains',
     ),
     Resource.find({}, null, { sort: { createdAt: -1 } }),

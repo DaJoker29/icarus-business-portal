@@ -7,7 +7,8 @@ const paymentSchema = new Schema({
   created: { type: Date, default: Date.now(), required: true },
   amount: { type: Number, required: true },
   description: { type: String, required: true },
-  customer: { type: String, required: true },
+  customerToken: { type: String, required: true },
+  userId: { type: Schema.Types.ObjectId, ref: 'user' },
   currency: { type: String, required: true },
 });
 

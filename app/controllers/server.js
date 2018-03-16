@@ -6,11 +6,11 @@ function renderServerDetail(req, res, next) {
   const { user } = req;
 
   Promise.all([
-    Server.findOne({ LINODEID: id }).populate('domains'),
+    Server.findOne({ LINODEID: id }).populate('domains assignedTo'),
     Resource.find({}, null, { sort: { createdAt: -1 } }),
   ])
     .then(([server, resources]) => {
-      if (user.email === server.assignedTo) {
+      if (user.id === server.assignedTo.id) {
         const resource = resources.find(e => e.hostname === server.LABEL);
         return res.render('server', {
           user,
