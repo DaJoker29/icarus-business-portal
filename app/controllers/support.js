@@ -1,35 +1,35 @@
 const debug = require('debug')('icarus-support');
-const { Message } = require('../models');
+const { Ticket } = require('../models');
 
 function renderSupport(req, res) {
-  return Message.find({ owner: req.user.email }, null, { sort: { date: -1 } })
-    .then(messages => {
+  return Ticket.find({ createdBy: req.user._id }, null, { sort: { date: -1 } })
+    .then(tickets => {
       res.render('support', {
         title: 'Contact Support',
         user: req.user,
-        messages,
+        tickets,
       });
     })
     .catch(e => {
-      debug(`Error fetching messages: ${e}`);
+      debug(`Error fetching tickets: ${e}`);
     });
 }
 
-async function submitMessage(req, res, next) {
-  const { message } = req.body;
-  const { email } = req.user;
-  const newMessage = new Message({ content: message, owner: email });
-  await newMessage
+async function submitTicket(req, res, next) {
+  const { ticket } = req.body;
+  const { _id } = req.user;
+  const newTicket = new Ticket({ ticket, createdBy: _id });
+  await newTicket
     .save()
     .then(doc => {
-      debug(`Message saved: ${doc}`);
+      debug(`Ticket saved: ${doc}`);
       res.redirect('/support');
     })
     .catch(e => {
-      debug(`Error saving message: ${e}`);
-      next(new Error(e, `Error submitting message from user: ${email}`));
+      debug(`Error saving ticket: ${e}`);
+      next(new Error(e, `Error submitting ticket from user: ${_id}`));
     });
 }
 
 module.exports.RENDER_SUPPORT = renderSupport;
-module.exports.SUBMIT_MESSAGE = submitMessage;
+module.exports.SUBMIT_TICKET = submitTicket;

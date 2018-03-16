@@ -23,6 +23,4 @@ router.post(
   Auth.CHANGE_PASSWORD,
 );
 
-router.get('/add', AuthHelpers.AUTHENTICATED, User.RENDER_ADD);
-
 module.exports = router;

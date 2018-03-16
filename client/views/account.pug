@@ -25,10 +25,14 @@ block main-content
     fieldset
       legend Change Password
 
-      p You will be sent an email to confirm your email address and then you will be taken to a page to create your new password.
+      p You will be logged out and prompted to sign back in with your new password.
 
       div
         label(for="currentPassword") Current Password
         input(type="password" name="currentPassword" placeholder="Your current password")
+
+      div
+        label(for="newPassword") New Password
+        input(type="password" name="newPassword" placeholder="Your new password")
 
       button(type="submit") Change Password

@@ -33,8 +33,9 @@ async function renewPlan(req, res) {
 
 function renderRenewal(req, res, next) {
   Server.findOne({ LINODEID: req.params.id })
+    .populate('assignedTo')
     .then(server => {
-      if (req.user.email !== server.assignedTo) {
+      if (req.user.id !== server.assignedTo.id) {
         throw new VError(
           "User trying to renew server that isn't assigned to them.",
         );
