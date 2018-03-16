@@ -2,7 +2,7 @@ extends main-layout
 
 block main-content
   - const status = ['Being Created', 'Brand New', 'Running', 'Powered Off'];
-  h2 #{server.domains[0].name.toUpperCase()}
+  h2 #{server.domains.length > 0 ? server.domains[0].name.toUpperCase() : server.LABEL}
   ul
     if status[server.STATUS + 1] == 'Running'
       li Currently Online

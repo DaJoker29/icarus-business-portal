@@ -5,7 +5,10 @@ if servers
     each server in servers
       li
         div.flex-table.flex-table--3cols
-          a(href="/server/" + server.LINODEID).bold.flex-table-cell.flex-table-cell--black.flex-table-cell--double #{server.domains[0].name.toUpperCase()}
+          if server.domains.length > 0
+            a(href="/server/" + server.LINODEID).bold.flex-table-cell.flex-table-cell--black.flex-table-cell--double #{ server.domains[0].name.toUpperCase() }
+          else
+            a(href="/server/" + server.LINODEID).bold.flex-table-cell.flex-table-cell--black.flex-table-cell--double #{ server.LABEL } / #{ server.ipAddress}
           if status[server.STATUS + 1] == 'Running'
             p.flex-table-cell.flex-table-cell--green Online
           else
