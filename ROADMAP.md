@@ -12,9 +12,9 @@ Icarus is a client portal for clients of [Zero Daedalus custom web solutions](ht
 - *Complete Transparency*
 
 ## Current Milestone
-**Basic Interface**
+**Admin Interface**
 
-> A simple interface that allows users to easily monitoring their resource usage and renew any services that are nearing expiration.
+> Quick access to all relevant info to complete basic administration tasks (reviewing and modifying information or links between data.)
 
 ## Future Milestones
 
@@ -47,3 +47,7 @@ Icarus is a client portal for clients of [Zero Daedalus custom web solutions](ht
 
 **Website Education and News**
 > Provide regular information that users may find useful in running their websites. Video, Audio and Text.
+
+## Completed Milestones
+~**Basic Interface**~
+> A simple interface that allows users to easily monitoring their resource usage and renew any services that are nearing expiration.
