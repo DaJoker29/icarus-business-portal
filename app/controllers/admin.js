@@ -51,5 +51,15 @@ async function changeServerInfo(req, res, next) {
   res.redirect('/admin');
 }
 
+function renderUserDetail(req, res, next) {
+  const { id } = req.params;
+  return Promise.all([User.findById(id), Payment.find({ userId: id })])
+    .then(([user, payments]) => {
+      res.render('user', { user, payments });
+    })
+    .catch(e => next(new VError(e, 'Problem rendering user detail page')));
+}
+
+module.exports.RENDER_USER_DETAIL = renderUserDetail;
 module.exports.RENDER_ADMIN = renderAdmin;
 module.exports.CHANGE_SERVER_INFO = changeServerInfo;

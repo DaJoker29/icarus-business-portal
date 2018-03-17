@@ -10,6 +10,13 @@ router.get(
   Admin.RENDER_ADMIN,
 );
 
+router.get(
+  '/admin/user/:id',
+  Auth.AUTHENTICATED,
+  Auth.ADMIN,
+  Admin.RENDER_USER_DETAIL,
+);
+
 router.post(
   '/admin/server/:id',
   Auth.AUTHENTICATED,
