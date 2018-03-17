@@ -28,8 +28,18 @@ block main-content
     li Datacenter: #{server.DATACENTERID}
     li Provision Date: #{moment(server.CREATE_DT).format('M/d/YY')}
     li Plan ID: #{server.PLANID}
-  if server.domains
-    h3 Domain Names
-    ul
-      each domain in server.domains
-        li #{domain.name}
+  h3 Domain Names
+  form(action="/admin/server/domain" method="POST")
+    fieldset
+
+      div
+        label(for="name") New Domain
+        input(type="text" name="name")
+        input(type="hidden" name="server" value=server._id)
+        input(type="hidden" name="user" value=server.assignedTo._id)
+      div
+        button Add Domain
+
+  ul
+    each domain in server.domains
+      li #{domain.name}

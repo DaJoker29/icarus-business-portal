@@ -7,6 +7,7 @@ const {
   Ticket,
   Payment,
   Comment,
+  Domain,
 } = require('../models');
 
 function renderAdmin(req, res, next) {
@@ -127,11 +128,29 @@ function assignTicket(req, res, next) {
   )
     .then(ticket => {
       debug(`Ticket assigned: ${ticket._id}`);
-      return res.redirect('/admin');
+      return res.redirect('/admin/');
     })
     .catch(e => next(new VError(e, 'Problem assigning ticket')));
 }
 
+function addDomain(req, res, next) {
+  return Domain.create(req.body)
+    .then(domain => {
+      debug(`New domain name created: ${domain._id}`);
+      return Server.findOneAndUpdate(
+        { _id: domain.server },
+        { $push: { domains: domain._id } },
+        { new: true },
+      );
+    })
+    .then(server => {
+      debug(`Server updated with new domain: ${server._id}`);
+      return res.redirect(`/admin/server/${server.id}`);
+    })
+    .catch(e => next(new VError(e, 'Problem adding new domain name')));
+}
+
+module.exports.ADD_DOMAIN = addDomain;
 module.exports.COMPLETE_TICKET = completeTicket;
 module.exports.ASSIGN_TICKET = assignTicket;
 module.exports.CLOSE_TICKET = closeTicket;

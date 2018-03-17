@@ -53,10 +53,10 @@ router.get(
 );
 
 router.post(
-  '/admin/server/:id',
+  '/admin/server/domain',
   Auth.AUTHENTICATED,
   Auth.ADMIN,
-  Admin.CHANGE_SERVER_INFO,
+  Admin.ADD_DOMAIN,
 );
 
 module.exports = router;
