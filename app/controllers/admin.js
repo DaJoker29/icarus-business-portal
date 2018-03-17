@@ -20,7 +20,9 @@ function renderAdmin(req, res, next) {
       path: 'createdBy comments',
       populate: { path: 'commenter' },
     }),
-    Payment.find({}, null, { sort: { created: -1 } }),
+    Payment.find({}, null, { limit: 5, sort: { created: -1 } }).populate(
+      'userId',
+    ),
   ])
     .then(([users, servers, resources, tickets, payments]) => {
       res.render('admin', {

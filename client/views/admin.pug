@@ -47,3 +47,10 @@ block main-content
             input(type="text" name="message")
           div
             button Send
+  h3 Recent Transactions
+  each payment in payments
+    ul
+      li #{moment.unix(payment.created).format('MMM Do, YYYY')}
+      li #{numeral(payment.amount).divide(100).format('$0.00')}
+      li #{payment.userId.email}
+      li #{payment.description}
