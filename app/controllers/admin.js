@@ -100,6 +100,21 @@ function closeTicket(req, res, next) {
     .catch(e => next(new VError(e, 'Problem closing ticket')));
 }
 
+function assignTicket(req, res, next) {
+  const { id } = req.params;
+  return Ticket.findOneAndUpdate(
+    { _id: id },
+    { isAssigned: true },
+    { new: true },
+  )
+    .then(ticket => {
+      debug(`Ticket assigned: ${ticket._id}`);
+      return res.redirect('/admin');
+    })
+    .catch(e => next(new VError(e, 'Problem assigning ticket')));
+}
+
+module.exports.ASSIGN_TICKET = assignTicket;
 module.exports.CLOSE_TICKET = closeTicket;
 module.exports.COMMENT_TICKET = commentOnTicket;
 module.exports.RENDER_SERVER_DETAIL = renderServerDetail;

@@ -38,6 +38,13 @@ router.get(
   Admin.CLOSE_TICKET,
 );
 
+router.get(
+  '/admin/ticket/assign/:id',
+  Auth.AUTHENTICATED,
+  Auth.ADMIN,
+  Admin.ASSIGN_TICKET,
+);
+
 router.post(
   '/admin/server/:id',
   Auth.AUTHENTICATED,

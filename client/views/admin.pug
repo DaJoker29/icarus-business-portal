@@ -22,6 +22,10 @@ block main-content
     each ticket in tickets
       li #{moment(ticket.createdAt).format('M/d/YY')} - #{ticket.createdBy.email} -&nbsp;
         |
+        a(href="/admin/ticket/assign/" + ticket.id) Assign
+        |
+        span  - 
+        |
         a(href="/admin/ticket/close/" + ticket.id) Close
       li
         ul
