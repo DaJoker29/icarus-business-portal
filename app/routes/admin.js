@@ -17,6 +17,13 @@ router.get(
   Admin.RENDER_USER_DETAIL,
 );
 
+router.get(
+  '/admin/server/:id',
+  Auth.AUTHENTICATED,
+  Auth.ADMIN,
+  Admin.RENDER_SERVER_DETAIL,
+);
+
 router.post(
   '/admin/server/:id',
   Auth.AUTHENTICATED,

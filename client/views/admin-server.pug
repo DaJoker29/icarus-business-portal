@@ -1,0 +1,35 @@
+extends main-layout
+
+block main-content
+  p
+    a(href="/admin") Return to Admin
+  h3 #{ server.domains.length ? server.domains[0].name : server.LABEL + ' / ' + server.ipAddress }
+  ul
+    li Server ID: #{server.id}
+    li Created On: #{moment(server.createdOn).format('M/d/YY')}
+    li Expires On: #{moment(server.expires).format('M/d/YY')}
+  ul
+    li Assigned To:
+      a(href="/admin/user/" + server.assignedTo.id)  #{server.assignedTo.email}
+  ul
+    li Support Plan: #{server.supportPlan}
+    li Hosting Plan: #{server.hostingPlan}
+  ul
+    li IP Address: #{server.ipAddress}
+    li Hostname: #{server.LABEL}
+    li Distribution: #{server.DISTRIBUTIONVENDOR}
+    li Linode ID: #{server.LINODEID}
+  ul
+    li Transfer Limit: #{numeral(server.TOTALXFER).multiply(1000000000).format('0b')}
+    li RAM Limit: ~ #{numeral(server.TOTALRAM).multiply(1000000).format('0b')}
+    li SSD Limit: ~ #{numeral(server.TOTALHD).multiply(1000000).format('0b')}
+  ul
+    li Status: #{server.STATUS}
+    li Datacenter: #{server.DATACENTERID}
+    li Provision Date: #{moment(server.CREATE_DT).format('M/d/YY')}
+    li Plan ID: #{server.PLANID}
+  if server.domains
+    h3 Domain Names
+    ul
+      each domain in server.domains
+        li #{domain.name}

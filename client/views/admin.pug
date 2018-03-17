@@ -6,8 +6,14 @@ block active
 block main-content
   h3 Active Users
   ul
-  each user in users
-    li
-      a(href="/admin/user/" + user.id) #{user.email}
-      if user.firstName || user.lastName
-        span  - #{user.firstName} #{user.lastName}
+    each user in users
+      li
+        a(href="/admin/user/" + user.id) #{user.email}
+        if user.firstName || user.lastName
+          span  - #{user.firstName} #{user.lastName}
+  h3 Servers
+  ul
+    each server in servers
+      li
+        a(href="/admin/server/" + server.id) #{server.LABEL}
+        span  - #{server.assignedTo.email}
