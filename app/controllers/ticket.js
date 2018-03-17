@@ -1,20 +1,19 @@
 const debug = require('debug')('icarus-tickets');
+const VError = require('verror');
 const { Ticket, Comment } = require('../models');
 
-function renderTicketing(req, res) {
+function renderTicketing(req, res, next) {
   return Ticket.find({ createdBy: req.user._id, isClosed: false }, null, {
     sort: { date: -1 },
   })
     .populate({ path: 'comments', populate: { path: 'commenter' } })
     .then(tickets => {
-      res.render('ticketing', {
+      return res.render('ticketing', {
         user: req.user,
         tickets,
       });
     })
-    .catch(e => {
-      debug(`Error fetching tickets: ${e}`);
-    });
+    .catch(e => next(new VError(e, 'Error rendering ticketing page')));
 }
 
 async function submitTicket(req, res, next) {
@@ -38,11 +37,28 @@ async function submitTicket(req, res, next) {
       debug(`Comment added to ticket: ${ticket.comments[0].message}`);
       return res.redirect('/tickets');
     })
-    .catch(e => {
-      debug(`Error saving ticket: ${e}`);
-      next(new Error(e, `Error submitting ticket from user: ${_id}`));
-    });
+    .catch(e => next(new VError(e, 'Error submitting ticket')));
 }
 
+function submitComment(req, res, next) {
+  const { id } = req.params;
+  const { message } = req.body;
+  return Comment.create({ message, commenter: req.user._id, ticket: id })
+    .then(comment => {
+      debug(`User Comment created ${comment._id}`);
+      return Ticket.findOneAndUpdate(
+        { _id: comment.ticket },
+        { $push: { comments: comment._id } },
+        { new: true },
+      );
+    })
+    .then(ticket => {
+      debug(`User commented on ticket: ${ticket._id}`);
+      return res.redirect('/tickets');
+    })
+    .catch(e => next(new VError(e, 'Problem saving user comment on ticket')));
+}
+
+module.exports.SUBMIT_COMMENT = submitComment;
 module.exports.RENDER_TICKETING = renderTicketing;
 module.exports.SUBMIT_TICKET = submitTicket;
