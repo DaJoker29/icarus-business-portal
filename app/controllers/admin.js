@@ -150,6 +150,25 @@ function addDomain(req, res, next) {
     .catch(e => next(new VError(e, 'Problem adding new domain name')));
 }
 
+function removeDomain(req, res, next) {
+  const { id } = req.params;
+  return Domain.findByIdAndRemove(id)
+    .then(domain => {
+      debug(`Deleting Domain: ${domain.name}`);
+      return Server.findOneAndUpdate(
+        { _id: domain.server },
+        { $pull: { domains: domain._id } },
+        { new: true },
+      );
+    })
+    .then(server => {
+      debug(`Domain Name removed from server: ${server.id}`);
+      return res.redirect(`/admin/server/${server.id}`);
+    })
+    .catch(e => next(new VError(e, 'Problem removing domain name')));
+}
+
+module.exports.REMOVE_DOMAIN = removeDomain;
 module.exports.ADD_DOMAIN = addDomain;
 module.exports.COMPLETE_TICKET = completeTicket;
 module.exports.ASSIGN_TICKET = assignTicket;

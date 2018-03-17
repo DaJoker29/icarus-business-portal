@@ -59,4 +59,11 @@ router.post(
   Admin.ADD_DOMAIN,
 );
 
+router.get(
+  '/admin/server/domain/remove/:id',
+  Auth.AUTHENTICATED,
+  Auth.ADMIN,
+  Admin.REMOVE_DOMAIN,
+);
+
 module.exports = router;

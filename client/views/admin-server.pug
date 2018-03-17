@@ -29,6 +29,11 @@ block main-content
     li Provision Date: #{moment(server.CREATE_DT).format('M/d/YY')}
     li Plan ID: #{server.PLANID}
   h3 Domain Names
+  ul
+    each domain in server.domains
+      li #{domain.name} - 
+        |
+        a(href="/admin/server/domain/remove/" + domain._id) Delete
   form(action="/admin/server/domain" method="POST")
     fieldset
 
@@ -39,7 +44,3 @@ block main-content
         input(type="hidden" name="user" value=server.assignedTo._id)
       div
         button Add Domain
-
-  ul
-    each domain in server.domains
-      li #{domain.name}
