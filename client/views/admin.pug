@@ -17,10 +17,12 @@ block main-content
       li
         a(href="/admin/server/" + server.id) #{server.LABEL}
         span  - #{server.assignedTo.email}
-  h3 Open Tickets
+  h3 Open Tickets (#{tickets.length})
   ul
     each ticket in tickets
-      li #{moment(ticket.createdAt).format('M/d/YY')} - #{ticket.createdBy.email}
+      li #{moment(ticket.createdAt).format('M/d/YY')} - #{ticket.createdBy.email} -&nbsp;
+        |
+        a(href="/admin/ticket/close/" + ticket.id) Close
       li
         ul
           li Subject: #{ticket.subject}

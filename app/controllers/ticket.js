@@ -2,7 +2,9 @@ const debug = require('debug')('icarus-tickets');
 const { Ticket, Comment } = require('../models');
 
 function renderTicketing(req, res) {
-  return Ticket.find({ createdBy: req.user._id }, null, { sort: { date: -1 } })
+  return Ticket.find({ createdBy: req.user._id, isClosed: false }, null, {
+    sort: { date: -1 },
+  })
     .populate({ path: 'comments', populate: { path: 'commenter' } })
     .then(tickets => {
       res.render('ticketing', {

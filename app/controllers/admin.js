@@ -14,7 +14,7 @@ function renderAdmin(req, res, next) {
     User.find(),
     Server.find({}, null, { sort: { expires: 1 } }).populate('assignedTo'),
     Resource.find({}, null, { sort: { createdAt: -1 } }),
-    Ticket.find({}, null, { sort: { date: -1 } }).populate({
+    Ticket.find({ isClosed: false }, null, { sort: { date: -1 } }).populate({
       path: 'createdBy comments',
       populate: { path: 'commenter' },
     }),
@@ -90,6 +90,17 @@ function commentOnTicket(req, res, next) {
     .catch(e => next(new VError(e, 'Problem saving admin comment on ticket')));
 }
 
+function closeTicket(req, res, next) {
+  const { id } = req.params;
+  return Ticket.findOneAndUpdate({ _id: id }, { isClosed: true }, { new: true })
+    .then(ticket => {
+      debug(`Ticket closed: ${ticket._id}`);
+      return res.redirect('/admin');
+    })
+    .catch(e => next(new VError(e, 'Problem closing ticket')));
+}
+
+module.exports.CLOSE_TICKET = closeTicket;
 module.exports.COMMENT_TICKET = commentOnTicket;
 module.exports.RENDER_SERVER_DETAIL = renderServerDetail;
 module.exports.RENDER_USER_DETAIL = renderUserDetail;

@@ -31,6 +31,13 @@ router.post(
   Admin.COMMENT_TICKET,
 );
 
+router.get(
+  '/admin/ticket/close/:id',
+  Auth.AUTHENTICATED,
+  Auth.ADMIN,
+  Admin.CLOSE_TICKET,
+);
+
 router.post(
   '/admin/server/:id',
   Auth.AUTHENTICATED,
