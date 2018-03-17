@@ -1,0 +1,38 @@
+extends main-layout
+
+
+block active
+  - var current = 'support'
+
+block main-content
+  form(action="" method="POST")
+    fieldset
+      legend Create Ticket
+      p Tickets allows you to submit issues you're having and easily monitor our progress in dealing with them.
+
+      div
+        label(for="title") Subject
+        input(type="text" name="subject")
+
+      div
+        label(for="ticket") Issue to address
+        textarea#ticket(name="message", rows="5" placeholder="Message goes here...")
+      button Send
+
+  if (tickets)
+    fieldset
+      legend Open Tickets
+    
+    each ticket in tickets  
+      .flex-table.flex-table--3cols
+        if ticket.isCompleted
+          - var status = 'Completed'
+        else if ticket.isAssigned
+          - var status = 'Assigned'
+        else
+          - var status = 'Open'
+        .flex-table-cell.flex-table-cell--black.flex-table-cell--double #{ticket.subject} - #{moment(ticket.createdAt).format('MMM d, YYYY')}
+        .flex-table-cell.flex-table-cell--green #{status}
+        each comment in ticket.comments
+          .flex-table-cell.flex-table-cell--gold #{ comment.commenter.firstName ? comment.commenter.firstName : comment.email} 
+          .flex-table-cell.flex-table-cell--black.flex-table-cell--double #{comment.message} (#{moment(comment.createdAt).format('M/d/YY - h:mm a')})

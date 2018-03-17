@@ -1,8 +1,0 @@
-if tickets
-  h3 Tickets (#{tickets.length})
-  .flex-table.flex-table--2cols
-    each ticket in tickets
-      .flex-table-cell.flex-table-cell--black.flex-table-cell--full #{ticket.owner}
-      .flex-table-cell.flex-table-cell--red #{moment(ticket.date).format('MMM d, YYYY, h:mm:ss a')}
-      .flex-table-cell.flex-table-cell--red #{ticket.isAssigned ? 'Assigned' : 'Unassigned'} -  #{ticket.isCompleted ? 'Completed' : 'Open'}
-      .flex-table-cell.flex-table-cell--blue.flex-table-cell--full #{ticket.content}

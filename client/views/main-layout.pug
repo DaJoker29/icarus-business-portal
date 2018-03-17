@@ -10,8 +10,8 @@ block navigation
       li(class={active: current === 'account'})
         a(href="/account")
           i.fas.fa-user-circle
-      li(class={active: current === 'support'})
-        a(href="/support")
+      li(class={active: current === 'tickets'})
+        a(href="/tickets")
           i.fas.fa-paper-plane
       if user.isAdmin
         li(class={active: current === 'admin'})
