@@ -25,6 +25,13 @@ router.get(
 );
 
 router.post(
+  '/admin/comment/:id',
+  Auth.AUTHENTICATED,
+  Auth.ADMIN,
+  Admin.COMMENT_TICKET,
+);
+
+router.post(
   '/admin/server/:id',
   Auth.AUTHENTICATED,
   Auth.ADMIN,

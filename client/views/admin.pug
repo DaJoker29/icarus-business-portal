@@ -17,3 +17,21 @@ block main-content
       li
         a(href="/admin/server/" + server.id) #{server.LABEL}
         span  - #{server.assignedTo.email}
+  h3 Open Tickets
+  ul
+    each ticket in tickets
+      li #{moment(ticket.createdAt).format('M/d/YY')} - #{ticket.createdBy.email}
+      li
+        ul
+          li Subject: #{ticket.subject}
+          li
+            ul
+              each comment in ticket.comments
+                li #{moment(comment.createdAt).format('M/d/YY')} - #{comment.commenter.email} - #{comment.message}
+      form(action="/admin/comment/" + ticket.id method="POST")
+        fieldset
+          div
+            label(for="message") Comment
+            input(type="text" name="message")
+          div
+            button Send
