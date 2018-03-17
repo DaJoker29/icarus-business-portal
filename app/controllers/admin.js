@@ -14,7 +14,9 @@ function renderAdmin(req, res, next) {
     User.find(),
     Server.find({}, null, { sort: { expires: 1 } }).populate('assignedTo'),
     Resource.find({}, null, { sort: { createdAt: -1 } }),
-    Ticket.find({ isClosed: false }, null, { sort: { date: -1 } }).populate({
+    Ticket.find({ isClosed: false }, null, {
+      sort: { isCompleted: 1, date: -1 },
+    }).populate({
       path: 'createdBy comments',
       populate: { path: 'commenter' },
     }),
@@ -100,6 +102,20 @@ function closeTicket(req, res, next) {
     .catch(e => next(new VError(e, 'Problem closing ticket')));
 }
 
+function completeTicket(req, res, next) {
+  const { id } = req.params;
+  return Ticket.findOneAndUpdate(
+    { _id: id },
+    { isCompleted: true },
+    { new: true },
+  )
+    .then(ticket => {
+      debug(`Ticket completed: ${ticket._id}`);
+      return res.redirect('/admin');
+    })
+    .catch(e => next(new VError(e, 'Problem marking ticket complete')));
+}
+
 function assignTicket(req, res, next) {
   const { id } = req.params;
   return Ticket.findOneAndUpdate(
@@ -114,6 +130,7 @@ function assignTicket(req, res, next) {
     .catch(e => next(new VError(e, 'Problem assigning ticket')));
 }
 
+module.exports.COMPLETE_TICKET = completeTicket;
 module.exports.ASSIGN_TICKET = assignTicket;
 module.exports.CLOSE_TICKET = closeTicket;
 module.exports.COMMENT_TICKET = commentOnTicket;

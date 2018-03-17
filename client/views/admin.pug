@@ -21,11 +21,17 @@ block main-content
   ul
     each ticket in tickets
       li #{moment(ticket.createdAt).format('M/d/YY')} - #{ticket.createdBy.email} -&nbsp;
-        |
-        a(href="/admin/ticket/assign/" + ticket.id) Assign
-        |
-        span  - 
-        |
+        if ticket.isAssigned == false
+          |
+          a(href="/admin/ticket/assign/" + ticket.id) Assign
+          |
+          span  - 
+        if ticket.isCompleted == false
+          |
+          a(href="/admin/ticket/complete/" + ticket.id) Complete
+          |
+          span  - 
+          |
         a(href="/admin/ticket/close/" + ticket.id) Close
       li
         ul

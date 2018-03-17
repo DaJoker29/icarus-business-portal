@@ -45,6 +45,13 @@ router.get(
   Admin.ASSIGN_TICKET,
 );
 
+router.get(
+  '/admin/ticket/complete/:id',
+  Auth.AUTHENTICATED,
+  Auth.ADMIN,
+  Admin.COMPLETE_TICKET,
+);
+
 router.post(
   '/admin/server/:id',
   Auth.AUTHENTICATED,
