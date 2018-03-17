@@ -1,0 +1,22 @@
+extends main-layout
+
+block main-content
+  p
+    a(href="/admin") Return to Admin
+  h3 #{selectedUser.email}
+  ul
+    li User ID: #{selectedUser.id}
+    li Account created: #{moment(selectedUser.createdOn).format('MMM Do, YYYY')}
+    li #{ selectedUser.isVerified ? 'Verified' : 'Unverified'} - #{ selectedUser.isAdmin ? 'Admin' : 'Client'}
+  ul
+    li Name: #{selectedUser.firstName} #{selectedUser.lastName} 
+    li Organization: #{selectedUser.organization}
+    li Phone: #{selectedUser.phone.phone}
+    li Stripe ID: #{selectedUser.stripeID}
+  if payments
+    h3 Past Transactions
+    each payment in payments
+      ul
+        li #{moment.unix(payment.created).format('MMM Do, YYYY')}
+        li #{numeral(payment.amount).divide(100).format('$0.00')}
+        li #{payment.description}

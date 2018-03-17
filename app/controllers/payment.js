@@ -80,6 +80,16 @@ function renderPaymentForm(req, res) {
   });
 }
 
+function renderPastPayments(req, res, next) {
+  const { user } = req;
+  return Payment.find({ userId: user._id })
+    .then(payments => {
+      return res.render('payments', { user, payments });
+    })
+    .catch(e => next(new VError(e, 'Problem rendering past payments page')));
+}
+
+module.exports.RENDER_PAST_PAYMENTS = renderPastPayments;
 module.exports.CHARGE_CC = chargeCreditCard;
 module.exports.CREATE_STRIPE_ID = createStripeID;
 module.exports.RENDER_PAYMENT_FORM = renderPaymentForm;

@@ -107,6 +107,10 @@ legend {
   text-align: center;
 }
 
+legend + p {
+ margin-top: -1rem;
+}
+
 label {
   text-align: left;
 }

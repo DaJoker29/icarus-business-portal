@@ -1,0 +1,9 @@
+extends main-layout
+
+block main-content
+  a(href="/") Return to Dashboard
+  h3 Past Transactions (#{payments.length})
+  each payment in payments
+    ul
+      li #{moment.unix(payment.created).format('MMM Do, YYYY')} - #{numeral(payment.amount).divide(100).format('$0.00')}
+      li #{payment.description}

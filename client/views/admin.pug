@@ -4,4 +4,53 @@ block active
   - var current = 'admin'
 
 block main-content
-  include payment-list
+  h3 Active Users
+  ul
+    each user in users
+      li
+        a(href="/admin/user/" + user.id) #{user.email}
+        if user.firstName || user.lastName
+          span  - #{user.firstName} #{user.lastName}
+  h3 Servers
+  ul
+    each server in servers
+      li
+        a(href="/admin/server/" + server.id) #{server.LABEL}
+        span  - #{server.assignedTo.email}
+  h3 Open Tickets (#{tickets.length})
+  ul
+    each ticket in tickets
+      li #{moment(ticket.createdAt).format('M/d/YY')} - #{ticket.createdBy.email} -&nbsp;
+        if ticket.isAssigned == false
+          |
+          a(href="/admin/ticket/assign/" + ticket.id) Assign
+          |
+          span  - 
+        if ticket.isCompleted == false
+          |
+          a(href="/admin/ticket/complete/" + ticket.id) Complete
+          |
+          span  - 
+          |
+        a(href="/admin/ticket/close/" + ticket.id) Close
+      li
+        ul
+          li Subject: #{ticket.subject}
+          li
+            ul
+              each comment in ticket.comments
+                li #{moment(comment.createdAt).format('M/d/YY')} - #{comment.commenter.email} - #{comment.message}
+      form(action="/admin/comment/" + ticket.id method="POST")
+        fieldset
+          div
+            label(for="message") Comment
+            input(type="text" name="message")
+          div
+            button Send
+  h3 Recent Transactions
+  each payment in payments
+    ul
+      li #{moment.unix(payment.created).format('MMM Do, YYYY')}
+      li #{numeral(payment.amount).divide(100).format('$0.00')}
+      li #{payment.userId.email}
+      li #{payment.description}
